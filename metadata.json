@@ -1,0 +1,13 @@
+{
+  "name": "SolanaWarung",
+  "description": "AI-Powered UMKM Marketplace with Digital Rupiah (CBDC) on Solana Blockchain",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "AI Product Analysis",
+    "Blockchain Payments",
+    "Business Analytics"
+  ]
+}
