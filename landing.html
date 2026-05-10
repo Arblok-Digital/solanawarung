@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SolanaWarung — UMKM Indonesia Masa Depan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-color: #0A0A0F;
+            --primary-green: #14F195;
+            --primary-purple: #9945FF;
+            --text-white: #FFFFFF;
+            --text-dim: #94A3B8;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ═══════════════════════════════════════════
+           REUSABLE UTILITIES
+           ═══════════════════════════════════════════ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-green), #10c77b);
+            color: #000;
+            box-shadow: 0 10px 20px -5px rgba(20, 241, 149, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -5px rgba(20, 241, 149, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-white);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ═══════════════════════════════════════════
+           NAVBAR
+           ═══════════════════════════════════════════ */
+        nav {
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-box {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-purple));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-style: italic;
+            color: white;
+        }
+
+        /* ═══════════════════════════════════════════
+           HERO SECTION
+           ═══════════════════════════════════════════ */
+        #hero {
+            padding-top: 180px;
+            padding-bottom: 100px;
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-glow-1 {
+            position: absolute;
+            top: -10%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(153, 69, 255, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .hero-glow-2 {
+            position: absolute;
+            bottom: 0%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(20, 241, 149, 0.05) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .hero-badge {
+            background: rgba(153, 69, 255, 0.1);
+            border: 1px solid rgba(153, 69, 255, 0.2);
+            color: var(--primary-purple);
+            padding: 8px 16px;
+            border-radius: 99px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            display: inline-block;
+        }
+
+        #hero h1 {
+            font-size: clamp(40px, 8vw, 72px);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+            background: linear-gradient(to bottom, #fff 60%, rgba(255,255,255,0.6));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #hero p {
+            font-size: 18px;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            font-weight: 500;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 60px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            max-width: 800px;
+            margin: 0 auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 40px;
+        }
+
+        .stat-item h4 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .stat-item p {
+            font-size: 11px !important;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0 !important;
+        }
+
+        /* ═══════════════════════════════════════════
+           ABOUT SECTION
+           ═══════════════════════════════════════════ */
+        #about {
+            padding: 100px 0;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.01));
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 40px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            border-radius: 32px;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary-green);
+            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            background: rgba(20, 241, 149, 0.1);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-green);
+            margin-bottom: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: var(--text-dim);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* ═══════════════════════════════════════════
+           HOW IT WORKS (TABS)
+           ═══════════════════════════════════════════ */
+        #how-to {
+            padding: 100px 0;
+        }
+
+        .tabs-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            overflow: hidden;
+            padding: 60px;
+        }
+
+        .tabs-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 6px;
+            border-radius: 16px;
+            width: fit-content;
+            margin: 0 auto 60px;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            background: transparent;
+            color: var(--text-dim);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tab-btn.active {
+            background: var(--primary-purple);
+            color: white;
+            box-shadow: 0 4px 12px rgba(153, 69, 255, 0.3);
+        }
+
+        .step-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fade-in 0.5s ease-out;
+        }
+
+        .step-item {
+            position: relative;
+        }
+
+        .step-num {
+            font-size: 48px;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.05);
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            z-index: 0;
+        }
+
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            color: var(--primary-purple);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-item h4 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-item p {
+            font-size: 14px;
+            color: var(--text-dim);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ═══════════════════════════════════════════
+           FAQ SECTION (ACCORDION)
+           ═══════════════════════════════════════════ */
+        #faq {
+            padding: 100px 0;
+        }
+
+        .faq-grid {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .faq-header {
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .faq-header h4 {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .faq-icon {
+            transition: var(--transition);
+        }
+
+        .faq-content {
+            padding: 0 32px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+            color: var(--text-dim);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .faq-item.active {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+            color: var(--primary-green);
+        }
+
+        .faq-item.active .faq-content {
+            max-height: 200px;
+            padding-bottom: 24px;
+        }
+
+        /* ═══════════════════════════════════════════
+           CLOSING CTA
+           ═══════════════════════════════════════════ */
+        #cta-final {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, #13131F, #0A0A0F);
+            border: 1px solid var(--border-color);
+            padding: 80px 40px;
+            border-radius: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(20, 241, 149, 0.05) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .cta-box h2 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-box p {
+            color: var(--text-dim);
+            font-size: 18px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-footer-text {
+            display: block;
+            margin-top: 16px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ═══════════════════════════════════════════
+           FOOTER
+           ═══════════════════════════════════════════ */
+        footer {
+            padding: 80px 0 40px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-grid {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-info {
+            max-width: 300px;
+        }
+
+        .footer-info p {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-top: 12px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 80px;
+        }
+
+        .link-col h5 {
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .link-col a {
+            display: block;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 12px;
+            transition: var(--transition);
+        }
+
+        .link-col a:hover {
+            color: var(--primary-green);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.2);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            #hero h1 { font-size: 48px; }
+            .hero-actions { flex-direction: column; }
+            .stats-grid { grid-template-columns: 1fr; gap: 24px; text-align: center; }
+            .footer-links { flex-direction: column; gap: 40px; }
+            .tabs-container { padding: 30px; }
+            .cta-box h2 { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div class="logo">
+                <div class="logo-box">S</div>
+                <span>SolanaWarung</span>
+            </div>
+            <a href="/marketplace" class="btn btn-secondary">Masuk Marketplace</a>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-glow-1"></div>
+        <div class="hero-glow-2"></div>
+        <div class="container">
+            <span class="hero-badge reveal">Web3 for UMKM Indonesia</span>
+            <h1 class="reveal">Jualan Lebih Mudah.<br>Dibayar Lebih Aman.<br>Tumbuh dengan AI.</h1>
+            <p class="reveal">SolanaWarung adalah marketplace UMKM Indonesia pertama yang menggunakan Gemini AI untuk listing produk otomatis dan Digital Rupiah untuk transaksi yang transparan.</p>
+            
+            <div class="hero-actions reveal">
+                <a href="/marketplace" class="btn btn-primary">Mulai Jualan Gratis <i data-lucide="arrow-right"></i></a>
+                <a href="/marketplace" class="btn btn-secondary">Lihat Marketplace</a>
+            </div>
+
+            <div class="stats-grid reveal">
+                <div class="stat-item">
+                    <h4>10.000+</h4>
+                    <p>Seller UMKM</p>
+                </div>
+                <div class="stat-item">
+                    <h4>Rp 0</h4>
+                    <p>Biaya Pendaftaran</p>
+                </div>
+                <div class="stat-item">
+                    <h4>Gemini AI</h4>
+                    <p>Listing Otomatis</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Kenalan Dulu sama SolanaWarung</h2>
+            </div>
+            
+            <div class="card-grid">
+                <div class="feature-card reveal">
+                    <div class="icon-box"><i data-lucide="camera"></i></div>
+                    <h3>Foto, Langsung Jadi Produk</h3>
+                    <p>Cukup foto produkmu, AI kami langsung analisis dan buatkan deskripsi, kategori, serta estimasi harga yang tepat.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="icon-box"><i data-lucide="wallet"></i></div>
+                    <h3>Bayar Pakai Digital Rupiah</h3>
+                    <p>Transaksi menggunakan Digital Rupiah yang aman. Dana pembeli ditahan dulu sampai barang dikonfirmasi diterima.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="icon-box"><i data-lucide="trending-up"></i></div>
+                    <h3>Dapat Saran Bisnis AI</h3>
+                    <p>Setiap minggu, AI kami analisis penjualanmu dan kasih saran optimasi stok dan ide produk baru.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-to">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Cara Menggunakan</h2>
+            </div>
+
+            <div class="tabs-container reveal">
+                <div class="tabs-switcher">
+                    <button class="tab-btn active" onclick="switchTab('seller')">Mode Seller</button>
+                    <button class="tab-btn" onclick="switchTab('buyer')">Mode Buyer</button>
+                </div>
+
+                <!-- Tab Seller -->
+                <div id="seller-steps" class="tab-content active">
+                    <div class="step-list">
+                        <div class="step-item">
+                            <span class="step-num">01</span>
+                            <div class="step-icon"><i data-lucide="user-plus"></i></div>
+                            <h4>Daftar Akun</h4>
+                            <p>Proses cuma 30 detik pakai akun Google. Gak perlu form ribet.</p>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">02</span>
+                            <div class="step-icon"><i data-lucide="store"></i></div>
+                            <h4>Aktifkan Toko</h4>
+                            <p>Satu klik tombol "Jadikan Seller" di profil, tokomu langsung live.</p>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">03</span>
+                            <div class="step-icon"><i data-lucide="camera"></i></div>
+                            <h4>Foto Produkmu</h4>
+                            <p>Upload foto dari HP. AI langsung bikin deskripsi & kategori otomatis.</p>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">04</span>
+                            <div class="step-icon"><i data-lucide="check-circle"></i></div>
+                            <h4>Terima Pesanan</h4>
+                            <p>Konfirmasi pesanan, kirim barang, dana langsung masuk dompet digital.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Buyer -->
+                <div id="buyer-steps" class="tab-content">
+                    <div class="step-list">
+                        <div class="step-item">
+                            <span class="step-num">01</span>
+                            <div class="step-icon"><i data-lucide="search"></i></div>
+                            <h4>Browse Produk</h4>
+                            <p>Cari produk UMKM favoritmu langsung tanpa harus login dulu.</p>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">02</span>
+                            <div class="step-icon"><i data-lucide="wallet"></i></div>
+                            <h4>Isi Saldo</h4>
+                            <p>Top-up saldo Digital Rupiah instan buat mulai belanja aman.</p>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">03</span>
+                            <div class="step-icon"><i data-lucide="shield-check"></i></div>
+                            <h4>Bayar Aman</h4>
+                            <p>Dana dilindungi sistem Escrow. Aman dari penipuan jual-beli.</p>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">04</span>
+                            <div class="step-icon"><i data-lucide="package"></i></div>
+                            <h4>Terima Barang</h4>
+                            <p>Barang sampai, konfirmasi, dan dukung UMKM lokal terus berkembang.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Pertanyaan Sering Diajukan</h2>
+            </div>
+            
+            <div class="faq-grid">
+                <div class="faq-item reveal">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <h4>Apakah SolanaWarung gratis?</h4>
+                        <i data-lucide="plus" class="faq-icon"></i>
+                    </div>
+                    <div class="faq-content">
+                        Daftar dan buka toko di SolanaWarung sepenuhnya gratis. Tidak ada biaya bulanan. Kami hanya mengambil komisi sangat kecil dari setiap transaksi yang berhasil.
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <h4>Harus paham Blockchain?</h4>
+                        <i data-lucide="plus" class="faq-icon"></i>
+                    </div>
+                    <div class="faq-content">
+                        Sama sekali tidak. Kamu cukup daftar dengan akun Google. Teknologi blockchain bekerja "di balik layar" untuk keamanan tanpa kamu harus pusing cara kerjanya.
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <h4>Apa itu Digital Rupiah?</h4>
+                        <i data-lucide="plus" class="faq-icon"></i>
+                    </div>
+                    <div class="faq-content">
+                        Digital Rupiah adalah versi digital Rupiah yang transparan dan aman. Saat ini kami menggunakan simulasi berbasis CBDC agar sistem siap saat BI meluncurkannya nanti.
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <div class="faq-header" onclick="toggleFaq(this)">
+                        <h4>Gimana kalau barang gak datang?</h4>
+                        <i data-lucide="plus" class="faq-icon"></i>
+                    </div>
+                    <div class="faq-content">
+                        Dana kamu ditahan oleh sistem Escrow kami. Seller baru terima uang setelah barang dikonfirmasi sampai. Kalau ada masalah, dana bisa dikembalikan 100%.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cta-final">
+        <div class="container">
+            <div class="cta-box reveal">
+                <h2>Siap Bawa Warungmu ke Level Berikutnya?</h2>
+                <p>Bergabung dengan ribuan UMKM Indonesia yang sudah pakai SolanaWarung. Gratis, mudah, dan bertenaga AI.</p>
+                <a href="/marketplace" class="btn btn-primary btn-lg" style="padding: 20px 40px; font-size: 16px;">Mulai Sekarang — Gratis</a>
+                <span class="cta-footer-text">Tidak perlu kartu kredit. Daftar dengan akun Google dalam 30 detik.</span>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info">
+                    <div class="logo" style="margin-bottom: 12px;">
+                        <div class="logo-box">S</div>
+                        <span>SolanaWarung</span>
+                    </div>
+                    <p>From warung to the world. Platform marketplace UMKM masa depan bertenaga AI.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="link-col">
+                        <h5>Platform</h5>
+                        <a href="#">Marketplace</a>
+                        <a href="#">Cara Pakai</a>
+                    </div>
+                    <div class="link-col">
+                        <h5>Perusahaan</h5>
+                        <a href="#">Tentang Kami</a>
+                        <a href="#">Hubungi Kami</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 SolanaWarung — Arblok Digital, Tasikmalaya</span>
+                <span>Dibangun dengan Gemini AI × Google Cloud × Solana</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Reveal Animations on Scroll
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Tab Switching Logic
+        function switchTab(type) {
+            // Update Buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.innerText.toLowerCase().includes(type)) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Update Content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${type}-steps`).classList.add('active');
+            
+            // Re-render icons if needed
+            lucide.createIcons();
+        }
+
+        // Accordion Logic
+        function toggleFaq(header) {
+            const item = header.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            // Close others
+            document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+            
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>

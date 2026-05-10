@@ -1,0 +1,43 @@
+/* Custom styling for Solana Wallet Adapter button to match SolanaWarung's theme */
+.wallet-adapter-button {
+    font-family: 'Inter', sans-serif !important;
+    justify-content: center !important;
+}
+
+.wallet-adapter-button-trigger {
+    background-color: #2563eb !important; /* blue-600 */
+    border-radius: 0.75rem !important; /* rounded-xl */
+}
+
+.wallet-adapter-modal-wrapper {
+    background-color: #0c111d !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 2rem !important;
+    color: white !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+.wallet-adapter-modal-button-close {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.wallet-adapter-modal-title {
+    color: white !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+}
+
+.wallet-adapter-modal-list {
+    margin: 0 0 10px !important;
+}
+
+.wallet-adapter-modal-list .wallet-adapter-button {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    border-radius: 1rem !important;
+    margin-bottom: 8px !important;
+}
+
+.wallet-adapter-modal-list .wallet-adapter-button:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+}

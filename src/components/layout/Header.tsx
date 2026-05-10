@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { LogOut, Wifi, Code, Database, Loader2 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+
+// Custom style for Wallet Button to match our premium theme
+import '../../styles/wallet-button.css';
 
 export const Header: React.FC = () => {
   const { user, profile, logout, switchRole, seedData } = useAuth();
@@ -34,11 +38,13 @@ export const Header: React.FC = () => {
       <div className="flex items-center space-x-3">
         <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center font-black text-lg italic shadow-lg shadow-blue-500/20">S</div>
         <div>
-          <h1 className="text-base font-black tracking-tight leading-none">SolanaWarung</h1>
+          <h1 className="text-base font-black tracking-tight leading-none">
+            {profile?.role === 'seller' && profile?.warungName ? profile.warungName : 'SolanaWarung'}
+          </h1>
           <div className="flex items-center gap-1.5 mt-0.5">
             <Wifi size={8} className="text-emerald-400" />
             <span className="text-[9px] text-slate-500 uppercase tracking-[0.2em] font-bold">
-              {profile?.role === 'seller' ? 'Seller Dashboard' : 'Buyer Space'} • Devnet
+              {profile?.role === 'seller' ? 'Powered by SolanaWarung • Devnet' : 'Buyer Space • Devnet'}
             </span>
           </div>
         </div>
@@ -54,6 +60,11 @@ export const Header: React.FC = () => {
           {seeding ? <Loader2 size={12} className="animate-spin" /> : <Database size={12} />}
           Seed Data
         </button>
+
+        {/* Wallet Connector */}
+        <div className="wallet-adapter-wrapper">
+          <WalletMultiButton className="!bg-blue-600 !h-9 !px-4 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest hover:!bg-blue-700 transition-all shadow-lg shadow-blue-500/20" />
+        </div>
 
         {/* Dev Mode Role Switcher */}
         <button 

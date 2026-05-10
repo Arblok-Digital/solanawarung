@@ -3,8 +3,10 @@ import { ProductAnalysis } from '../../types';
 
 // WARNING: Exposing API Key in client is insecure for production.
 // Move to server-side proxy for production deployment.
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
+const genAI = new GoogleGenerativeAI(apiKey);
+// Menggunakan model gemini-1.5-flash yang stabil
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash-latest' });
 
 export const analyzeProductImage = async (base64Image: string): Promise<ProductAnalysis> => {
   const prompt = `Analyze this UMKM product image for an Indonesian marketplace (SolanaWarung). 

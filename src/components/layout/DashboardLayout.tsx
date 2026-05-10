@@ -4,8 +4,8 @@ import { Sidebar } from './Sidebar';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  activeTab: 'main' | 'dashboard';
-  setActiveTab: (tab: 'main' | 'dashboard') => void;
+  activeTab: 'main' | 'dashboard' | 'wallet' | 'orders';
+  setActiveTab: (tab: 'main' | 'dashboard' | 'wallet' | 'orders') => void;
 }
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({ 

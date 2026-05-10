@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visi, Misi & Roadmap - SolanaWarung</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0A0A0F;
+      color: #ffffff;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .gold-border { border-color: #D4A017; }
+    .gold-text { color: #D4A017; }
+    .green-border { border-color: #14F195; }
+    .green-text { color: #14F195; }
+    @media print {
+      body { background-color: #ffffff; color: #000000; }
+      .glass { border: 1px solid #ccc; background: #fafafa; }
+      .no-print { display: none !important; }
+      * { color: #000 !important; border-color: #ccc !important; }
+    }
+  </style>
+</head>
+<body class="selection:bg-[#14F195]/30">
+
+  <!-- Print Button -->
+  <div class="fixed top-24 right-6 z-50 no-print">
+    <button onclick="window.print()" class="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-xs font-bold transition-all flex items-center gap-2">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+      Print / Save PDF
+    </button>
+  </div>
+
+  <!-- HEADER -->
+  <nav class="border-b border-white/10 glass sticky top-0 z-40">
+    <div class="container mx-auto px-6 h-20 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-gradient-to-br from-[#14F195] to-[#9945FF] rounded-xl flex items-center justify-center font-black text-lg italic text-white">S</div>
+        <span class="font-black text-xl tracking-tight">SolanaWarung</span>
+      </div>
+      <a href="/" class="text-sm font-bold text-slate-400 hover:text-white transition-colors">Kembali ke Beranda</a>
+    </div>
+  </nav>
+
+  <!-- Title Section -->
+  <section class="pt-24 pb-16 text-center container mx-auto px-6">
+    <span class="inline-block px-4 py-2 border border-[#9945FF] text-[#9945FF] rounded-full text-[10px] font-black uppercase tracking-widest mb-6">#JuaraVibeCoding — Google for Developers Indonesia 2026</span>
+    <h1 class="text-5xl md:text-6xl font-black mb-6 tracking-tight">Visi, Misi &amp; Roadmap</h1>
+    <p class="text-lg text-slate-400 max-w-3xl mx-auto">Dokumen ini dibuat untuk investor, judge kompetisi, dan mitra strategis yang ingin memahami arah SolanaWarung secara menyeluruh.</p>
+  </section>
+
+  <!-- RINGKASAN EKSEKUTIF -->
+  <section class="pb-16 container mx-auto px-6 max-w-4xl">
+    <div class="p-8 md:p-10 rounded-[2rem] bg-gradient-to-br from-white/5 to-white/0 border border-white/10">
+      <h2 class="text-2xl font-black mb-6 border-b border-white/10 pb-4">Executive Summary</h2>
+      <div class="space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center py-2 border-b border-white/5"><span class="w-48 font-bold text-slate-400 text-sm">Platform</span><span class="font-medium">SolanaWarung — AI-Powered UMKM Marketplace</span></div>
+        <div class="flex flex-col md:flex-row md:items-center py-2 border-b border-white/5"><span class="w-48 font-bold text-slate-400 text-sm">Builder</span><span class="font-medium">Arblok Digital, Tasikmalaya, Indonesia</span></div>
+        <div class="flex flex-col md:flex-row md:items-center py-2 border-b border-white/5"><span class="w-48 font-bold text-slate-400 text-sm">Tech Stack</span><span class="font-medium">Gemini AI · Firebase · Solana Blockchain · Google Cloud</span></div>
+        <div class="flex flex-col md:flex-row md:items-center py-2 border-b border-white/5"><span class="w-48 font-bold text-slate-400 text-sm">Target Market</span><span class="font-medium">60 juta UMKM Indonesia dan Asia Tenggara</span></div>
+        <div class="flex flex-col md:flex-row md:items-center py-2 border-b border-white/5"><span class="w-48 font-bold text-slate-400 text-sm">Status Saat Ini</span><span class="font-medium text-[#14F195]">MVP dalam pengembangan aktif — Fase 1 Kompetisi 2026</span></div>
+        <div class="flex flex-col md:flex-row md:items-center py-2"><span class="w-48 font-bold text-slate-400 text-sm">Model Revenue</span><span class="font-medium">Komisi transaksi · Payment API · B2B Data · Credit Engine</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISI & MISI -->
+  <section class="pb-24 container mx-auto px-6 max-w-5xl">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="p-10 rounded-[2rem] glass gold-border border-2">
+        <span class="gold-text font-black text-xs uppercase tracking-widest mb-4 block">VISI</span>
+        <h3 class="text-2xl font-bold leading-relaxed">Menjadi infrastruktur pembayaran digital paling dipercaya untuk UMKM Asia Tenggara di era CBDC.</h3>
+      </div>
+      <div class="p-10 rounded-[2rem] glass green-border border-2">
+        <span class="green-text font-black text-xs uppercase tracking-widest mb-4 block">MISI</span>
+        <h3 class="text-2xl font-bold leading-relaxed">Membuat setiap UMKM bisa listing produk dalam 3 menit, dibayar dengan Digital Rupiah, dan tumbuh dengan insight AI — tanpa butuh skill teknis apapun.</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- MASALAH YANG DISELESAIKAN -->
+  <section class="py-24 bg-white/[0.02]">
+    <div class="container mx-auto px-6 max-w-5xl">
+      <h2 class="text-3xl font-black mb-12 text-center">Problem Statement</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="p-8 glass rounded-[1.5rem]">
+          <h4 class="text-xl font-bold mb-3 text-red-400">UMKM Terjebak di Cash</h4>
+          <p class="text-slate-400 text-sm leading-relaxed">78% transaksi UMKM Indonesia masih tunai. Tidak ada jejak digital, tidak ada data kredit, tidak ada akses ke modal formal. Mereka invisible di mata sistem keuangan.</p>
+        </div>
+        <div class="p-8 glass rounded-[1.5rem]">
+          <h4 class="text-xl font-bold mb-3 text-red-400">Onboarding Digital Terlalu Rumit</h4>
+          <p class="text-slate-400 text-sm leading-relaxed">Platform existing butuh waktu dan pengetahuan teknis untuk setup toko. Penjual makanan tidak punya waktu belajar teknis.</p>
+        </div>
+        <div class="p-8 glass rounded-[1.5rem]">
+          <h4 class="text-xl font-bold mb-3 text-red-400">Bank Sentral Butuh Ekosistem</h4>
+          <p class="text-slate-400 text-sm leading-relaxed">BI dan bank sentral ASEAN sedang pilot CBDC tapi butuh ekosistem merchant yang siap. Belum ada pemain yang positioning di sini.</p>
+        </div>
+        <div class="p-8 glass rounded-[1.5rem]">
+          <h4 class="text-xl font-bold mb-3 text-red-400">UMKM Tidak Punya Data Bisnis</h4>
+          <p class="text-slate-400 text-sm leading-relaxed">Semua keputusan berdasarkan insting. Tidak ada analytics, tidak ada prediksi, tidak ada insight pasar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUSI & TECH STACK -->
+  <section class="py-24 container mx-auto px-6 max-w-5xl">
+    <h2 class="text-3xl font-black mb-12 text-center">Solusi &amp; Tech Stack</h2>
+    <div class="space-y-8">
+      <!-- Row 1 -->
+      <div class="p-8 glass rounded-[2rem] flex flex-col md:flex-row gap-8 items-start">
+        <div class="w-16 h-16 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/20">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold mb-4">Gemini AI</h3>
+          <ul class="list-disc list-inside text-slate-400 text-sm space-y-2 mb-4">
+            <li><strong class="text-white">Gemini Vision:</strong> foto produk → listing otomatis dalam 30 detik</li>
+            <li><strong class="text-white">Gemini Text:</strong> analisis data penjualan → saran bisnis bahasa Indonesia</li>
+          </ul>
+          <div class="inline-block px-3 py-1 bg-white/5 rounded text-xs"><span class="font-bold text-white">Keunggulan:</span> AI yang makin pintar seiring data UMKM Indonesia bertambah</div>
+        </div>
+      </div>
+      <!-- Row 2 -->
+      <div class="p-8 glass rounded-[2rem] flex flex-col md:flex-row gap-8 items-start">
+        <div class="w-16 h-16 rounded-2xl bg-[#14F195]/10 text-[#14F195] flex items-center justify-center shrink-0 border border-[#14F195]/20">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold mb-4">Solana Blockchain</h3>
+          <ul class="list-disc list-inside text-slate-400 text-sm space-y-2 mb-4">
+            <li><strong class="text-white">Smart contract escrow:</strong> dana buyer di-hold sampai seller konfirmasi</li>
+            <li><strong class="text-white">Mock CBDC:</strong> SPL Token sebagai simulasi Digital Rupiah</li>
+          </ul>
+          <div class="inline-block px-3 py-1 bg-white/5 rounded text-xs"><span class="font-bold text-white">Keunggulan:</span> throughput tinggi, biaya murah, cocok untuk mikrotransaksi UMKM</div>
+        </div>
+      </div>
+      <!-- Row 3 -->
+      <div class="p-8 glass rounded-[2rem] flex flex-col md:flex-row gap-8 items-start">
+        <div class="w-16 h-16 rounded-2xl bg-orange-500/10 text-orange-400 flex items-center justify-center shrink-0 border border-orange-500/20">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold mb-4">Firebase + Google Cloud</h3>
+          <ul class="list-disc list-inside text-slate-400 text-sm space-y-2 mb-4">
+            <li><strong class="text-white">Firestore:</strong> database realtime untuk semua data off-chain</li>
+            <li><strong class="text-white">Firebase Auth:</strong> Google OAuth, zero friction onboarding</li>
+          </ul>
+          <div class="inline-block px-3 py-1 bg-white/5 rounded text-xs"><span class="font-bold text-white">Keunggulan:</span> 100% dalam ekosistem Google, skalabel dari 100 ke 1 juta user</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section class="py-24 bg-[#14F195]/5">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <h2 class="text-3xl font-black mb-16 text-center">Roadmap 2026–2035</h2>
+      
+      <div class="relative border-l-2 border-[#14F195]/30 pl-8 md:pl-12 space-y-16">
+        <!-- Fase 1 -->
+        <div class="relative">
+          <div class="absolute -left-[41px] md:-left-[57px] top-0 w-6 h-6 rounded-full bg-[#14F195] border-4 border-[#0A0A0F] shadow-[0_0_15px_rgba(20,241,149,0.5)]"></div>
+          <span class="inline-block px-3 py-1 bg-[#14F195] text-black text-[10px] font-black uppercase tracking-widest rounded mb-3">SEKARANG — AKTIF</span>
+          <h3 class="text-2xl font-black mb-2 text-[#14F195]">FASE 1 — 2026 — DOMINASI LOKAL</h3>
+          <p class="text-white font-bold mb-4">Target: 10.000 seller aktif, GMV Rp 50 miliar per bulan</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <p class="text-xs text-slate-500 font-bold uppercase mb-2">Yang Dibangun:</p>
+              <ul class="list-disc list-inside text-sm text-slate-400 space-y-1">
+                <li>AI Product Listing (Gemini Vision)</li>
+                <li>Mock CBDC Wallet + Escrow</li>
+                <li>AI Business Analytics</li>
+                <li>Mobile-first PWA</li>
+                <li>Smart Contract Solana Devnet</li>
+              </ul>
+            </div>
+            <div class="bg-black/30 p-4 rounded-xl border border-white/5 h-fit">
+              <p class="text-xs text-slate-500 font-bold uppercase mb-2">KPI:</p>
+              <p class="text-sm font-bold text-white">10K seller · Rp50M GMV/bulan · 60% retensi seller</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fase 2 -->
+        <div class="relative">
+          <div class="absolute -left-[41px] md:-left-[57px] top-0 w-6 h-6 rounded-full bg-[#9945FF] border-4 border-[#0A0A0F]"></div>
+          <span class="inline-block px-3 py-1 bg-[#9945FF] text-white text-[10px] font-black uppercase tracking-widest rounded mb-3">BERIKUTNYA</span>
+          <h3 class="text-2xl font-black mb-2 text-[#9945FF]">FASE 2 — 2027–2028 — INFRASTRUKTUR</h3>
+          <p class="text-white font-bold mb-4">Target: 100.000 seller, GMV Rp 1 triliun per bulan</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <p class="text-xs text-slate-500 font-bold uppercase mb-2">Yang Dibangun:</p>
+              <ul class="list-disc list-inside text-sm text-slate-400 space-y-1">
+                <li>SolanaWarung Pay API (jadi Stripe-nya Indonesia untuk CBDC)</li>
+                <li>Integrasi logistik: JNE, J&T, SiCepat</li>
+                <li>SW Credit: pinjaman modal dari data transaksi on-chain</li>
+                <li>B2B Data Intelligence: jual insight ke brand besar</li>
+                <li>Integrasi Digital Rupiah BI (begitu tersedia)</li>
+                <li>Migrasi Solana mainnet</li>
+              </ul>
+            </div>
+            <div class="bg-black/30 p-4 rounded-xl border border-white/5 h-fit">
+              <p class="text-xs text-slate-500 font-bold uppercase mb-2">KPI:</p>
+              <p class="text-sm font-bold text-white">100K seller · Rp1T GMV/bulan · 3 revenue streams</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fase 3 -->
+        <div class="relative">
+          <div class="absolute -left-[41px] md:-left-[57px] top-0 w-6 h-6 rounded-full bg-slate-500 border-4 border-[#0A0A0F]"></div>
+          <span class="inline-block px-3 py-1 bg-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded mb-3">RENCANA</span>
+          <h3 class="text-2xl font-black mb-2 text-slate-300">FASE 3 — 2029–2031 — EKSPANSI ASEAN</h3>
+          <p class="text-white font-bold mb-4">Target: 5 negara, GMV $1 miliar per tahun</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <p class="text-xs text-slate-500 font-bold uppercase mb-2">Yang Dibangun:</p>
+              <ul class="list-disc list-inside text-sm text-slate-400 space-y-1">
+                <li>Multi-country CBDC gateway: Digital Baht, Peso, Dong</li>
+                <li>Cross-border trade UMKM tanpa bank koresponden</li>
+                <li>Licensed CBDC gateway dari bank sentral ASEAN</li>
+                <li>Gemini multilingual: Thai, Tagalog, Vietnamese</li>
+                <li>DeFi liquidity pool untuk working capital seller</li>
+              </ul>
+            </div>
+            <div class="bg-black/30 p-4 rounded-xl border border-white/5 h-fit">
+              <p class="text-xs text-slate-500 font-bold uppercase mb-2">KPI:</p>
+              <p class="text-sm font-bold text-white">5 negara · $1B GMV/tahun · 7 CBDC integrated</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fase 4 -->
+        <div class="relative">
+          <div class="absolute -left-[41px] md:-left-[57px] top-0 w-6 h-6 rounded-full bg-slate-700 border-4 border-[#0A0A0F]"></div>
+          <span class="inline-block px-3 py-1 bg-white/5 text-slate-400 text-[10px] font-black uppercase tracking-widest rounded mb-3">VISI BESAR</span>
+          <h3 class="text-2xl font-black mb-2 text-slate-400">FASE 4 — 2032–2035 — PLATFORM ECONOMY</h3>
+          <p class="text-white font-bold mb-4">Target: 1 juta seller ASEAN, IPO</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <p class="text-xs text-slate-500 font-bold uppercase mb-2">Yang Dibangun:</p>
+              <ul class="list-disc list-inside text-sm text-slate-400 space-y-1">
+                <li>SolanaWarung App Store: developer bangun di atas infrastruktur SW</li>
+                <li>SolanaWarung Chain: app-chain sendiri di atas Solana SVM</li>
+                <li>SW Token: utility token untuk governance dan kredit premium</li>
+                <li>Sovereign identity berbasis NFT untuk seller lintas negara</li>
+                <li>AI Agent Merchant: kelola toko otonom 24/7</li>
+              </ul>
+            </div>
+            <div class="bg-black/30 p-4 rounded-xl border border-white/5 h-fit">
+              <p class="text-xs text-slate-500 font-bold uppercase mb-2">KPI:</p>
+              <p class="text-sm font-bold text-white">1M+ seller · $10B GMV/tahun · IPO</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPETITIVE MOAT -->
+  <section class="py-24 container mx-auto px-6 max-w-5xl">
+    <h2 class="text-3xl font-black mb-12 text-center">Kenapa Susah Disaingi</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="p-6 glass rounded-2xl border-t-2 border-t-[#14F195]/50 hover:-translate-y-1 transition-transform">
+        <h4 class="font-bold text-lg mb-2">1. Network Effect</h4>
+        <p class="text-sm text-slate-400">Semakin banyak seller, semakin banyak buyer, loop ini tidak bisa dibeli pesaing.</p>
+      </div>
+      <div class="p-6 glass rounded-2xl border-t-2 border-t-[#9945FF]/50 hover:-translate-y-1 transition-transform">
+        <h4 class="font-bold text-lg mb-2">2. Regulatory Positioning</h4>
+        <p class="text-sm text-slate-400">Siapa masuk duluan ke ekosistem CBDC, dia yang dapat lisensi gateway.</p>
+      </div>
+      <div class="p-6 glass rounded-2xl border-t-2 border-t-[#14F195]/50 hover:-translate-y-1 transition-transform">
+        <h4 class="font-bold text-lg mb-2">3. Data Moat</h4>
+        <p class="text-sm text-slate-400">Data transaksi UMKM yang tidak bisa di-scrape atau dibeli pesaing manapun.</p>
+      </div>
+      <div class="p-6 glass rounded-2xl border-t-2 border-t-[#9945FF]/50 hover:-translate-y-1 transition-transform">
+        <h4 class="font-bold text-lg mb-2">4. Switching Cost Tinggi</h4>
+        <p class="text-sm text-slate-400">Seller tidak mau pindah karena kehilangan riwayat on-chain dan kredit score.</p>
+      </div>
+      <div class="p-6 glass rounded-2xl border-t-2 border-t-[#14F195]/50 hover:-translate-y-1 transition-transform">
+        <h4 class="font-bold text-lg mb-2">5. AI yang Makin Pintar</h4>
+        <p class="text-sm text-slate-400">Model fine-tuned dengan data UMKM Indonesia, pesaing baru tidak punya ini.</p>
+      </div>
+      <div class="p-6 glass rounded-2xl border-t-2 border-t-[#9945FF]/50 hover:-translate-y-1 transition-transform">
+        <h4 class="font-bold text-lg mb-2">6. Revenue Model Defensif</h4>
+        <p class="text-sm text-slate-400">Bisa subsidi seller dengan komisi 0% karena untung dari infrastruktur.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVENUE MODEL -->
+  <section class="py-24 bg-white/[0.02]">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <h2 class="text-3xl font-black mb-12 text-center">Model Pendapatan</h2>
+      <div class="space-y-4">
+        <div class="glass p-6 rounded-2xl flex flex-col md:flex-row gap-4 items-center">
+          <div class="bg-blue-500/20 text-blue-400 font-black px-4 py-2 rounded-lg shrink-0 w-full md:w-48 text-center border border-blue-500/30">Stream 1</div>
+          <div>
+            <h4 class="font-bold mb-1">Komisi Transaksi</h4>
+            <p class="text-sm text-slate-400">1-2% dari setiap transaksi berhasil di marketplace</p>
+          </div>
+        </div>
+        <div class="glass p-6 rounded-2xl flex flex-col md:flex-row gap-4 items-center">
+          <div class="bg-green-500/20 text-green-400 font-black px-4 py-2 rounded-lg shrink-0 w-full md:w-48 text-center border border-green-500/30">Stream 2</div>
+          <div>
+            <h4 class="font-bold mb-1">Payment API</h4>
+            <p class="text-sm text-slate-400">Biaya per-call untuk merchant eksternal yang pakai SW Pay API</p>
+          </div>
+        </div>
+        <div class="glass p-6 rounded-2xl flex flex-col md:flex-row gap-4 items-center">
+          <div class="bg-purple-500/20 text-purple-400 font-black px-4 py-2 rounded-lg shrink-0 w-full md:w-48 text-center border border-purple-500/30">Stream 3</div>
+          <div>
+            <h4 class="font-bold mb-1">B2B Data Intelligence</h4>
+            <p class="text-sm text-slate-400">Langganan bulanan untuk brand dan distributor yang beli insight tren</p>
+          </div>
+        </div>
+        <div class="glass p-6 rounded-2xl flex flex-col md:flex-row gap-4 items-center">
+          <div class="bg-orange-500/20 text-orange-400 font-black px-4 py-2 rounded-lg shrink-0 w-full md:w-48 text-center border border-orange-500/30">Stream 4</div>
+          <div>
+            <h4 class="font-bold mb-1">Credit Engine</h4>
+            <p class="text-sm text-slate-400">Spread dari pinjaman modal yang diberikan ke seller berdasarkan kredit score</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA PENUTUP -->
+  <section class="py-24 container mx-auto px-6 max-w-5xl text-center">
+    <h2 class="text-4xl font-black mb-12">Tertarik Berkolaborasi?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+      <a href="mailto:ardiblokchine@gmail.com?subject=Investor Inquiry - SolanaWarung" class="block p-8 glass rounded-2xl cursor-pointer hover:-translate-y-1 transition-all border border-white/10 hover:border-[#14F195]/50 hover:shadow-[0_0_20px_rgba(20,241,149,0.2)]">
+        <h4 class="font-black text-[#14F195] mb-3">Untuk Investor</h4>
+        <p class="text-sm text-slate-400">Hubungi via Email untuk pitch deck lengkap dan financial projection</p>
+      </a>
+      <a href="mailto:ardiblokchine@gmail.com?subject=Tech Partnership - SolanaWarung" class="block p-8 glass rounded-2xl cursor-pointer hover:-translate-y-1 transition-all border border-white/10 hover:border-[#9945FF]/50 hover:shadow-[0_0_20px_rgba(153,69,255,0.2)]">
+        <h4 class="font-black text-[#9945FF] mb-3">Untuk Mitra Teknologi</h4>
+        <p class="text-sm text-slate-400">Diskusikan integrasi API dan partnership teknis via Email</p>
+      </a>
+      <a href="mailto:ardiblokchine@gmail.com?subject=Media Inquiry - SolanaWarung" class="block p-8 glass rounded-2xl cursor-pointer hover:-translate-y-1 transition-all border border-white/10 hover:border-blue-400/50 hover:shadow-[0_0_20px_rgba(96,165,250,0.2)]">
+        <h4 class="font-black text-blue-400 mb-3">Untuk Media</h4>
+        <p class="text-sm text-slate-400">Dapatkan press kit dan materi komunikasi via Email</p>
+      </a>
+    </div>
+    <p class="text-sm font-bold text-slate-500 tracking-widest uppercase">Arblok Digital — Tasikmalaya, West Java, Indonesia</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-12 border-t border-white/5 bg-black/50 no-print">
+    <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+      <a href="/" class="text-sm font-bold text-slate-500 hover:text-white transition-colors">&larr; Kembali ke Landing Page</a>
+      <div class="text-[10px] font-bold text-slate-600 uppercase tracking-widest text-center md:text-right">
+        <span class="block mb-2">&copy; 2026 SolanaWarung — Arblok Digital | ardiblokchine@gmail.com</span>
+        <span>Dibangun dengan Gemini AI × Google Cloud × Solana</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

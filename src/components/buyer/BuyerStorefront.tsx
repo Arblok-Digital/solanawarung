@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Wallet, SlidersHorizontal, Sparkles } from 'lucide-react';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { PublicKey } from '@solana/web3.js';
 import { getAllProducts } from '../../services/firebase/products';
 import { createOrder } from '../../services/firebase/orders';
 import { createEscrowTransaction } from '../../services/solana/escrow';
-import { Product } from '../../types';
+import { Product, OrderStatus } from '../../types';
 import { ProductGrid } from '../seller/ProductGrid';
 import { ProductDetail } from './ProductDetail';
 
@@ -13,6 +14,7 @@ const CATEGORIES = ['Semua', 'Makanan', 'Minuman', 'Pakaian', 'Kerajinan', 'Elek
 
 export const BuyerStorefront: React.FC = () => {
   const wallet = useWallet();
+  const { setVisible } = useWalletModal();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [purchaseLoading, setPurchaseLoading] = useState(false);
@@ -33,8 +35,16 @@ export const BuyerStorefront: React.FC = () => {
 
   const handlePurchase = async (product: Product) => {
     if (!wallet.connected || !wallet.publicKey) {
-      alert('Tolong koneksikan Phantom Wallet Anda terlebih dahulu.');
-      return;
+      try {
+        if (!wallet.wallet) {
+          setVisible(true);
+          return;
+        }
+        await wallet.connect();
+      } catch (err) {
+        console.error('Wallet connection error:', err);
+        return;
+      }
     }
 
     setPurchaseLoading(true);
@@ -46,18 +56,18 @@ export const BuyerStorefront: React.FC = () => {
 
       let signature = "demo-sig-" + Date.now();
       try {
-        signature = await wallet.sendTransaction(tx, wallet.connection);
+        signature = await wallet.sendTransaction(tx, (wallet as any).connecting);
       } catch (txError) {
         console.log("Transaction simulated for demo.");
       }
 
       await createOrder({
-        buyerId: wallet.publicKey.toString(),
+        buyerId: wallet.publicKey?.toString() || 'demo-buyer',
         sellerId: product.sellerId || '',
         productId: product.id || '',
         productName: product.name,
         amount: product.price,
-        status: 'PENDING_ESCROW',
+        status: OrderStatus.PENDING_ESCROW,
         transactionSignature: signature,
       });
 
@@ -74,7 +84,7 @@ export const BuyerStorefront: React.FC = () => {
         productId: product.id || '',
         productName: product.name,
         amount: product.price,
-        status: 'PENDING_ESCROW',
+        status: OrderStatus.PENDING_ESCROW,
         transactionSignature: signature,
       });
 
@@ -104,57 +114,65 @@ export const BuyerStorefront: React.FC = () => {
   });
 
   return (
-    <div className="p-8 animate-fade-in">
+    <div className="flex flex-col gap-8 p-6 sm:p-10 animate-fade-in max-w-7xl mx-auto w-full">
       {/* Hero Banner */}
-      <div className="relative bg-gradient-to-r from-[#0c111d] to-[#1a1f35] rounded-[2rem] p-10 mb-8 overflow-hidden">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-[80px] -mr-20 -mt-20"></div>
-        <div className="absolute bottom-0 left-1/2 w-60 h-60 bg-purple-500/10 rounded-full blur-[80px] -mb-20"></div>
-        <div className="relative z-10">
-          <div className="flex items-center gap-2 mb-3">
-            <Sparkles size={16} className="text-blue-400" />
-            <span className="text-blue-400 text-[11px] font-black uppercase tracking-[0.2em]">AI-Powered Marketplace</span>
+      <section className="relative bg-gradient-to-br from-[#0c111d] to-[#161b2c] rounded-[2.5rem] p-8 md:p-12 overflow-hidden shadow-2xl shadow-blue-900/20">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] -mr-32 -mt-32"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-[80px] -ml-20 -mb-20"></div>
+        
+        <div className="relative z-10 space-y-4">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+            <span className="text-blue-400 text-[10px] font-black uppercase tracking-[0.3em]">AI-Powered Marketplace</span>
           </div>
-          <h2 className="text-3xl font-black text-white tracking-tight mb-2">Pasar SolanaWarung</h2>
-          <p className="text-slate-400 text-sm max-w-md">Temukan produk terbaik dari UMKM lokal Indonesia. Semua transaksi dilindungi oleh Smart Contract Escrow.</p>
+          <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
+            Pasar <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">SolanaWarung</span>
+          </h2>
+          <p className="text-slate-400 text-sm md:text-base max-w-xl leading-relaxed font-medium">
+            Temukan produk UMKM terbaik Indonesia. Aman, instan, dan transparan dengan teknologi Digital Rupiah.
+          </p>
         </div>
-      </div>
+      </section>
 
       {/* Search & Filters */}
-      <div className="flex items-center gap-4 mb-6">
-        <div className="relative group flex-1 max-w-md">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-blue-500 transition-colors" size={18} />
+      <section className="flex flex-col md:flex-row items-start md:items-center gap-6">
+        <div className="relative group flex-1 w-full max-w-xl">
+          <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={20} />
           <input 
             type="text" 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Cari produk UMKM..."
-            className="w-full pl-11 pr-6 py-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition-all shadow-sm font-medium text-sm placeholder:text-slate-300"
+            placeholder="Cari produk UMKM (contoh: Kopi Gayo)..."
+            className="w-full pl-14 pr-6 py-4 bg-white border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all shadow-sm font-bold text-slate-800 placeholder:text-slate-300"
           />
         </div>
-      </div>
-
-      {/* Category Tabs */}
-      <div className="flex items-center gap-2 mb-8 overflow-x-auto pb-1">
-        {CATEGORIES.map(cat => (
-          <button 
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
-            className={`px-4 py-2 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeCategory === cat 
-                ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20' 
-                : 'bg-white border border-slate-200 text-slate-500 hover:bg-slate-50 hover:border-slate-300'
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
+        
+        {/* Category Tabs */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar w-full md:w-auto">
+          {CATEGORIES.map(cat => (
+            <button 
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap cursor-pointer border
+                ${activeCategory === cat 
+                  ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-500/30' 
+                  : 'bg-white border-slate-100 text-slate-400 hover:border-blue-300 hover:text-blue-600'
+                }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </section>
       
-      <ProductGrid 
-        products={filteredProducts} 
-        loading={loading} 
-        onEdit={handleProductClick}
-      />
+      {/* Product Grid Container */}
+      <section className="min-h-[400px]">
+        <ProductGrid 
+          products={filteredProducts} 
+          loading={loading} 
+          onEdit={handleProductClick}
+        />
+      </section>
     </div>
   );
 };

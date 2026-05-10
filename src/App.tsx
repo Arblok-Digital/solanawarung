@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { AuthProvider } from './contexts/AuthContext';
 import { useAuth } from './hooks/useAuth';
 import { LoginPage } from './components/auth/LoginPage';
@@ -6,13 +6,19 @@ import { RoleSelector } from './components/auth/RoleSelector';
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { SellerDashboard } from './components/seller/SellerDashboard';
 import { BuyerStorefront } from './components/buyer/BuyerStorefront';
+import { WalletPage } from './components/buyer/WalletPage';
 import { SolanaWalletProvider } from './components/providers/SolanaWalletProvider';
 import { InsightPanel } from './components/seller/InsightPanel';
+import { OrdersPanel } from './components/shared/OrdersPanel';
+import { LandingPage } from './components/landing/LandingPage';
 import { Loader2 } from 'lucide-react';
 
 function MainContent() {
   const { user, profile, loading } = useAuth();
-  const [activeTab, setActiveTab] = useState<'main' | 'dashboard'>('main');
+  const [activeTab, setActiveTab] = useState<'main' | 'dashboard' | 'wallet' | 'orders'>('main');
+
+  const [showLanding, setShowLanding] = useState(true);
+  console.log('DEBUG: showLanding is', showLanding);
 
   if (loading) {
     return (
@@ -26,6 +32,10 @@ function MainContent() {
     );
   }
 
+  if (showLanding) {
+    return <LandingPage onEnter={() => setShowLanding(false)} />;
+  }
+
   if (!user) {
     return <LoginPage />;
   }
@@ -36,11 +46,11 @@ function MainContent() {
 
   return (
     <DashboardLayout activeTab={activeTab} setActiveTab={setActiveTab}>
-      {activeTab === 'main' ? (
-        profile.role === 'seller' ? <SellerDashboard /> : <BuyerStorefront />
-      ) : (
-        <InsightPanel />
-      )}
+      {activeTab === 'main' && profile?.role === 'buyer' && <BuyerStorefront />}
+      {activeTab === 'main' && profile?.role === 'seller' && <SellerDashboard />}
+      {activeTab === 'dashboard' && <InsightPanel />}
+      {activeTab === 'wallet' && <WalletPage />}
+      {activeTab === 'orders' && <OrdersPanel />}
     </DashboardLayout>
   );
 }

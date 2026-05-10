@@ -31,6 +31,7 @@ export interface ProductAnalysis {
 
 export enum OrderStatus {
   PENDING = 'PENDING',
+  PENDING_ESCROW = 'PENDING_ESCROW',
   ESCROW = 'ESCROW',
   COMPLETED = 'COMPLETED',
   CANCELLED = 'CANCELLED'
@@ -41,9 +42,11 @@ export interface Order {
   buyerId: string;
   sellerId: string;
   productId: string;
+  productName: string;
   amount: number;
   status: OrderStatus;
   txHash?: string;
+  transactionSignature?: string;
   createdAt: any;
-  updatedAt: any;
+  updatedAt?: any;
 }
