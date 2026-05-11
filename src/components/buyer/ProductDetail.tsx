@@ -62,7 +62,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         {/* Product Image */}
-        <div className="aspect-square rounded-[2.5rem] overflow-hidden bg-slate-100 shadow-2xl border border-slate-100">
+        <div className="aspect-square rounded-[2.5rem] overflow-hidden bg-[#0D0D12] shadow-2xl border border-white/5">
           <img 
             src={product.imageUrl || 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=800'} 
             alt={product.name} 
@@ -76,7 +76,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
             <span className="px-4 py-1.5 bg-blue-50 text-blue-600 rounded-full text-[10px] font-black uppercase tracking-[0.2em] inline-block">
               {product.category}
             </span>
-            <h2 className="text-4xl font-black text-slate-800 tracking-tight leading-tight">
+            <h2 className="text-4xl font-black text-white tracking-tight leading-tight">
               {product.name}
             </h2>
             <div className="flex items-center gap-4 text-sm font-bold text-slate-400">
@@ -93,7 +93,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
             </div>
           </div>
 
-          <div className="p-8 bg-slate-50 rounded-[2rem] border border-slate-100">
+          <div className="p-8 bg-white/5 rounded-[2rem] border border-white/5">
             <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Harga Digital Rupiah</p>
             <div className="flex items-baseline gap-2">
               <span className="text-4xl font-black text-blue-600">Rp {product.price.toLocaleString('id-ID')}</span>
@@ -101,7 +101,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
           </div>
 
           <div className="space-y-6">
-            <h4 className="text-sm font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
+            <h4 className="text-sm font-black text-white uppercase tracking-widest flex items-center gap-2">
               <Package size={16} className="text-blue-600" /> Deskripsi Produk
             </h4>
             <p className="text-slate-500 leading-relaxed">
@@ -110,22 +110,22 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="p-4 bg-white border border-slate-100 rounded-2xl flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+            <div className="p-4 bg-white/5 border border-white/5 rounded-2xl flex items-center gap-3">
+              <div className="w-10 h-10 bg-blue-900/20 text-blue-400 rounded-xl flex items-center justify-center">
                 <Truck size={20} />
               </div>
               <div>
                 <p className="text-[10px] font-black text-slate-400 uppercase">Pengiriman</p>
-                <p className="text-xs font-bold text-slate-700">Nasional</p>
+                <p className="text-xs font-bold text-white">Nasional</p>
               </div>
             </div>
-            <div className="p-4 bg-white border border-slate-100 rounded-2xl flex items-center gap-3">
-              <div className="w-10 h-10 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center">
+            <div className="p-4 bg-white/5 border border-white/5 rounded-2xl flex items-center gap-3">
+              <div className="w-10 h-10 bg-purple-900/20 text-purple-400 rounded-xl flex items-center justify-center">
                 <Clock size={20} />
               </div>
               <div>
                 <p className="text-[10px] font-black text-slate-400 uppercase">Proses</p>
-                <p className="text-xs font-bold text-slate-700">1-2 Hari</p>
+                <p className="text-xs font-bold text-white">1-2 Hari</p>
               </div>
             </div>
           </div>

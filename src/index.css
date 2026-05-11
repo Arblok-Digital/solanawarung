@@ -10,8 +10,28 @@ html {
 }
 
 body {
-  overflow-x: hidden;
+  background-color: #060608;
+  color: #F0EEE8;
 }
+
+/* ═══════════════════════════════════════════
+   GLOBAL THEME OVERRIDES (HEADER & SIDEBAR)
+   ═══════════════════════════════════════════ */
+
+/* Paksa Header jadi Hitam Pekat */
+header, [class*="Header"], [class*="header"] {
+  background-color: #060608 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #F0EEE8 !important;
+}
+
+/* Paksa Sidebar jadi Abu-Abu Gelap (#0D0D12) */
+aside, [class*="Sidebar"], [class*="sidebar"] {
+  background-color: #0D0D12 !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #94A3B8 !important;
+}
+
 
 /* ═══════════════════════════════════════════
    CUSTOM ANIMATIONS

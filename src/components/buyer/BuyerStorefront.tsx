@@ -23,10 +23,15 @@ export const BuyerStorefront: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
-    getAllProducts().then(data => {
-      setProducts(data);
-      setLoading(false);
-    });
+    getAllProducts()
+      .then(data => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Gagal ambil produk:", err);
+        setLoading(false);
+      });
   }, []);
 
   const handleProductClick = (product: Product) => {
@@ -107,9 +112,13 @@ export const BuyerStorefront: React.FC = () => {
   }
 
   const filteredProducts = products.filter(p => {
-    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.category.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = activeCategory === 'Semua' || p.category === activeCategory;
+    const matchesSearch = (p.name?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
+      (p.category?.toLowerCase() || '').includes(searchQuery.toLowerCase());
+    
+    // Case-insensitive matching untuk kategori
+    const matchesCategory = activeCategory === 'Semua' || 
+      p.category?.toLowerCase() === activeCategory.toLowerCase();
+      
     return matchesSearch && matchesCategory;
   });
 
@@ -120,13 +129,13 @@ export const BuyerStorefront: React.FC = () => {
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] -mr-32 -mt-32"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-[80px] -ml-20 -mb-20"></div>
         
-        <div className="relative z-10 space-y-4">
+        <div className="relative z-10 space-y-4 text-left">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-            <span className="text-blue-400 text-[10px] font-black uppercase tracking-[0.3em]">AI-Powered Marketplace</span>
+            <div className="w-2 h-2 bg-[#14F195] rounded-full animate-pulse"></div>
+            <span className="text-[#14F195] text-[10px] font-black uppercase tracking-[0.3em]">AI-Powered Marketplace</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
-            Pasar <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">SolanaWarung</span>
+            Pasar <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#14F195] to-[#9945FF]">SolanaWarung</span>
           </h2>
           <p className="text-slate-400 text-sm md:text-base max-w-xl leading-relaxed font-medium">
             Temukan produk UMKM terbaik Indonesia. Aman, instan, dan transparan dengan teknologi Digital Rupiah.
@@ -143,20 +152,20 @@ export const BuyerStorefront: React.FC = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Cari produk UMKM (contoh: Kopi Gayo)..."
-            className="w-full pl-14 pr-6 py-4 bg-white border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all shadow-sm font-bold text-slate-800 placeholder:text-slate-300"
+            className="w-full pl-14 pr-6 py-4 bg-white/5 border border-white/10 rounded-2xl focus:outline-none focus:ring-4 focus:ring-[#14F195]/10 focus:border-[#14F195]/50 transition-all shadow-sm font-bold text-white placeholder:text-slate-600"
           />
         </div>
         
         {/* Category Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar w-full md:w-auto">
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar w-full md:w-auto bg-black/20 p-1.5 rounded-2xl border border-white/5">
           {CATEGORIES.map(cat => (
             <button 
               key={cat}
               onClick={() => setActiveCategory(cat)}
               className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap cursor-pointer border
                 ${activeCategory === cat 
-                  ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-500/30' 
-                  : 'bg-white border-slate-100 text-slate-400 hover:border-blue-300 hover:text-blue-600'
+                  ? 'bg-[#14F195] text-black border-[#14F195] shadow-lg shadow-[#14F195]/20' 
+                  : 'bg-white/5 border-white/5 text-slate-400 hover:border-white/20 hover:text-white'
                 }`}
             >
               {cat}

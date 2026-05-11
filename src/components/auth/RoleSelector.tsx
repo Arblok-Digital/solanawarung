@@ -98,8 +98,9 @@ export const RoleSelector: React.FC = () => {
                 className="w-full px-5 py-4 bg-[#111116] border border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#14F195]/50 focus:border-[#14F195] transition-all font-medium appearance-none cursor-pointer text-white"
               >
                 <option value="" className="text-slate-500">Pilih Kategori</option>
-                <option value="Makanan & Minuman">Makanan & Minuman</option>
-                <option value="Fashion">Fashion</option>
+                <option value="Makanan">Makanan</option>
+                <option value="Minuman">Minuman</option>
+                <option value="Pakaian">Pakaian</option>
                 <option value="Kerajinan">Kerajinan</option>
                 <option value="Jasa">Jasa</option>
                 <option value="Lainnya">Lainnya</option>
@@ -137,7 +138,7 @@ export const RoleSelector: React.FC = () => {
           <button 
             onClick={() => handleRoleSelect('seller')}
             disabled={registering}
-            className="flex flex-col items-center p-8 bg-white/5 hover:bg-white/10 border-2 border-white/10 hover:border-[#9945FF]/50 rounded-2xl transition-all group disabled:opacity-50 cursor-pointer hover:shadow-lg hover:shadow-[#9945FF]/20 hover:scale-[1.03] active:scale-[0.97]"
+            className="flex flex-col items-center p-8 bg-white/5 hover:bg-white/10 border-2 border-white/10 hover:border-[#9945FF]/50 rounded-2xl transition-all group disabled:opacity-50 cursor-pointer hover:shadow-lg hover:shadow-[#9945FF]/20 hover:scale-[1.03] active:scale-[0.97]" // Already dark, but ensuring consistency
           >
             <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mb-4 shadow-sm group-hover:shadow-lg transition-all border border-white/5">
               <Store className="text-slate-400 group-hover:text-[#9945FF] transition-colors" size={24} />

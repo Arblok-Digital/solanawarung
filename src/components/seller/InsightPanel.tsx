@@ -100,20 +100,20 @@ export const InsightPanel: React.FC = () => {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center p-20 animate-fade-in">
-        <div className="relative mb-8">
-          <div className="w-24 h-24 bg-gradient-to-br from-purple-100 to-blue-100 rounded-3xl flex items-center justify-center">
-            <BrainCircuit className="text-purple-500" size={40} />
+        <div className="relative mb-8"> {/* Changed to dark theme colors */}
+          <div className="w-24 h-24 bg-gradient-to-br from-purple-900/20 to-blue-900/20 rounded-3xl flex items-center justify-center border border-white/10">
+            <BrainCircuit className="text-purple-400" size={40} />
           </div>
-          <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center animate-bounce">
+          <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center animate-bounce">
             <Sparkles size={14} className="text-white" />
           </div>
         </div>
-        <h3 className="text-xl font-black text-slate-800 mb-2">Gemini sedang menganalisis...</h3>
+        <h3 className="text-xl font-black text-white mb-2">Gemini sedang menganalisis...</h3>
         <p className="text-slate-400 text-sm">Membaca data penjualan dan menghasilkan insight bisnis.</p>
         <div className="mt-6 flex gap-1">
-          <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-          <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0.15s' }}></div>
-          <div className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '0.3s' }}></div>
+          <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+          <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.15s' }}></div>
+          <div className="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style={{ animationDelay: '0.3s' }}></div>
         </div>
       </div>
     );
@@ -124,8 +124,8 @@ export const InsightPanel: React.FC = () => {
       {/* Header */}
       <div className="flex items-start justify-between mb-8">
         <div>
-          <h2 className="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
+          <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-600/20">
               <Sparkles className="text-white" size={18} />
             </div>
             AI Business Intelligence
@@ -135,33 +135,33 @@ export const InsightPanel: React.FC = () => {
         <button
           onClick={handleRefresh}
           disabled={refreshing}
-          className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-500 hover:text-purple-600 hover:border-purple-200 transition-all disabled:opacity-50 cursor-pointer shadow-sm"
+          className="flex items-center gap-2 px-4 py-2.5 bg-[#0D0D12] border border-white/10 rounded-xl text-xs font-bold text-slate-400 hover:text-purple-400 hover:border-purple-400/20 transition-all disabled:opacity-50 cursor-pointer shadow-sm"
         >
           <RefreshCw size={14} className={refreshing ? 'animate-spin' : ''} />
           Refresh
         </button>
       </div>
 
-      {/* Stats Row */}
+      {/* Stats Row - Changed to dark theme colors */}
       <div className="grid grid-cols-4 gap-4 mb-8 stagger-children">
-        <div className="p-5 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+        <div className="p-5 bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm hover:shadow-md transition-shadow">
           <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-2">Total Pendapatan</p>
-          <p className="text-2xl font-black text-slate-800 font-mono">{totalRevenue.toLocaleString()}</p>
+          <p className="text-2xl font-black text-white font-mono">{totalRevenue.toLocaleString()}</p>
           <p className="text-[10px] text-slate-400 font-bold mt-1">CBDC (Digital Rupiah)</p>
         </div>
-        <div className="p-5 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+        <div className="p-5 bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm hover:shadow-md transition-shadow">
           <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-2">Total Order</p>
-          <p className="text-2xl font-black text-slate-800 font-mono">{orders.length}</p>
+          <p className="text-2xl font-black text-white font-mono">{orders.length}</p>
           <p className="text-[10px] text-slate-400 font-bold mt-1">Transaksi</p>
         </div>
-        <div className="p-5 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+        <div className="p-5 bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm hover:shadow-md transition-shadow">
           <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-2">Rata-rata Order</p>
-          <p className="text-2xl font-black text-slate-800 font-mono">{avgOrderValue.toLocaleString()}</p>
+          <p className="text-2xl font-black text-white font-mono">{avgOrderValue.toLocaleString()}</p>
           <p className="text-[10px] text-slate-400 font-bold mt-1">CBDC / Order</p>
         </div>
-        <div className="p-5 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+        <div className="p-5 bg-[#1e1e1e] rounded-2xl border border-white/10 shadow-sm hover:shadow-md transition-shadow">
           <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-2">Katalog</p>
-          <p className="text-2xl font-black text-slate-800 font-mono">{products.length}</p>
+          <p className="text-2xl font-black text-white font-mono">{products.length}</p>
           <p className="text-[10px] text-slate-400 font-bold mt-1">Produk Aktif</p>
         </div>
       </div>
@@ -169,10 +169,10 @@ export const InsightPanel: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left: Charts */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Area Chart */}
-          <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+          {/* Area Chart - Changed to dark theme colors */}
+          <div className="bg-[#121212] rounded-2xl border border-white/10 p-6 shadow-sm">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-bold text-slate-800 flex items-center gap-2 text-sm">
+              <h3 className="font-bold text-white flex items-center gap-2 text-sm">
                 <BarChart3 size={16} className="text-blue-500" />
                 Grafik Penjualan Mingguan
               </h3>
@@ -186,12 +186,12 @@ export const InsightPanel: React.FC = () => {
                       <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3} />
                       <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
                     </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  </defs> {/* Changed stroke color for dark theme */}
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 600 }} />
                   <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11 }} />
                   <Tooltip
-                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', fontWeight: 700, fontSize: '12px' }}
+                    contentStyle={{ borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.3)', fontWeight: 700, fontSize: '12px', background: '#0D0D12' }}
                     labelStyle={{ fontWeight: 800, marginBottom: '4px' }}
                   />
                   <Area type="monotone" dataKey="sales" stroke="#8b5cf6" strokeWidth={3} fillOpacity={1} fill="url(#colorSalesGrad)" dot={{ fill: '#8b5cf6', strokeWidth: 2, stroke: '#fff', r: 4 }} />
@@ -200,10 +200,10 @@ export const InsightPanel: React.FC = () => {
             </div>
           </div>
 
-          {/* Category Pie + Quick Stats */}
+          {/* Category Pie + Quick Stats - Changed to dark theme colors */}
           <div className="grid grid-cols-2 gap-6">
-            <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
-              <h3 className="font-bold text-slate-800 text-sm mb-4 flex items-center gap-2">
+            <div className="bg-[#121212] rounded-2xl border border-white/10 p-6 shadow-sm">
+              <h3 className="font-bold text-white flex items-center gap-2 text-sm">
                 <Zap size={16} className="text-amber-500" />
                 Distribusi Kategori
               </h3>
@@ -266,11 +266,11 @@ export const InsightPanel: React.FC = () => {
 
         {/* Right: AI Insights */}
         <div className="space-y-6">
-          {/* Summary Card */}
-          <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm relative overflow-hidden">
+          {/* Summary Card - Changed to dark theme colors */}
+          <div className="bg-[#0D0D12] rounded-2xl border border-white/10 p-6 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-purple-500/5 to-transparent rounded-full -mr-10 -mt-10"></div>
 
-            <h3 className="font-black text-slate-800 flex items-center gap-2 text-sm mb-4 relative z-10">
+            <h3 className="font-black text-white flex items-center gap-2 text-sm mb-4 relative z-10">
               <BrainCircuit className="text-purple-600" size={18} />
               Executive Summary
             </h3>
@@ -282,7 +282,7 @@ export const InsightPanel: React.FC = () => {
             <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Rekomendasi AI</h4>
             <ul className="space-y-3 relative z-10">
               {insight?.recommendations.map((rec, idx) => (
-                <li key={idx} className="flex gap-3 text-sm text-slate-600 leading-relaxed">
+                <li key={idx} className="flex gap-3 text-sm text-slate-400 leading-relaxed">
                   <span className="w-5 h-5 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">{idx + 1}</span>
                   {rec}
                 </li>

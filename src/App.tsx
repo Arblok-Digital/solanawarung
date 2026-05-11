@@ -20,9 +20,13 @@ function MainContent() {
   const [showLanding, setShowLanding] = useState(true);
   console.log('DEBUG: showLanding is', showLanding);
 
+  if (showLanding) {
+    return <LandingPage onEnter={() => setShowLanding(false)} />;
+  }
+
   if (loading) {
     return (
-      <div className="w-full h-full bg-[#0a0e1a] flex flex-col items-center justify-center gap-4">
+      <div className="w-full h-full bg-[#060608] flex flex-col items-center justify-center gap-4">
         <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-500/20 animate-pulse">
           <span className="text-white text-2xl font-black italic">S</span>
         </div>
@@ -30,10 +34,6 @@ function MainContent() {
         <p className="text-slate-500 text-xs font-bold uppercase tracking-widest">Memuat SolanaWarung...</p>
       </div>
     );
-  }
-
-  if (showLanding) {
-    return <LandingPage onEnter={() => setShowLanding(false)} />;
   }
 
   if (!user) {

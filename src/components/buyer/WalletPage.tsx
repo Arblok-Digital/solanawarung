@@ -124,8 +124,8 @@ export const WalletPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Top Up Section */}
         <div id="topup-section" className="lg:col-span-1 space-y-6">
-          <div className="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-sm">
-            <h3 className="text-base font-black text-slate-800 mb-6 flex items-center gap-2">
+          <div className="bg-[#0D0D12] rounded-[2rem] p-6 border border-white/5 shadow-sm">
+            <h3 className="text-base font-black text-white mb-6 flex items-center gap-2">
               <CreditCard size={18} className="text-blue-600" /> Isi Saldo Instan
             </h3>
             <div className="grid grid-cols-2 gap-3 mb-6">
@@ -136,7 +136,7 @@ export const WalletPage: React.FC = () => {
                   className={`py-3 rounded-xl text-xs font-bold transition-all border
                     ${topUpAmount === amt 
                       ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-200' 
-                      : 'bg-slate-50 text-slate-600 border-slate-100 hover:border-blue-300'}`}
+                      : 'bg-white/5 text-slate-400 border-white/5 hover:border-blue-300'}`}
                 >
                   Rp {amt.toLocaleString('id-ID')}
                 </button>
@@ -163,32 +163,32 @@ export const WalletPage: React.FC = () => {
 
         {/* Transactions List */}
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden">
-            <div className="p-6 border-b border-slate-50 flex items-center justify-between">
-              <h3 className="text-base font-black text-slate-800 flex items-center gap-2">
+          <div className="bg-[#0D0D12] rounded-[2rem] border border-white/5 shadow-sm overflow-hidden">
+            <div className="p-6 border-b border-white/5 flex items-center justify-between">
+              <h3 className="text-base font-black text-white flex items-center gap-2">
                 <History size={18} className="text-blue-600" /> Riwayat Transaksi
               </h3>
               <button className="text-[10px] font-black text-blue-600 uppercase tracking-widest hover:underline">Lihat Semua</button>
             </div>
             
-            <div className="divide-y divide-slate-50">
+            <div className="divide-y divide-white/5">
               {transactions.length > 0 ? (
                 transactions.map((tx) => (
-                  <div key={tx.id} className="p-5 flex items-center justify-between hover:bg-slate-50/50 transition-colors">
+                  <div key={tx.id} className="p-5 flex items-center justify-between hover:bg-white/5 transition-colors">
                     <div className="flex items-center gap-4">
                       <div className={`w-10 h-10 rounded-xl flex items-center justify-center
-                        ${tx.jenis === 'masuk' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'}`}>
+                        ${tx.jenis === 'masuk' ? 'bg-emerald-900/20 text-emerald-400' : 'bg-blue-900/20 text-blue-400'}`}>
                         {tx.jenis === 'masuk' ? <ArrowDownLeft size={18} /> : <ArrowUpRight size={18} />}
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-slate-800">{tx.keterangan}</p>
+                        <p className="text-sm font-bold text-white">{tx.keterangan}</p>
                         <p className="text-[10px] text-slate-400 font-medium">
                           {tx.timestamp?.toDate().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) || 'Memproses...'}
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className={`text-sm font-black ${tx.jenis === 'masuk' ? 'text-emerald-600' : 'text-slate-800'}`}>
+                      <p className={`text-sm font-black ${tx.jenis === 'masuk' ? 'text-emerald-400' : 'text-white'}`}>
                         {tx.jenis === 'masuk' ? '+' : '-'} Rp {tx.jumlah.toLocaleString('id-ID')}
                       </p>
                       <span className="text-[9px] font-black uppercase tracking-widest text-slate-300">Success</span>

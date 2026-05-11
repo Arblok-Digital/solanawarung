@@ -40,7 +40,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onBackToLanding }) => {
   };
 
   return (
-    <div className="w-full h-full bg-[#0a0e1a] flex items-center justify-center p-6 font-sans relative overflow-hidden">
+    <div className="w-full h-full bg-[#060608] flex items-center justify-center p-6 font-sans relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/15 rounded-full blur-[120px] animate-pulse-glow"></div>
@@ -136,8 +136,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onBackToLanding }) => {
         {/* Google Login */}
         <button 
           onClick={login}
-          disabled={loading}
-          className="w-full py-3.5 px-6 bg-white hover:bg-slate-100 text-slate-900 rounded-xl font-bold flex items-center justify-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.97] shadow-lg group cursor-pointer disabled:opacity-50 text-sm mb-3"
+          disabled={loading} // Changed to dark theme colors
+          className="w-full py-3.5 px-6 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold flex items-center justify-center gap-3 transition-all hover:scale-[1.02] active:scale-[0.97] shadow-lg shadow-black/20 group cursor-pointer disabled:opacity-50 text-sm mb-3"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>

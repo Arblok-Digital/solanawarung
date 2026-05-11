@@ -41,11 +41,11 @@ export const OrdersPanel: React.FC = () => {
 
   const getStatusStyle = (status: OrderStatus) => {
     switch (status) {
-      case OrderStatus.PENDING_ESCROW: return 'bg-amber-50 text-amber-600 border-amber-100';
-      case OrderStatus.ESCROW: return 'bg-blue-50 text-blue-600 border-blue-100';
-      case OrderStatus.COMPLETED: return 'bg-emerald-50 text-emerald-600 border-emerald-100';
-      case OrderStatus.CANCELLED: return 'bg-red-50 text-red-600 border-red-100';
-      default: return 'bg-slate-50 text-slate-600 border-slate-100';
+      case OrderStatus.PENDING_ESCROW: return 'bg-amber-900/20 text-amber-400 border-amber-900/50';
+      case OrderStatus.ESCROW: return 'bg-blue-900/20 text-blue-400 border-blue-900/50';
+      case OrderStatus.COMPLETED: return 'bg-emerald-900/20 text-emerald-400 border-emerald-900/50';
+      case OrderStatus.CANCELLED: return 'bg-red-900/20 text-red-400 border-red-900/50';
+      default: return 'bg-gray-900/20 text-gray-400 border-gray-900/50';
     }
   };
 
@@ -66,8 +66,8 @@ export const OrdersPanel: React.FC = () => {
     <div className="p-8 animate-fade-in max-w-6xl mx-auto w-full">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
         <div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3">
-            <Package className="text-blue-600" size={28} />
+          <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
+            <Package className="text-[#14F195]" size={28} />
             {profile?.role === 'seller' ? 'Manajemen Pesanan' : 'Pesanan Saya'}
           </h2>
           <p className="text-slate-400 text-sm mt-1">
@@ -77,15 +77,15 @@ export const OrdersPanel: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2 bg-white p-1.5 rounded-2xl border border-slate-100 shadow-sm overflow-x-auto no-scrollbar">
+        <div className="flex items-center gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/10 shadow-sm overflow-x-auto no-scrollbar">
           {['ALL', ...Object.values(OrderStatus)].map((filter) => (
             <button
               key={filter}
               onClick={() => setActiveFilter(filter as any)}
               className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap
                 ${activeFilter === filter 
-                  ? 'bg-blue-600 text-white shadow-md shadow-blue-200' 
-                  : 'text-slate-400 hover:text-blue-600 hover:bg-blue-50'}`}
+                  ? 'bg-[#9945FF] text-white shadow-md' 
+                  : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
             >
               {filter.replace('_', ' ')}
             </button>
@@ -96,17 +96,17 @@ export const OrdersPanel: React.FC = () => {
       <div className="space-y-4">
         {filteredOrders.length > 0 ? (
           filteredOrders.map((order) => (
-            <div key={order.id} className="bg-white rounded-[2rem] border border-slate-100 p-6 md:p-8 hover:shadow-xl hover:shadow-slate-200/50 transition-all group border-l-4" 
+            <div key={order.id} className="bg-[#0D0D12] rounded-[2rem] border border-white/5 p-6 md:p-8 hover:shadow-2xl transition-all group border-l-4" 
                  style={{ borderLeftColor: order.status === OrderStatus.PENDING_ESCROW ? '#f59e0b' : order.status === OrderStatus.ESCROW ? '#3b82f6' : '#10b981' }}>
               
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                 <div className="flex items-start gap-5">
-                  <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center shrink-0 border border-slate-100 group-hover:scale-110 transition-transform">
-                    <Package className="text-slate-400" size={24} />
+                  <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center shrink-0 border border-white/5 group-hover:scale-110 transition-transform">
+                    <Package className="text-slate-600" size={24} />
                   </div>
                   <div>
                     <div className="flex items-center gap-3 mb-1">
-                      <h4 className="text-lg font-black text-slate-800">{order.productName || 'Produk UMKM'}</h4>
+                      <h4 className="text-lg font-black text-white">{order.productName || 'Produk UMKM'}</h4>
                       <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${getStatusStyle(order.status)}`}>
                         {order.status.replace('_', ' ')}
                       </span>
@@ -127,22 +127,22 @@ export const OrdersPanel: React.FC = () => {
                 <div className="flex flex-col md:flex-row items-center gap-4">
                   <div className="text-right md:pr-6 md:border-r border-slate-100 w-full md:w-auto">
                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Pembayaran</p>
-                    <p className="text-xl font-black text-blue-600">Rp {order.amount.toLocaleString('id-ID')}</p>
+                    <p className="text-xl font-black text-[#14F195]">Rp {order.amount.toLocaleString('id-ID')}</p>
                   </div>
 
                   <div className="flex items-center gap-2 w-full md:w-auto">
                     {/* Seller Actions */}
                     {profile?.role === 'seller' && order.status === OrderStatus.PENDING_ESCROW && (
                       <button 
-                        onClick={() => handleUpdateStatus(order.id!, OrderStatus.ESCROW)}
-                        className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-blue-200 transition-all active:scale-95"
+                        onClick={() => handleUpdateStatus(order.id!, OrderStatus.ESCROW)} // Changed to dark theme colors
+                        className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-[#9945FF] hover:bg-[#7B5EA7] text-white px-6 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-[#9945FF]/20 transition-all active:scale-95"
                       >
                         <Truck size={14} /> Konfirmasi & Kirim
                       </button>
                     )}
                     
                     {profile?.role === 'seller' && order.status === OrderStatus.ESCROW && (
-                      <div className="flex items-center gap-2 text-blue-500 font-bold text-xs bg-blue-50 px-4 py-3 rounded-2xl border border-blue-100">
+                      <div className="flex items-center gap-2 text-blue-400 font-bold text-xs bg-blue-900/20 px-4 py-3 rounded-2xl border border-blue-900/50">
                         <Loader2 className="animate-spin" size={14} /> Menunggu Buyer
                       </div>
                     )}
@@ -150,7 +150,7 @@ export const OrdersPanel: React.FC = () => {
                     {/* Buyer Actions */}
                     {profile?.role === 'buyer' && order.status === OrderStatus.ESCROW && (
                       <button 
-                        onClick={() => handleUpdateStatus(order.id!, OrderStatus.COMPLETED)}
+                        onClick={() => handleUpdateStatus(order.id!, OrderStatus.COMPLETED)} // Changed to dark theme colors
                         className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-200 transition-all active:scale-95"
                       >
                         <CheckCircle2 size={14} /> Pesanan Diterima
@@ -158,12 +158,12 @@ export const OrdersPanel: React.FC = () => {
                     )}
 
                     {order.status === OrderStatus.COMPLETED && (
-                      <div className="flex items-center gap-2 text-emerald-600 font-black text-[10px] uppercase tracking-widest bg-emerald-50 px-6 py-3.5 rounded-2xl border border-emerald-100">
+                      <div className="flex items-center gap-2 text-emerald-400 font-black text-[10px] uppercase tracking-widest bg-emerald-900/20 px-6 py-3.5 rounded-2xl border border-emerald-900/50">
                         <CheckCircle2 size={16} /> Selesai
                       </div>
                     )}
 
-                    <button className="p-3.5 bg-slate-50 hover:bg-slate-100 text-slate-400 rounded-2xl transition-colors">
+                    <button className="p-3.5 bg-white/5 hover:bg-white/10 text-slate-400 rounded-2xl transition-colors">
                       <ArrowRight size={18} />
                     </button>
                   </div>
@@ -172,18 +172,18 @@ export const OrdersPanel: React.FC = () => {
             </div>
           ))
         ) : (
-          <div className="bg-white rounded-[3rem] p-20 border border-slate-100 text-center shadow-sm">
-            <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-200">
+          <div className="bg-[#0D0D12] rounded-[3rem] p-20 border border-white/5 text-center shadow-sm">
+            <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-600">
               <Package size={32} />
             </div>
-            <h3 className="text-xl font-black text-slate-800 mb-2">Belum ada pesanan</h3>
+            <h3 className="text-xl font-black text-white mb-2">Belum ada pesanan</h3>
             <p className="text-slate-400 text-sm max-w-xs mx-auto mb-8">
               {profile?.role === 'seller' 
                 ? 'Promosikan produk Anda untuk mendapatkan pesanan pertama!' 
                 : 'Jelajahi marketplace dan temukan produk UMKM menarik!'}
             </p>
             {profile?.role === 'buyer' && (
-              <button className="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-blue-200 hover:scale-105 transition-all">
+              <button className="bg-[#14F195] text-black px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl shadow-[#14F195]/20 hover:scale-105 transition-all">
                 Mulai Belanja
               </button>
             )}
@@ -192,11 +192,11 @@ export const OrdersPanel: React.FC = () => {
       </div>
 
       {/* Info Card */}
-      <div className="mt-12 bg-gradient-to-br from-[#0c111d] to-[#1a2333] rounded-[2.5rem] p-8 md:p-10 text-white relative overflow-hidden shadow-2xl">
+      <div className="mt-12 bg-gradient-to-br from-[#0D0D12] to-[#111118] rounded-[2.5rem] p-8 md:p-10 text-white relative overflow-hidden shadow-2xl shadow-black/20">
         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 blur-[100px] -mr-32 -mt-32"></div>
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-          <div className="w-20 h-20 bg-blue-500/20 rounded-3xl flex items-center justify-center shrink-0 border border-blue-500/30">
-            <ShieldCheck size={40} className="text-blue-400" />
+          <div className="w-20 h-20 bg-blue-900/20 rounded-3xl flex items-center justify-center shrink-0 border border-blue-900/30">
+            <ShieldCheck size={40} className="text-blue-400" /> {/* Blue-400 is fine for accent */}
           </div>
           <div className="flex-1 text-center md:text-left">
             <h4 className="text-xl font-black mb-2">Keamanan Rekening Bersama (Escrow)</h4>
@@ -204,7 +204,7 @@ export const OrdersPanel: React.FC = () => {
               Setiap transaksi di SolanaWarung menggunakan sistem Escrow berbasis Smart Contract. Dana pembeli diamankan oleh sistem dan hanya akan diteruskan ke penjual setelah pembeli melakukan konfirmasi penerimaan barang.
             </p>
           </div>
-          <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl text-[10px] font-black uppercase tracking-widest">
+          <div className="flex items-center gap-2 px-4 py-2 bg-emerald-900/20 border border-emerald-900/30 text-emerald-400 rounded-xl text-[10px] font-black uppercase tracking-widest">
             <AlertCircle size={12} /> On-Chain Verified
           </div>
         </div>
