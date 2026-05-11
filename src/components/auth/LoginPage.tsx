@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LogIn, Sparkles, Shield, Zap, Globe, Mail, Lock, Loader2, ArrowRight, UserCircle } from 'lucide-react';
+import { Sparkles, Shield, Zap, Globe, Mail, Lock, Loader2, ArrowRight, UserCircle } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
 export const LoginPage: React.FC = () => {

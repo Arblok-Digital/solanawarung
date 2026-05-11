@@ -1,5 +1,5 @@
 import React from 'react';
-import { Package, Trash2, Eye, Sparkles, ShoppingCart } from 'lucide-react';
+import { Package, Trash2, Sparkles, ShoppingCart } from 'lucide-react';
 import { Product } from '../../types';
 
 interface ProductCardProps {

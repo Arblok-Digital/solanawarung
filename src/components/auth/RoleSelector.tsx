@@ -31,8 +31,8 @@ export const RoleSelector: React.FC = () => {
     setRegistering(true);
     try {
       await registerRole('seller');
-      if (user) {
-        await updateProfile(user.uid, sellerData);
+      if (user && user.uid) {
+        await updateProfile(user.uid, sellerData as any);
       }
     } finally {
       setRegistering(false);

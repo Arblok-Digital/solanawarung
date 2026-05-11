@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Search, Camera, Wallet, TrendingUp, UserPlus, Store, 
-  CheckCircle, Package, ArrowRight, ShieldCheck, Database, 
-  LogOut, Wifi, Code, Sparkles, ChevronDown, Plus, 
-  Rocket, CircleDollarSign, Lock, Smartphone, Globe, Shield,
+  Search, Camera, Wallet, TrendingUp, UserPlus, Store,
+  CheckCircle, Package, ArrowRight, ShieldCheck, Sparkles, Plus,
+  Rocket, CircleDollarSign, Globe, Shield,
   AlertCircle, Zap
 } from 'lucide-react';
 

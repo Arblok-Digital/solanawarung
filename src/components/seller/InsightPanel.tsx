@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrainCircuit, TrendingUp, TrendingDown, Minus, Target, Sparkles, Loader2, RefreshCw, BarChart3, Zap } from 'lucide-react';
+import { BrainCircuit, TrendingUp, TrendingDown, Minus, Target, Sparkles, RefreshCw, BarChart3, Zap } from 'lucide-react';
 import {
   AreaChart,
   Area,
