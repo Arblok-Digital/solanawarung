@@ -306,7 +306,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
           {/* CTA Buttons */}
           <div className="reveal text-center">
             <div className="flex flex-wrap justify-center gap-4 mb-6">
-              <a href="/vision.html" className="px-8 py-4 bg-[#14F195] text-black font-black uppercase text-xs tracking-widest rounded-xl shadow-[0_0_20px_rgba(20,241,149,0.3)] hover:-translate-y-1 transition-all">Lihat Visi &amp; Roadmap Lengkap</a>
+              <a href="#" onClick={(e) => e.preventDefault()} className="px-8 py-4 bg-[#14F195] text-black font-black uppercase text-xs tracking-widest rounded-xl shadow-[0_0_20px_rgba(20,241,149,0.3)] hover:-translate-y-1 transition-all">Visi &amp; Roadmap (Coming Soon)</a>
               <button onClick={onEnter} className="px-8 py-4 glass hover:bg-white/10 text-white font-black uppercase text-xs tracking-widest rounded-xl transition-all">Mulai Jualan Sekarang</button>
             </div>
             <p className="text-xs text-slate-500 font-medium">Dibangun dengan Gemini AI · Firebase · Solana Blockchain · Google Cloud</p>

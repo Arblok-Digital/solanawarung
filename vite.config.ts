@@ -18,7 +18,7 @@ export default defineConfig({
   ],
   server: {
     port: 3000,
-    // Proxy untuk menghindari CORS saat development
+    // Proxy untuk menghindari CORS saat development (Hanya lokal)
     proxy: {
       '/v1beta': {
         target: 'https://generativelanguage.googleapis.com',
