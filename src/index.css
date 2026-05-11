@@ -5,9 +5,12 @@
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
-html, body, #root {
-  height: 100%;
-  overflow: hidden;
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
 }
 
 /* ═══════════════════════════════════════════

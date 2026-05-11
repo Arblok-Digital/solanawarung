@@ -37,7 +37,7 @@ function MainContent() {
   }
 
   if (!user) {
-    return <LoginPage />;
+    return <LoginPage onBackToLanding={() => setShowLanding(true)} />;
   }
 
   if (!profile) {

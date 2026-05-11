@@ -1,0 +1,1787 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SolanaWarung — Ekosistem</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black:   #060608;
+  --card:    #0D0D12;
+  --border:  rgba(255,255,255,0.07);
+  --green:   #00FF88;
+  --purple:  #7B5EA7;
+  --gold:    #F0C040;
+  --blue:    #4488FF;
+  --red:     #FF4466;
+  --white:   #F0EEE8;
+  --muted:   #666680;
+  --r:       16px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Syne', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CUSTOM CURSOR ── */
+.cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--green);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.1s ease;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(0,255,136,0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transition: all 0.15s ease;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1000; opacity: 0.5;
+}
+
+/* ── GRID BG ── */
+.grid-bg {
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none; z-index: 0;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 48px;
+  background: rgba(6,6,8,0.7);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 22px; font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.02em;
+}
+.nav-logo span { color: var(--green); }
+.nav-links { display: flex; gap: 4px; }
+.nav-link {
+  padding: 8px 16px;
+  font-size: 13px; font-weight: 500;
+  color: var(--muted);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.nav-link:hover { color: var(--white); background: rgba(255,255,255,0.05); }
+.nav-cta {
+  padding: 10px 20px;
+  background: var(--green);
+  color: #000;
+  font-size: 13px; font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: all 0.15s;
+}
+.nav-cta:hover { opacity: 0.85; transform: translateY(-1px); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 48px 80px;
+  position: relative; overflow: hidden;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(0,255,136,0.08) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: 0.6; }
+  50% { transform: translate(-50%,-50%) scale(1.1); opacity: 1; }
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px;
+  background: rgba(0,255,136,0.08);
+  border: 1px solid rgba(0,255,136,0.2);
+  border-radius: 100px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.15em;
+  color: var(--green);
+  margin-bottom: 40px;
+  opacity: 0; animation: fadeUp 0.8s 0.2s ease both;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+h1.hero-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: clamp(56px, 9vw, 120px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--white);
+  margin-bottom: 32px;
+  opacity: 0; animation: fadeUp 0.8s 0.4s ease both;
+}
+
+h1.hero-title .green { color: var(--green); }
+h1.hero-title .italic { font-family: 'Instrument Serif', serif; font-style: italic; }
+
+.hero-sub {
+  font-size: 18px; font-weight: 400;
+  color: var(--muted); line-height: 1.7;
+  max-width: 560px; margin: 0 auto 48px;
+  opacity: 0; animation: fadeUp 0.8s 0.6s ease both;
+}
+
+.hero-cta {
+  display: flex; gap: 12px; justify-content: center;
+  opacity: 0; animation: fadeUp 0.8s 0.8s ease both;
+}
+
+.btn-main {
+  padding: 16px 32px;
+  background: var(--green); color: #000;
+  font-family: 'Syne', sans-serif;
+  font-size: 15px; font-weight: 700;
+  border-radius: 10px; border: none;
+  cursor: pointer; text-decoration: none;
+  transition: all 0.15s;
+  letter-spacing: -0.01em;
+}
+.btn-main:hover { opacity: 0.85; transform: translateY(-2px); }
+
+.btn-outline {
+  padding: 16px 32px;
+  background: transparent; color: var(--white);
+  font-family: 'Syne', sans-serif;
+  font-size: 15px; font-weight: 600;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  cursor: pointer; text-decoration: none;
+  transition: all 0.15s;
+}
+.btn-outline:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
+
+.hero-stats {
+  display: flex; gap: 0;
+  margin-top: 80px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  opacity: 0; animation: fadeUp 0.8s 1s ease both;
+}
+
+.stat-item {
+  padding: 24px 48px;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.stat-item:last-child { border-right: none; }
+
+.stat-num {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 36px; font-weight: 700;
+  color: var(--white); letter-spacing: -0.03em;
+  display: block;
+}
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.15em;
+  color: var(--muted); text-transform: uppercase;
+  margin-top: 4px; display: block;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ── SECTION BASE ── */
+section { padding: 120px 0; position: relative; z-index: 1; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 48px; }
+
+.section-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--green);
+  margin-bottom: 16px; display: block;
+}
+
+h2.section-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 700; letter-spacing: -0.03em;
+  color: var(--white); line-height: 1.05;
+  margin-bottom: 20px;
+}
+
+.section-desc {
+  font-size: 16px; font-weight: 400;
+  color: var(--muted); line-height: 1.75;
+  max-width: 540px; margin-bottom: 64px;
+}
+
+/* ── ECOSYSTEM MAP ── */
+.ecosystem-section { background: var(--black); }
+
+.eco-map {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 2px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.eco-card {
+  background: var(--card);
+  padding: 36px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s;
+}
+.eco-card:hover { background: #111118; }
+
+/* Center card spans all 3 columns */
+.eco-center {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; justify-content: center;
+  gap: 32px;
+  padding: 48px;
+  background: linear-gradient(135deg, rgba(0,255,136,0.05), rgba(123,94,167,0.05));
+  border-bottom: 2px solid rgba(0,255,136,0.15);
+  flex-wrap: wrap;
+}
+
+.eco-core-badge {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  text-align: center;
+}
+
+.eco-core-icon {
+  width: 72px; height: 72px;
+  border-radius: 20px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+  background: rgba(0,255,136,0.1);
+  border: 1px solid rgba(0,255,136,0.2);
+  position: relative;
+}
+
+.eco-core-icon::after {
+  content: '';
+  position: absolute; inset: -4px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(0,255,136,0.3), transparent);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.eco-core-badge:hover .eco-core-icon::after { opacity: 1; }
+
+.eco-core-name {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 15px; font-weight: 600;
+  color: var(--white);
+}
+.eco-core-desc {
+  font-size: 11px; color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.05em;
+}
+
+.eco-arrow {
+  font-size: 24px; color: rgba(0,255,136,0.3);
+  font-weight: 300;
+}
+
+.eco-card-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 16px; display: block;
+}
+
+.eco-card-icon { font-size: 32px; margin-bottom: 16px; display: block; }
+
+.eco-card-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 20px; font-weight: 600;
+  color: var(--white); letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+
+.eco-card-desc {
+  font-size: 13px; color: var(--muted);
+  line-height: 1.65;
+}
+
+.eco-card-pills {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 20px;
+}
+.pill {
+  padding: 4px 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.05em;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+.pill.green { border-color: rgba(0,255,136,0.3); color: var(--green); background: rgba(0,255,136,0.06); }
+.pill.purple { border-color: rgba(123,94,167,0.4); color: #A080D0; background: rgba(123,94,167,0.08); }
+.pill.gold { border-color: rgba(240,192,64,0.3); color: var(--gold); background: rgba(240,192,64,0.06); }
+.pill.blue { border-color: rgba(68,136,255,0.3); color: var(--blue); background: rgba(68,136,255,0.06); }
+
+/* ── PIPELINE SECTION ── */
+.pipeline-section { background: #080810; }
+
+.pipeline {
+  display: flex; flex-direction: column; gap: 2px;
+}
+
+.pipe-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0;
+  background: var(--border);
+  overflow: hidden;
+  border-radius: 0;
+}
+.pipe-row:first-child { border-radius: 16px 16px 0 0; }
+.pipe-row:last-child { border-radius: 0 0 16px 16px; }
+
+.pipe-label {
+  background: var(--card);
+  padding: 28px 24px;
+  display: flex; flex-direction: column;
+  justify-content: center; gap: 6px;
+  border-right: 1px solid var(--border);
+}
+
+.pipe-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--muted);
+  letter-spacing: 0.1em;
+}
+
+.pipe-name {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 16px; font-weight: 600;
+  color: var(--white); letter-spacing: -0.02em;
+}
+
+.pipe-content {
+  background: var(--card);
+  padding: 28px 32px;
+  display: flex; align-items: center; gap: 0;
+  overflow-x: auto;
+}
+
+.pipe-step {
+  display: flex; align-items: center; gap: 0;
+  flex-shrink: 0;
+}
+
+.pipe-node {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 8px; text-align: center; min-width: 100px;
+}
+
+.pipe-node-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+  transition: all 0.2s;
+}
+.pipe-row:hover .pipe-node-icon { border-color: rgba(0,255,136,0.3); }
+
+.pipe-node-label {
+  font-size: 11px; font-weight: 500;
+  color: var(--muted); line-height: 1.3;
+  max-width: 90px;
+}
+
+.pipe-connector {
+  width: 32px; height: 1px;
+  background: linear-gradient(90deg, var(--muted), transparent);
+  margin: 0 4px;
+  position: relative;
+  flex-shrink: 0;
+}
+.pipe-connector::after {
+  content: '›';
+  position: absolute; right: -4px; top: -9px;
+  color: var(--muted); font-size: 18px;
+}
+
+/* ── WALLET SECTION ── */
+.wallet-section { background: var(--black); }
+
+.wallet-showcase {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 24px; align-items: start;
+}
+
+.wallet-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.wallet-card-header {
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.wallet-card-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 16px; font-weight: 600;
+  color: var(--white); letter-spacing: -0.01em;
+}
+
+.wallet-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.1em;
+  padding: 4px 10px; border-radius: 100px;
+  text-transform: uppercase;
+}
+.wb-green { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+.wb-purple { background: rgba(123,94,167,0.15); color: #A080D0; border: 1px solid rgba(123,94,167,0.3); }
+
+.wallet-card-body { padding: 28px; }
+
+.balance-display {
+  margin-bottom: 24px;
+}
+.balance-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.15em;
+  color: var(--muted); text-transform: uppercase;
+  margin-bottom: 8px; display: block;
+}
+.balance-amount {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 40px; font-weight: 700;
+  color: var(--white); letter-spacing: -0.04em;
+  line-height: 1;
+}
+.balance-amount .currency { font-size: 20px; color: var(--muted); }
+
+.tx-list { display: flex; flex-direction: column; gap: 2px; }
+
+.tx-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; border-radius: 10px;
+  background: rgba(255,255,255,0.02);
+  transition: background 0.15s;
+}
+.tx-item:hover { background: rgba(255,255,255,0.04); }
+
+.tx-left { display: flex; align-items: center; gap: 12px; }
+
+.tx-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.tx-icon.in { background: rgba(0,255,136,0.1); }
+.tx-icon.out { background: rgba(255,68,102,0.1); }
+.tx-icon.hold { background: rgba(240,192,64,0.1); }
+
+.tx-desc { font-size: 13px; font-weight: 500; color: var(--white); }
+.tx-time { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.tx-amount { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; }
+.tx-amount.in { color: var(--green); }
+.tx-amount.out { color: var(--red); }
+.tx-amount.hold { color: var(--gold); }
+
+.chain-info {
+  margin-top: 20px; padding: 16px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 10px; border: 1px solid var(--border);
+}
+.chain-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 0;
+  font-size: 12px;
+}
+.chain-key { color: var(--muted); font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.05em; }
+.chain-val { color: var(--white); font-family: 'DM Mono', monospace; font-size: 11px; }
+.chain-val.green { color: var(--green); }
+
+/* ── ROADMAP SECTION ── */
+.roadmap-section { background: #080810; }
+
+.roadmap-track {
+  position: relative;
+  padding-left: 32px;
+}
+
+.roadmap-line {
+  position: absolute;
+  left: 7px; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg,
+    var(--green) 0%,
+    rgba(123,94,167,0.6) 40%,
+    rgba(68,136,255,0.4) 70%,
+    rgba(255,255,255,0.1) 100%
+  );
+}
+
+.phase-item {
+  position: relative;
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+}
+
+.phase-dot {
+  position: absolute;
+  left: -29px; top: 32px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 2px solid;
+  background: var(--black);
+  transition: all 0.3s;
+}
+
+.phase-dot.active {
+  border-color: var(--green);
+  box-shadow: 0 0 0 4px rgba(0,255,136,0.15);
+  background: var(--green);
+}
+.phase-dot.next { border-color: #A080D0; }
+.phase-dot.future { border-color: var(--border); }
+
+.phase-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.phase-card:hover { border-color: rgba(255,255,255,0.12); }
+.phase-card.active-card { border-color: rgba(0,255,136,0.2); }
+
+.phase-header {
+  padding: 28px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+}
+
+.phase-header-left { display: flex; align-items: center; gap: 16px; }
+
+.phase-year {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 32px; font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.phase-year.y1 { color: var(--green); }
+.phase-year.y2 { color: #A080D0; }
+.phase-year.y3 { color: var(--blue); }
+.phase-year.y4 { color: var(--gold); }
+
+.phase-meta { display: flex; flex-direction: column; gap: 4px; }
+
+.phase-name-text {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px; font-weight: 700;
+  color: var(--white); letter-spacing: -0.01em;
+}
+
+.phase-status {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 3px 10px; border-radius: 100px;
+  display: inline-block; width: fit-content;
+}
+.ps-active { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.25); }
+.ps-next { background: rgba(123,94,167,0.1); color: #A080D0; border: 1px solid rgba(123,94,167,0.25); }
+.ps-plan { background: rgba(68,136,255,0.08); color: var(--blue); border: 1px solid rgba(68,136,255,0.2); }
+.ps-vision { background: rgba(240,192,64,0.08); color: var(--gold); border: 1px solid rgba(240,192,64,0.2); }
+
+.phase-toggle { color: var(--muted); font-size: 20px; transition: transform 0.3s; }
+.phase-toggle.open { transform: rotate(45deg); }
+
+.phase-body {
+  padding: 0 32px;
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+}
+.phase-body.open {
+  max-height: 600px;
+  padding: 28px 32px;
+}
+
+.phase-features {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px; margin-bottom: 24px;
+}
+
+.feat-item {
+  padding: 16px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 10px; border: 1px solid var(--border);
+}
+
+.feat-icon { font-size: 20px; margin-bottom: 8px; }
+.feat-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+.feat-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+.phase-kpis {
+  display: flex; gap: 32px;
+  padding-top: 20px; border-top: 1px solid var(--border);
+}
+
+.kpi-item { display: flex; flex-direction: column; gap: 4px; }
+.kpi-val {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 28px; font-weight: 700;
+  letter-spacing: -0.03em; color: var(--white);
+}
+.kpi-key {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted);
+}
+
+/* ── MULTICHAIN SECTION ── */
+.chain-section { background: var(--black); }
+
+.chain-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.chain-card {
+  padding: 28px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  position: relative; overflow: hidden;
+  transition: all 0.2s;
+}
+.chain-card:hover { border-color: rgba(255,255,255,0.12); transform: translateY(-2px); }
+
+.chain-card-accent {
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+
+.chain-logo {
+  width: 48px; height: 48px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; margin-bottom: 16px;
+}
+
+.chain-name {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 22px; font-weight: 700;
+  color: var(--white); letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.chain-purpose {
+  font-size: 12px; color: var(--muted);
+  margin-bottom: 16px; font-family: 'DM Mono', monospace;
+  letter-spacing: 0.05em;
+}
+.chain-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+
+.chain-pros { display: flex; flex-direction: column; gap: 6px; }
+.chain-pro {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--muted);
+}
+.chain-pro::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+.chain-phase {
+  margin-top: 20px; padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.1em;
+  color: var(--muted); text-transform: uppercase;
+}
+
+/* ── MOAT SECTION ── */
+.moat-section { background: #080810; }
+
+.moat-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 2px; background: var(--border);
+  border-radius: 20px; overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.moat-card {
+  background: var(--card);
+  padding: 40px 36px;
+  position: relative; overflow: hidden;
+  transition: background 0.2s;
+}
+.moat-card:hover { background: #111118; }
+
+.moat-num {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 80px; font-weight: 700;
+  color: rgba(255,255,255,0.03);
+  position: absolute; bottom: -16px; right: 16px;
+  line-height: 1; pointer-events: none; user-select: none;
+}
+
+.moat-icon { font-size: 36px; margin-bottom: 20px; }
+
+.moat-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 22px; font-weight: 700;
+  color: var(--white); letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+.moat-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+/* ── QUOTE SECTION ── */
+.quote-section {
+  background: var(--green);
+  padding: 100px 0;
+}
+.quote-section .wrap { text-align: center; }
+
+.quote-text {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: clamp(28px, 4vw, 52px);
+  color: #000;
+  line-height: 1.35;
+  max-width: 800px; margin: 0 auto 24px;
+  letter-spacing: -0.02em;
+}
+
+.quote-source {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(0,0,0,0.5);
+}
+
+/* ── CTA SECTION ── */
+.cta-section { background: var(--black); padding: 160px 0; }
+.cta-section .wrap { text-align: center; }
+
+.cta-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 700; letter-spacing: -0.04em;
+  color: var(--white); line-height: 0.95;
+  margin-bottom: 24px;
+}
+.cta-title .green { color: var(--green); }
+
+.cta-sub {
+  font-size: 18px; color: var(--muted);
+  max-width: 480px; margin: 0 auto 48px;
+  line-height: 1.7;
+}
+
+.cta-stack {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; flex-wrap: wrap;
+  margin-top: 40px;
+}
+.cta-tech {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.08em;
+  color: var(--muted);
+  padding: 6px 14px; border-radius: 100px;
+  border: 1px solid var(--border);
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  padding: 60px 0 40px;
+}
+
+.footer-top {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; margin-bottom: 48px;
+  padding-bottom: 48px; border-bottom: 1px solid var(--border);
+}
+
+.footer-brand {}
+.footer-logo {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 28px; font-weight: 700;
+  color: var(--white); letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.footer-logo span { color: var(--green); }
+.footer-tagline {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic; font-size: 15px;
+  color: var(--muted);
+}
+
+.footer-cols { display: flex; gap: 64px; }
+.footer-col h4 {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 16px;
+}
+.footer-col a {
+  display: block; font-size: 14px;
+  color: rgba(240,238,232,0.5);
+  text-decoration: none; margin-bottom: 10px;
+  transition: color 0.15s;
+}
+.footer-col a:hover { color: var(--white); }
+
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.1em; color: var(--muted);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { padding: 16px 24px; }
+  .nav-links { display: none; }
+  .wrap { padding: 0 24px; }
+  section { padding: 80px 0; }
+  .eco-map { grid-template-columns: 1fr; }
+  .eco-center { grid-column: 1; }
+  .wallet-showcase { grid-template-columns: 1fr; }
+  .chain-grid { grid-template-columns: 1fr; }
+  .moat-grid { grid-template-columns: 1fr; }
+  .phase-features { grid-template-columns: 1fr 1fr; }
+  .hero-stats { flex-direction: column; }
+  .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+  .footer-top { flex-direction: column; gap: 40px; }
+  .footer-cols { gap: 32px; flex-wrap: wrap; }
+  .pipe-row { grid-template-columns: 120px 1fr; }
+  .hero-cta { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Solana<span>Warung</span></div>
+  <div class="nav-links">
+    <a href="#ecosystem" class="nav-link">Ekosistem</a>
+    <a href="#pipeline" class="nav-link">Pipeline</a>
+    <a href="#wallet" class="nav-link">Wallet</a>
+    <a href="#roadmap" class="nav-link">Roadmap</a>
+    <a href="#chain" class="nav-link">Multichain</a>
+  </div>
+  <a href="#cta" class="nav-cta">Mulai Sekarang</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-eyebrow">🟢 Live di Solana Devnet — #JuaraVibeCoding 2026</div>
+  <h1 class="hero-title">
+    Infrastruktur<br>
+    Ekonomi Digital<br>
+    <span class="green italic">ASEAN.</span>
+  </h1>
+  <p class="hero-sub">
+    Dari warung di gang sempit sampai marketplace bertenaga AI dan blockchain yang melayani 60 juta UMKM — dengan infrastruktur CBDC yang siap ketika bank sentral bermigrasi.
+  </p>
+  <div class="hero-cta">
+    <a href="#ecosystem" class="btn-main">Lihat Ekosistem</a>
+    <a href="#roadmap" class="btn-outline">Baca Roadmap</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <span class="stat-num">60M</span>
+      <span class="stat-label">UMKM di ASEAN</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">$220B</span>
+      <span class="stat-label">Market Size</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">7+</span>
+      <span class="stat-label">Negara Pilot CBDC</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">4</span>
+      <span class="stat-label">Fase Roadmap</span>
+    </div>
+  </div>
+</div>
+
+<!-- ECOSYSTEM -->
+<section class="ecosystem-section" id="ecosystem">
+  <div class="wrap">
+    <span class="section-tag reveal">01 — Ekosistem</span>
+    <h2 class="section-title reveal">Tiga Layer.<br>Satu Platform.</h2>
+    <p class="section-desc reveal">SolanaWarung bukan sekadar marketplace. Ini adalah tiga lapis infrastruktur yang saling terhubung — dari onboarding UMKM sampai settlement CBDC.</p>
+
+    <div class="eco-map reveal">
+      <!-- CENTER CORE -->
+      <div class="eco-center">
+        <div class="eco-core-badge">
+          <div class="eco-core-icon">🛍️</div>
+          <div class="eco-core-name">Marketplace</div>
+          <div class="eco-core-desc">Core Product</div>
+        </div>
+        <div class="eco-arrow">⟶</div>
+        <div class="eco-core-badge">
+          <div class="eco-core-icon" style="background:rgba(123,94,167,0.1);border-color:rgba(123,94,167,0.3)">🤖</div>
+          <div class="eco-core-name">Gemini AI</div>
+          <div class="eco-core-desc">Vision + Analytics</div>
+        </div>
+        <div class="eco-arrow">⟶</div>
+        <div class="eco-core-badge">
+          <div class="eco-core-icon" style="background:rgba(68,136,255,0.1);border-color:rgba(68,136,255,0.3)">⛓️</div>
+          <div class="eco-core-name">Blockchain</div>
+          <div class="eco-core-desc">Solana + CBDC</div>
+        </div>
+        <div class="eco-arrow">⟶</div>
+        <div class="eco-core-badge">
+          <div class="eco-core-icon" style="background:rgba(240,192,64,0.1);border-color:rgba(240,192,64,0.3)">💳</div>
+          <div class="eco-core-name">SW Wallet</div>
+          <div class="eco-core-desc">Internal + Web3</div>
+        </div>
+        <div class="eco-arrow">⟶</div>
+        <div class="eco-core-badge">
+          <div class="eco-core-icon" style="background:rgba(255,68,102,0.1);border-color:rgba(255,68,102,0.3)">📦</div>
+          <div class="eco-core-name">Logistik</div>
+          <div class="eco-core-desc">JNE · J&T · SiCepat</div>
+        </div>
+      </div>
+
+      <!-- ROW 2 -->
+      <div class="eco-card">
+        <span class="eco-card-tag" style="color:var(--green)">Layer 1 — Marketplace</span>
+        <span class="eco-card-icon">🛍️</span>
+        <div class="eco-card-title">UMKM Storefront</div>
+        <div class="eco-card-desc">Seller listing produk dalam 3 menit pakai AI. Buyer browse dan beli dari seluruh Indonesia.</div>
+        <div class="eco-card-pills">
+          <span class="pill green">Gemini Vision</span>
+          <span class="pill green">Auto-listing</span>
+          <span class="pill">Firestore</span>
+        </div>
+      </div>
+
+      <div class="eco-card">
+        <span class="eco-card-tag" style="color:#A080D0">Layer 2 — Payment</span>
+        <span class="eco-card-icon">💳</span>
+        <div class="eco-card-title">SW Wallet + CBDC</div>
+        <div class="eco-card-desc">Internal e-wallet berbasis Firestore. Mock CBDC via SPL Token. Siap swap ke Digital Rupiah BI.</div>
+        <div class="eco-card-pills">
+          <span class="pill purple">Mock CBDC</span>
+          <span class="pill purple">Escrow</span>
+          <span class="pill">Solana Devnet</span>
+        </div>
+      </div>
+
+      <div class="eco-card">
+        <span class="eco-card-tag" style="color:var(--gold)">Layer 3 — Intelligence</span>
+        <span class="eco-card-icon">📊</span>
+        <div class="eco-card-title">AI Business Engine</div>
+        <div class="eco-card-desc">Gemini analisis data penjualan dan kasih saran bisnis dalam bahasa Indonesia. On-chain kredit scoring.</div>
+        <div class="eco-card-pills">
+          <span class="pill gold">Gemini Text</span>
+          <span class="pill gold">Analytics</span>
+          <span class="pill">Credit Score</span>
+        </div>
+      </div>
+
+      <!-- ROW 3 -->
+      <div class="eco-card">
+        <span class="eco-card-tag" style="color:var(--blue)">Infrastruktur</span>
+        <span class="eco-card-icon">☁️</span>
+        <div class="eco-card-title">Google Cloud Stack</div>
+        <div class="eco-card-desc">Firebase Auth, Firestore, Storage, Cloud Run. 100% Google ecosystem sesuai syarat kompetisi.</div>
+        <div class="eco-card-pills">
+          <span class="pill blue">Firebase</span>
+          <span class="pill blue">Cloud Run</span>
+          <span class="pill">Vercel</span>
+        </div>
+      </div>
+
+      <div class="eco-card">
+        <span class="eco-card-tag" style="color:var(--green)">Blockchain</span>
+        <span class="eco-card-icon">⛓️</span>
+        <div class="eco-card-title">Solana Smart Contract</div>
+        <div class="eco-card-desc">Anchor program untuk escrow trustless. SPL Token sebagai mock CBDC. Multichain ready via abstraction layer.</div>
+        <div class="eco-card-pills">
+          <span class="pill green">Anchor</span>
+          <span class="pill green">SPL Token</span>
+          <span class="pill">Devnet</span>
+        </div>
+      </div>
+
+      <div class="eco-card">
+        <span class="eco-card-tag" style="color:var(--gold)">Post-Kompetisi</span>
+        <span class="eco-card-icon">🌏</span>
+        <div class="eco-card-title">ASEAN Expansion</div>
+        <div class="eco-card-desc">SW Pay API untuk merchant eksternal. Integrasi CBDC multi-negara. Licensed gateway bank sentral ASEAN.</div>
+        <div class="eco-card-pills">
+          <span class="pill gold">Pay API</span>
+          <span class="pill gold">Multi-CBDC</span>
+          <span class="pill">B2B Data</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section class="pipeline-section" id="pipeline">
+  <div class="wrap">
+    <span class="section-tag reveal">02 — Pipeline</span>
+    <h2 class="section-title reveal">Alur Data<br>End-to-End.</h2>
+    <p class="section-desc reveal">Dari foto produk sampai dana release ke seller — setiap langkah terdokumentasi dan trustless.</p>
+
+    <div class="pipeline reveal">
+      <div class="pipe-row">
+        <div class="pipe-label">
+          <span class="pipe-num">FLOW 01</span>
+          <span class="pipe-name">AI Listing</span>
+        </div>
+        <div class="pipe-content">
+          <div class="pipe-step">
+            <div class="pipe-node"><div class="pipe-node-icon">📸</div><div class="pipe-node-label">Seller Upload Foto</div></div>
+            <div class="pipe-connector"></div>
+            <div class="pipe-node"><div class="pipe-node-icon">🤖</div><div class="pipe-node-label">Gemini Vision API</div></div>
+            <div class="pipe-connector"></div>
+            <div class="pipe-node"><div class="pipe-node-icon">✨</div><div class="pipe-node-label">Auto-fill Form</div></div>
+            <div class="pipe-connector"></div>
+            <div class="pipe-node"><div class="pipe-node-icon">💾</div><div class="pipe-node-label">Simpan Firestore</div></div>
+            <div class="pipe-connector"></div>
+            <div class="pipe-node"><div class="pipe-node-icon">🛍️</div><div class="pipe-node-label">Live di Marketplace</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pipe-row">
+        <div class="pipe-label">
+          <span class="pipe-num">FLOW 02</span>
+          <span class="pipe-name">Checkout</span>
+        </div>
+        <div class="pipe-content">
+          <div class="pipe-step">
+            <div class="pipe-node"><div class="pipe-node-icon">🛒</div><div class="pipe-node-label">Buyer Klik Beli</div></div>
+            <div class="pipe-connector"></div>
+            <div class="pipe-node"><div class="pipe-node-icon">💳</div><div class="pipe-node-label">Cek Saldo CBDC</div></div>
+            <div class="pipe-connector"></div>
+            <div class="pipe-node"><div class="pipe-node-icon">🔒</div><div class="pipe-node-label">Escrow Hold Dana</div></div>
+            <div class="pipe-connector"></div>
+            <div class="pipe-node"><div class="pipe-node-icon">📋</div><div class="pipe-node-label">Order Tersimpan</div></div>
+            <div class="pipe-connector"></div>
+            <div class="pipe-node"><div class="pipe-node-icon">✅</div><div class="pipe-node-label">Seller Konfirmasi</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pipe-row">
+        <div class="pipe-label">
+          <span class="pipe-num">FLOW 03</span>
+          <span class="pipe-name">Settlement</span>
+        </div>
+        <div class="pipe-content">
+          <div class="pipe-step">
+            <div class="pipe-node"><div class="pipe-node-icon">✅</div><div class="pipe-node-label">Seller Konfirmasi</div></div>
+            <div class="pipe-connector"></div>
+            <div class="pipe-node"><div class="pipe-node-icon">📜</div><div class="pipe-node-label">Escrow Release</div></div>
+            <div class="pipe-connector"></div>
+            <div class="pipe-node"><div class="pipe-node-icon">💰</div><div class="pipe-node-label">Dana ke Seller</div></div>
+            <div class="pipe-connector"></div>
+            <div class="pipe-node"><div class="pipe-node-icon">⛓️</div><div class="pipe-node-label">TX Hash On-chain</div></div>
+            <div class="pipe-connector"></div>
+            <div class="pipe-node"><div class="pipe-node-icon">🎉</div><div class="pipe-node-label">Selesai</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pipe-row">
+        <div class="pipe-label">
+          <span class="pipe-num">FLOW 04</span>
+          <span class="pipe-name">AI Analytics</span>
+        </div>
+        <div class="pipe-content">
+          <div class="pipe-step">
+            <div class="pipe-node"><div class="pipe-node-icon">📊</div><div class="pipe-node-label">Data Order 30 Hari</div></div>
+            <div class="pipe-connector"></div>
+            <div class="pipe-node"><div class="pipe-node-icon">🤖</div><div class="pipe-node-label">Gemini Text API</div></div>
+            <div class="pipe-connector"></div>
+            <div class="pipe-node"><div class="pipe-node-icon">💡</div><div class="pipe-node-label">Insight Bisnis</div></div>
+            <div class="pipe-connector"></div>
+            <div class="pipe-node"><div class="pipe-node-icon">📱</div><div class="pipe-node-label">Dashboard Seller</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WALLET -->
+<section class="wallet-section" id="wallet">
+  <div class="wrap">
+    <span class="section-tag reveal">03 — SW Wallet</span>
+    <h2 class="section-title reveal">Dua Wallet.<br>Satu Ekosistem.</h2>
+    <p class="section-desc reveal">SW Internal Wallet untuk transaksi sehari-hari. Web3 Wallet untuk verifikasi on-chain dan masa depan multichain.</p>
+
+    <div class="wallet-showcase">
+      <!-- INTERNAL WALLET -->
+      <div class="wallet-card reveal">
+        <div class="wallet-card-header">
+          <div class="wallet-card-title">SW Internal Wallet</div>
+          <span class="wallet-badge wb-green">CBDC Ready</span>
+        </div>
+        <div class="wallet-card-body">
+          <div class="balance-display">
+            <span class="balance-label">Saldo Digital Rupiah</span>
+            <div class="balance-amount"><span class="currency">Rp </span>2.450.000</div>
+          </div>
+          <div class="tx-list">
+            <div class="tx-item">
+              <div class="tx-left">
+                <div class="tx-icon in">💰</div>
+                <div>
+                  <div class="tx-desc">Top Up Saldo</div>
+                  <div class="tx-time">Hari ini, 10:32</div>
+                </div>
+              </div>
+              <span class="tx-amount in">+Rp 500.000</span>
+            </div>
+            <div class="tx-item">
+              <div class="tx-left">
+                <div class="tx-icon out">🛒</div>
+                <div>
+                  <div class="tx-desc">Beli Keripik Singkong</div>
+                  <div class="tx-time">Kemarin, 14:15</div>
+                </div>
+              </div>
+              <span class="tx-amount out">-Rp 45.000</span>
+            </div>
+            <div class="tx-item">
+              <div class="tx-left">
+                <div class="tx-icon hold">🔒</div>
+                <div>
+                  <div class="tx-desc">Escrow — Batik Tasik</div>
+                  <div class="tx-time">Kemarin, 09:20</div>
+                </div>
+              </div>
+              <span class="tx-amount hold">Rp 320.000</span>
+            </div>
+            <div class="tx-item">
+              <div class="tx-left">
+                <div class="tx-icon in">💰</div>
+                <div>
+                  <div class="tx-desc">Pendapatan Penjualan</div>
+                  <div class="tx-time">2 hari lalu</div>
+                </div>
+              </div>
+              <span class="tx-amount in">+Rp 215.000</span>
+            </div>
+          </div>
+          <div class="chain-info" style="margin-top:20px">
+            <div class="chain-row">
+              <span class="chain-key">ENGINE</span>
+              <span class="chain-val green">Firestore Ledger</span>
+            </div>
+            <div class="chain-row">
+              <span class="chain-key">STATUS</span>
+              <span class="chain-val green">● Live</span>
+            </div>
+            <div class="chain-row">
+              <span class="chain-key">CBDC READY</span>
+              <span class="chain-val green">✓ Siap integrasi BI</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEB3 WALLET -->
+      <div class="wallet-card reveal reveal-delay-2">
+        <div class="wallet-card-header">
+          <div class="wallet-card-title">Web3 Wallet (Solana)</div>
+          <span class="wallet-badge wb-purple">Devnet</span>
+        </div>
+        <div class="wallet-card-body">
+          <div class="balance-display">
+            <span class="balance-label">Saldo SPL Token (Mock CBDC)</span>
+            <div class="balance-amount"><span class="currency" style="font-size:16px">◎ </span>1.5 SOL</div>
+          </div>
+          <div class="tx-list">
+            <div class="tx-item">
+              <div class="tx-left">
+                <div class="tx-icon in">⛓️</div>
+                <div>
+                  <div class="tx-desc">Escrow Release On-chain</div>
+                  <div class="tx-time">TX: 3xK9...mN2p</div>
+                </div>
+              </div>
+              <span class="tx-amount in">+500 CBDC</span>
+            </div>
+            <div class="tx-item">
+              <div class="tx-left">
+                <div class="tx-icon hold">🔒</div>
+                <div>
+                  <div class="tx-desc">Escrow Locked</div>
+                  <div class="tx-time">TX: 7pQ2...xR4k</div>
+                </div>
+              </div>
+              <span class="tx-amount hold">320 CBDC</span>
+            </div>
+            <div class="tx-item">
+              <div class="tx-left">
+                <div class="tx-icon in">🪂</div>
+                <div>
+                  <div class="tx-desc">Devnet Airdrop</div>
+                  <div class="tx-time">TX: 9mL1...vX8w</div>
+                </div>
+              </div>
+              <span class="tx-amount in">+1 SOL</span>
+            </div>
+          </div>
+          <div class="chain-info" style="margin-top:20px">
+            <div class="chain-row">
+              <span class="chain-key">NETWORK</span>
+              <span class="chain-val" style="color:#A080D0">Solana Devnet</span>
+            </div>
+            <div class="chain-row">
+              <span class="chain-key">ESCROW PROGRAM</span>
+              <span class="chain-val">Anchor Framework</span>
+            </div>
+            <div class="chain-row">
+              <span class="chain-key">MAINNET READY</span>
+              <span class="chain-val" style="color:var(--gold)">Phase 2 — 2027</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="roadmap-section" id="roadmap">
+  <div class="wrap">
+    <span class="section-tag reveal">04 — Roadmap</span>
+    <h2 class="section-title reveal">Dari Warung<br>ke Dunia.</h2>
+    <p class="section-desc reveal">Empat fase transformasi. Dari MVP kompetisi sampai platform economy dan IPO.</p>
+
+    <div class="roadmap-track reveal">
+      <div class="roadmap-line"></div>
+
+      <!-- PHASE 1 -->
+      <div class="phase-item">
+        <div class="phase-dot active"></div>
+        <div class="phase-card active-card">
+          <div class="phase-header" onclick="togglePhase(this)">
+            <div class="phase-header-left">
+              <div class="phase-year y1">2026</div>
+              <div class="phase-meta">
+                <div class="phase-name-text">Dominasi Lokal</div>
+                <span class="phase-status ps-active">Aktif Sekarang</span>
+              </div>
+            </div>
+            <div class="phase-toggle open">+</div>
+          </div>
+          <div class="phase-body open">
+            <div class="phase-features">
+              <div class="feat-item"><div class="feat-icon">🤖</div><div class="feat-title">AI Product Listing</div><div class="feat-desc">Gemini Vision analisis foto otomatis</div></div>
+              <div class="feat-item"><div class="feat-icon">💳</div><div class="feat-title">Mock CBDC Wallet</div><div class="feat-desc">Internal e-wallet Digital Rupiah</div></div>
+              <div class="feat-item"><div class="feat-icon">📜</div><div class="feat-title">Smart Contract Escrow</div><div class="feat-desc">Anchor program Solana devnet</div></div>
+              <div class="feat-item"><div class="feat-icon">📊</div><div class="feat-title">AI Analytics</div><div class="feat-desc">Saran bisnis bahasa Indonesia</div></div>
+              <div class="feat-item"><div class="feat-icon">📱</div><div class="feat-title">Mobile-First PWA</div><div class="feat-desc">Jalan di HP Android entry-level</div></div>
+              <div class="feat-item"><div class="feat-icon">🏪</div><div class="feat-title">Seller Dashboard</div><div class="feat-desc">Kelola toko, konfirmasi order</div></div>
+            </div>
+            <div class="phase-kpis">
+              <div class="kpi-item"><div class="kpi-val" style="color:var(--green)">10K</div><div class="kpi-key">Target Seller</div></div>
+              <div class="kpi-item"><div class="kpi-val" style="color:var(--green)">Rp50M</div><div class="kpi-key">GMV / Bulan</div></div>
+              <div class="kpi-item"><div class="kpi-val" style="color:var(--green)">60%</div><div class="kpi-key">Retensi Seller</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 2 -->
+      <div class="phase-item">
+        <div class="phase-dot next"></div>
+        <div class="phase-card">
+          <div class="phase-header" onclick="togglePhase(this)">
+            <div class="phase-header-left">
+              <div class="phase-year y2">2027–28</div>
+              <div class="phase-meta">
+                <div class="phase-name-text">Infrastruktur</div>
+                <span class="phase-status ps-next">Berikutnya</span>
+              </div>
+            </div>
+            <div class="phase-toggle">+</div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-features">
+              <div class="feat-item"><div class="feat-icon">🔌</div><div class="feat-title">SW Pay API</div><div class="feat-desc">Stripe-nya Indonesia untuk CBDC</div></div>
+              <div class="feat-item"><div class="feat-icon">📦</div><div class="feat-title">Logistik API</div><div class="feat-desc">JNE, J&T, SiCepat terintegrasi</div></div>
+              <div class="feat-item"><div class="feat-icon">💰</div><div class="feat-title">SW Credit</div><div class="feat-desc">Pinjaman dari data on-chain</div></div>
+              <div class="feat-item"><div class="feat-icon">🏦</div><div class="feat-title">Digital Rupiah BI</div><div class="feat-desc">Integrasi begitu BI launch</div></div>
+              <div class="feat-item"><div class="feat-icon">⛓️</div><div class="feat-title">Solana Mainnet</div><div class="feat-desc">Migrasi dari devnet</div></div>
+              <div class="feat-item"><div class="feat-icon">📈</div><div class="feat-title">B2B Data Intel</div><div class="feat-desc">Jual insight ke brand besar</div></div>
+            </div>
+            <div class="phase-kpis">
+              <div class="kpi-item"><div class="kpi-val" style="color:#A080D0">100K</div><div class="kpi-key">Seller Aktif</div></div>
+              <div class="kpi-item"><div class="kpi-val" style="color:#A080D0">Rp1T</div><div class="kpi-key">GMV / Bulan</div></div>
+              <div class="kpi-item"><div class="kpi-val" style="color:#A080D0">3</div><div class="kpi-key">Revenue Streams</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 3 -->
+      <div class="phase-item">
+        <div class="phase-dot future"></div>
+        <div class="phase-card">
+          <div class="phase-header" onclick="togglePhase(this)">
+            <div class="phase-header-left">
+              <div class="phase-year y3">2029–31</div>
+              <div class="phase-meta">
+                <div class="phase-name-text">Ekspansi ASEAN</div>
+                <span class="phase-status ps-plan">Rencana</span>
+              </div>
+            </div>
+            <div class="phase-toggle">+</div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-features">
+              <div class="feat-item"><div class="feat-icon">🌏</div><div class="feat-title">5 Negara ASEAN</div><div class="feat-desc">Vietnam, Thailand, Filipina, Bangladesh</div></div>
+              <div class="feat-item"><div class="feat-icon">🏛️</div><div class="feat-title">CBDC Gateway</div><div class="feat-desc">Lisensi bank sentral ASEAN</div></div>
+              <div class="feat-item"><div class="feat-icon">🔄</div><div class="feat-title">Cross-border Trade</div><div class="feat-desc">UMKM ekspor tanpa bank koresponden</div></div>
+              <div class="feat-item"><div class="feat-icon">🗣️</div><div class="feat-title">Multilingual AI</div><div class="feat-desc">Thai, Tagalog, Vietnamese</div></div>
+              <div class="feat-item"><div class="feat-icon">🏊</div><div class="feat-title">DeFi Liquidity</div><div class="feat-desc">Working capital dari pool</div></div>
+              <div class="feat-item"><div class="feat-icon">⛓️</div><div class="feat-title">Multi-CBDC</div><div class="feat-desc">Digital Baht, Peso, Dong</div></div>
+            </div>
+            <div class="phase-kpis">
+              <div class="kpi-item"><div class="kpi-val" style="color:var(--blue)">5</div><div class="kpi-key">Negara</div></div>
+              <div class="kpi-item"><div class="kpi-val" style="color:var(--blue)">$1B</div><div class="kpi-key">GMV / Tahun</div></div>
+              <div class="kpi-item"><div class="kpi-val" style="color:var(--blue)">7</div><div class="kpi-key">CBDC Integrated</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 4 -->
+      <div class="phase-item">
+        <div class="phase-dot future"></div>
+        <div class="phase-card">
+          <div class="phase-header" onclick="togglePhase(this)">
+            <div class="phase-header-left">
+              <div class="phase-year y4">2032–35</div>
+              <div class="phase-meta">
+                <div class="phase-name-text">Platform Economy</div>
+                <span class="phase-status ps-vision">Visi Besar</span>
+              </div>
+            </div>
+            <div class="phase-toggle">+</div>
+          </div>
+          <div class="phase-body">
+            <div class="phase-features">
+              <div class="feat-item"><div class="feat-icon">🏪</div><div class="feat-title">SW App Store</div><div class="feat-desc">Developer bangun di atas infrastruktur SW</div></div>
+              <div class="feat-item"><div class="feat-icon">⛓️</div><div class="feat-title">SW Chain</div><div class="feat-desc">App-chain sendiri di Solana SVM</div></div>
+              <div class="feat-item"><div class="feat-icon">🪙</div><div class="feat-title">SW Token</div><div class="feat-desc">Utility token governance + kredit</div></div>
+              <div class="feat-item"><div class="feat-icon">🪪</div><div class="feat-title">Sovereign Identity</div><div class="feat-desc">NFT identity seller lintas negara</div></div>
+              <div class="feat-item"><div class="feat-icon">🤖</div><div class="feat-title">AI Agent Merchant</div><div class="feat-desc">Kelola toko otonom 24/7</div></div>
+              <div class="feat-item"><div class="feat-icon">📈</div><div class="feat-title">IPO</div><div class="feat-desc">Target listing bursa ASEAN</div></div>
+            </div>
+            <div class="phase-kpis">
+              <div class="kpi-item"><div class="kpi-val" style="color:var(--gold)">1M+</div><div class="kpi-key">Seller ASEAN</div></div>
+              <div class="kpi-item"><div class="kpi-val" style="color:var(--gold)">$10B</div><div class="kpi-key">GMV / Tahun</div></div>
+              <div class="kpi-item"><div class="kpi-val" style="color:var(--gold)">IPO</div><div class="kpi-key">Target</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MULTICHAIN -->
+<section class="chain-section" id="chain">
+  <div class="wrap">
+    <span class="section-tag reveal">05 — Multichain Strategy</span>
+    <h2 class="section-title reveal">Satu Wallet.<br>Semua Chain.</h2>
+    <p class="section-desc reveal">SW Payment Abstraction Layer memastikan SolanaWarung tidak terikat satu blockchain. Ketika BI announce teknologi CBDC-nya, kami tinggal flip switch.</p>
+
+    <div class="chain-grid">
+      <div class="chain-card reveal">
+        <div class="chain-card-accent" style="background: linear-gradient(90deg,#9945FF,transparent)"></div>
+        <div class="chain-logo" style="background:rgba(153,69,255,0.1)">◎</div>
+        <div class="chain-name">Solana</div>
+        <div class="chain-purpose">Smart Contract + Escrow</div>
+        <div class="chain-desc">Throughput 65.000 TPS, biaya mikro. Anchor framework untuk escrow trustless. SPL Token sebagai mock CBDC. Ini chain utama sekarang.</div>
+        <div class="chain-pros">
+          <div class="chain-pro">65.000 TPS — paling cepat</div>
+          <div class="chain-pro">Biaya transaksi &lt; $0.001</div>
+          <div class="chain-pro">Smart contract powerful</div>
+          <div class="chain-pro">Ekosistem DeFi terbesar</div>
+        </div>
+        <div class="chain-phase">🟢 Aktif Sekarang — Devnet</div>
+      </div>
+
+      <div class="chain-card reveal reveal-delay-2">
+        <div class="chain-card-accent" style="background: linear-gradient(90deg,#7EC8E3,transparent)"></div>
+        <div class="chain-logo" style="background:rgba(126,200,227,0.1)">✦</div>
+        <div class="chain-name">Stellar</div>
+        <div class="chain-purpose">CBDC Settlement</div>
+        <div class="chain-desc">Didesain khusus untuk payment dan remittance. 30+ bank sentral dunia sudah pilot CBDC di Stellar. Paling mungkin dipilih BI untuk Digital Rupiah.</div>
+        <div class="chain-pros">
+          <div class="chain-pro">30+ bank sentral pakai Stellar</div>
+          <div class="chain-pro">Built-in DEX untuk currency swap</div>
+          <div class="chain-pro">Compliance: freeze + clawback</div>
+          <div class="chain-pro">Brazil, Ukraine pilot di Stellar</div>
+        </div>
+        <div class="chain-phase">⏳ Phase 2 — 2027 jika BI pilih ini</div>
+      </div>
+
+      <div class="chain-card reveal reveal-delay-3">
+        <div class="chain-card-accent" style="background: linear-gradient(90deg,#00AAE4,transparent)"></div>
+        <div class="chain-logo" style="background:rgba(0,170,228,0.1)">◈</div>
+        <div class="chain-name">XRP Ledger</div>
+        <div class="chain-purpose">B2B Cross-border</div>
+        <div class="chain-desc">Dipakai bank untuk settlement internasional. Built-in escrow native. Bank sentral Bhutan, Palau, Georgia pakai XRPL untuk CBDC mereka.</div>
+        <div class="chain-pros">
+          <div class="chain-pro">Settlement 3-5 detik</div>
+          <div class="chain-pro">Native escrow tanpa smart contract</div>
+          <div class="chain-pro">Bank-grade compliance</div>
+          <div class="chain-pro">Cocok untuk B2B cross-border</div>
+        </div>
+        <div class="chain-phase">⏳ Phase 3 — ASEAN expansion</div>
+      </div>
+    </div>
+
+    <!-- ABSTRACTION LAYER VIZ -->
+    <div class="reveal" style="margin-top:48px; background:var(--card); border:1px solid var(--border); border-radius:20px; padding:40px;">
+      <div style="text-align:center; margin-bottom:32px;">
+        <span class="section-tag" style="display:inline-block">Payment Abstraction Layer</span>
+        <h3 style="font-family:'Clash Display',sans-serif; font-size:28px; font-weight:700; letter-spacing:-0.02em; color:var(--white); margin-top:8px;">App tidak peduli chain mana yang jalan di belakang</h3>
+      </div>
+
+      <div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
+        <!-- UI Layer -->
+        <div style="background:rgba(0,255,136,0.08); border:1px solid rgba(0,255,136,0.2); border-radius:12px; padding:16px 32px; text-align:center;">
+          <div style="font-family:'DM Mono',monospace; font-size:10px; color:var(--green); letter-spacing:0.15em; margin-bottom:4px;">UI LAYER</div>
+          <div style="font-family:'Clash Display',sans-serif; font-size:18px; color:var(--white);">SW Wallet — "Saldo Rp 2.450.000"</div>
+        </div>
+
+        <div style="color:var(--muted); font-size:20px;">↓</div>
+
+        <!-- Abstraction -->
+        <div style="background:rgba(123,94,167,0.1); border:1px solid rgba(123,94,167,0.3); border-radius:12px; padding:16px 32px; text-align:center;">
+          <div style="font-family:'DM Mono',monospace; font-size:10px; color:#A080D0; letter-spacing:0.15em; margin-bottom:4px;">ABSTRACTION LAYER</div>
+          <div style="font-family:'Clash Display',sans-serif; font-size:18px; color:var(--white);">PaymentService.transfer(amount)</div>
+        </div>
+
+        <div style="color:var(--muted); font-size:20px;">↓</div>
+
+        <!-- Connectors -->
+        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+          <div style="background:rgba(153,69,255,0.1); border:1px solid rgba(153,69,255,0.3); border-radius:10px; padding:12px 20px; text-align:center;">
+            <div style="font-size:10px; font-family:'DM Mono',monospace; color:#9945FF; letter-spacing:0.1em; margin-bottom:4px;">CONNECTOR</div>
+            <div style="font-size:14px; font-weight:600; color:var(--white);">SolanaConnector</div>
+          </div>
+          <div style="background:rgba(126,200,227,0.08); border:1px solid rgba(126,200,227,0.2); border-radius:10px; padding:12px 20px; text-align:center;">
+            <div style="font-size:10px; font-family:'DM Mono',monospace; color:#7EC8E3; letter-spacing:0.1em; margin-bottom:4px;">CONNECTOR</div>
+            <div style="font-size:14px; font-weight:600; color:var(--white);">StellarConnector</div>
+          </div>
+          <div style="background:rgba(0,170,228,0.08); border:1px solid rgba(0,170,228,0.2); border-radius:10px; padding:12px 20px; text-align:center;">
+            <div style="font-size:10px; font-family:'DM Mono',monospace; color:#00AAE4; letter-spacing:0.1em; margin-bottom:4px;">CONNECTOR</div>
+            <div style="font-size:14px; font-weight:600; color:var(--white);">XRPConnector</div>
+          </div>
+          <div style="background:rgba(0,255,136,0.06); border:1px solid rgba(0,255,136,0.15); border-radius:10px; padding:12px 20px; text-align:center;">
+            <div style="font-size:10px; font-family:'DM Mono',monospace; color:var(--green); letter-spacing:0.1em; margin-bottom:4px;">FALLBACK</div>
+            <div style="font-size:14px; font-weight:600; color:var(--white);">FirestoreConnector</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MOAT -->
+<section class="moat-section">
+  <div class="wrap">
+    <span class="section-tag reveal">06 — Competitive Moat</span>
+    <h2 class="section-title reveal">Kenapa Susah<br>Disaingi.</h2>
+    <div class="moat-grid reveal">
+      <div class="moat-card">
+        <div class="moat-num">1</div>
+        <div class="moat-icon">🕸️</div>
+        <div class="moat-title">Network Effect</div>
+        <div class="moat-desc">Semakin banyak seller, semakin banyak produk, semakin banyak buyer. Loop ini tidak bisa dibeli pesaing — harus dibangun dari nol selama bertahun-tahun.</div>
+      </div>
+      <div class="moat-card">
+        <div class="moat-num">2</div>
+        <div class="moat-icon">🏛️</div>
+        <div class="moat-title">Regulatory First-Mover</div>
+        <div class="moat-desc">Siapa yang masuk duluan ke ekosistem CBDC bank sentral, dia yang dapat lisensi gateway. Ini bukan keunggulan teknologi — ini timing dan kepercayaan regulasi.</div>
+      </div>
+      <div class="moat-card">
+        <div class="moat-num">3</div>
+        <div class="moat-icon">📊</div>
+        <div class="moat-title">Data Moat</div>
+        <div class="moat-desc">Data transaksi UMKM yang tidak bisa di-scrape atau dibeli. Semakin lama berjalan, semakin tidak ternilai. AI kami makin pintar, pesaing baru tidak punya ini.</div>
+      </div>
+      <div class="moat-card">
+        <div class="moat-num">4</div>
+        <div class="moat-icon">💰</div>
+        <div class="moat-title">Revenue Model Defensif</div>
+        <div class="moat-desc">Seperti Amazon — rugi di marketplace, untung di infrastruktur. Bisa subsidi seller dengan komisi 0% karena revenue dari Pay API, data, dan credit engine.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-section">
+  <div class="wrap">
+    <div class="quote-text reveal">"Your margin is my opportunity. Tapi di sini, bukan margin yang kami cari — melainkan infrastruktur yang tidak bisa kamu bangun ulang."</div>
+    <div class="quote-source reveal">Prinsip SolanaWarung — Inspired by Jeff Bezos</div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="wrap">
+    <h2 class="cta-title reveal">Siap Bawa<br>Warungmu ke<br><span class="green">Level Berikutnya?</span></h2>
+    <p class="cta-sub reveal">Bergabung dengan ribuan UMKM Indonesia. Gratis, mudah, bertenaga AI dan blockchain.</p>
+    <div class="reveal">
+      <a href="#" class="btn-main" style="font-size:17px; padding:18px 40px;">Mulai Sekarang — Gratis</a>
+    </div>
+    <div class="cta-stack reveal">
+      <span class="cta-tech">Gemini AI</span>
+      <span class="cta-tech">Firebase</span>
+      <span class="cta-tech">Solana</span>
+      <span class="cta-tech">Google Cloud</span>
+      <span class="cta-tech">Anchor</span>
+      <span class="cta-tech">CBDC Ready</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">Solana<span>Warung</span></div>
+        <div class="footer-tagline">From warung to the world.</div>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="#">Marketplace</a>
+          <a href="#">SW Wallet</a>
+          <a href="#">AI Analytics</a>
+          <a href="#">Seller Dashboard</a>
+        </div>
+        <div class="footer-col">
+          <h4>Infrastruktur</h4>
+          <a href="#">SW Pay API</a>
+          <a href="#">Credit Engine</a>
+          <a href="#">B2B Data</a>
+          <a href="#">Logistik API</a>
+        </div>
+        <div class="footer-col">
+          <h4>Kompetisi</h4>
+          <a href="#">#JuaraVibeCoding</a>
+          <a href="#">Google for Devs</a>
+          <a href="#">Visi & Roadmap</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 SolanaWarung — Arblok Digital, Tasikmalaya, West Java</div>
+      <div class="footer-copy">Built with Gemini AI × Google Cloud × Solana × Antigravity</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── CUSTOM CURSOR
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx - 5 + 'px';
+  cursor.style.top  = my - 5 + 'px';
+});
+
+function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) *.12;
+  ring.style.left = rx - 18 + 'px';
+  ring.style.top  = ry - 18 + 'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+document.querySelectorAll('a, button, .phase-header, .chain-card, .eco-card, .moat-card').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform = 'scale(2.5)';
+    ring.style.transform = 'scale(1.4)';
+    ring.style.borderColor = 'rgba(0,255,136,0.6)';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.transform = 'scale(1)';
+    ring.style.transform = 'scale(1)';
+    ring.style.borderColor = 'rgba(0,255,136,0.4)';
+  });
+});
+
+// ── SCROLL REVEAL
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── ROADMAP ACCORDION
+function togglePhase(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.phase-toggle');
+  const isOpen = body.classList.contains('open');
+
+  // Close all
+  document.querySelectorAll('.phase-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.phase-toggle').forEach(t => { t.classList.remove('open'); t.textContent = '+'; });
+
+  if (!isOpen) {
+    body.classList.add('open');
+    toggle.classList.add('open');
+    toggle.textContent = '+';
+  }
+}
+
+// ── NAVBAR SCROLL
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 50) {
+    nav.style.background = 'rgba(6,6,8,0.95)';
+  } else {
+    nav.style.background = 'rgba(6,6,8,0.7)';
+  }
+});
+
+// ── SMOOTH SCROLL
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// ── COUNTER ANIMATION
+function animateCounter(el, target, suffix = '') {
+  let current = 0;
+  const increment = target / 60;
+  const timer = setInterval(() => {
+    current += increment;
+    if (current >= target) { current = target; clearInterval(timer); }
+    el.textContent = Math.floor(current).toLocaleString('id') + suffix;
+  }, 16);
+}
+
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target;
+      const val = el.dataset.val;
+      const suffix = el.dataset.suffix || '';
+      if (val) animateCounter(el, parseInt(val), suffix);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('[data-val]').forEach(el => counterObserver.observe(el));
+</script>
+</body>
+</html>

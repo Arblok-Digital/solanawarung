@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
-import { Sparkles, Shield, Zap, Globe, Mail, Lock, Loader2, ArrowRight, UserCircle } from 'lucide-react';
+import { Sparkles, Shield, Zap, Globe, Mail, Lock, Loader2, ArrowRight, UserCircle, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
-export const LoginPage: React.FC = () => {
+interface LoginPageProps {
+  onBackToLanding: () => void;
+}
+
+export const LoginPage: React.FC<LoginPageProps> = ({ onBackToLanding }) => {
   const { login, loginEmail, loginDemo } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -152,6 +156,15 @@ export const LoginPage: React.FC = () => {
         >
           <UserCircle size={16} />
           Masuk Mode Demo
+        </button>
+
+        {/* Tombol Kembali ke Beranda */}
+        <button 
+          onClick={onBackToLanding}
+          disabled={loading}
+          className="w-full py-3 px-6 bg-transparent border border-white/10 text-slate-400 rounded-xl font-bold flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.97] cursor-pointer disabled:opacity-50 text-sm mt-4"
+        >
+          <ArrowLeft size={16} /> Kembali ke Beranda
         </button>
         
         <p className="mt-6 text-[10px] text-slate-600 uppercase tracking-[0.25em] font-bold">

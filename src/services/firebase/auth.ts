@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { 
   signInWithPopup, 
   signInWithEmailAndPassword,
@@ -11,6 +10,7 @@ import {
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db, googleProvider } from '../../config/firebase';
 import { UserProfile } from '../../types';
+import { FirebaseError } from 'firebase/app';
 
 export const loginWithGoogle = async () => {
   try {
@@ -27,9 +27,10 @@ export const loginWithEmail = async (email: string, password: string) => {
     // Try sign in first
     const result = await signInWithEmailAndPassword(auth, email, password);
     return result.user;
-  } catch (error: any) {
+  } catch (error) {
     // If user not found, create account automatically
-    if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+    const firebaseError = error as FirebaseError;
+    if (firebaseError.code === 'auth/user-not-found' || firebaseError.code === 'auth/invalid-credential') {
       const result = await createUserWithEmailAndPassword(auth, email, password);
       // Set display name from email
       await updateFirebaseProfile(result.user, {
@@ -76,7 +77,7 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
 export const createUserProfile = async (user: FirebaseUser, role: 'seller' | 'buyer'): Promise<UserProfile> => {
   const profileData: UserProfile = {
     uid: user.uid,
-    email: user.email,
+    email: user.email || null,
     role,
     createdAt: serverTimestamp(),
   };
