@@ -63,7 +63,9 @@ export const Header: React.FC = () => {
 
         {/* Wallet Connector */}
         <div className="wallet-adapter-wrapper">
-          <WalletMultiButton className="!bg-blue-600 !h-9 !px-4 !rounded-xl !text-[10px] !font-black !uppercase !tracking-widest hover:!bg-blue-700 transition-all shadow-lg shadow-blue-500/20" />
+          <WalletMultiButton className="!bg-gradient-to-r !from-purple-600 !to-blue-600 hover:!opacity-90 !text-white !rounded-xl !px-4 !py-2 !h-auto !text-[11px] !font-bold !uppercase !tracking-wider !transition-all !shadow-lg !shadow-purple-500/20 !flex !items-center !gap-2 !border-none">
+            Web3 Wallet
+          </WalletMultiButton>
         </div>
 
         {/* Dev Mode Role Switcher */}

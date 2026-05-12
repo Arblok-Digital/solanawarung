@@ -7,7 +7,7 @@
 ## STATUS KESELURUHAN
 - **Fase saat ini**: Fase 1 — Kompetisi #JuaraVibeCoding 2026
 - **Target submit**: Sebelum deadline kompetisi
-- **Progress**: Step 01-05 selesai, Step 06 aktif
+- **Progress**: Step 01-05 selesai, Step 06 (Dashboard & UI Alignment) 95% selesai
 
 ---
 
@@ -35,6 +35,8 @@
   - Filter produk by kategori dan harga ✅
   - Mobile responsive ✅
 - **Catatan**: Seluruh komponen UI sudah premium dengan glassmorphism. Dashboard seller dan buyer sudah terpisah dengan role switcher dev mode.
+  - Dark Theme Alignment (Marketplace, Header, Sidebar) ✅
+- **Catatan**: Seluruh komponen UI sudah menggunakan tema premium dark yang konsisten dari Landing Page hingga dashboard internal.
 
 ---
 
@@ -82,6 +84,11 @@
   - Konfirmasi → escrow release → saldo seller bertambah
   - Grafik penjualan 7 hari
   - Tombol Minta Saran AI → Gemini analytics
+  - Dashboard ringkasan: produk aktif, pesanan pending, pendapatan ✅
+  - List pesanan + tombol konfirmasi ✅
+  - Konfirmasi → escrow release → saldo seller bertambah ✅
+  - Grafik penjualan 7 hari ✅
+  - Business Intelligence: Gemini AI Analytics & Trend Prediction ✅
 - **Selesai kalau**: Seller konfirmasi pesanan → saldo bertambah → AI kasih saran dalam bahasa Indonesia
 
 ---
@@ -143,6 +150,8 @@
   - `src/services/firebase/auth.ts`
   - `src/services/solana/cbdc.ts`
   - `src/services/solana/escrow.ts`
+- **Data Seed Mismatch**: Pastikan menjalankan ulang `seedDemoData` jika ada perubahan struktur kategori agar tidak ada data lama yang tersangkut.
+- **UI Refinement**: Beberapa modal pop-up masih perlu dipastikan kontrasnya di layar mobile setelah perubahan ke tema gelap pekat.
 - **Performance**: Ukuran bundle JS mencapai 2MB (akibat library Solana & Anchor). Perlu pertimbangan *Code Splitting* di masa depan.
 
 ---

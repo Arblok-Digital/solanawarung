@@ -157,6 +157,9 @@ aside, [class*="Sidebar"], [class*="sidebar"] {
 
 .wallet-adapter-button {
   font-family: "Inter", sans-serif !important;
+  padding: 0 !important;
+  height: auto !important;
+  line-height: normal !important;
 }
 
 .wallet-adapter-modal-wrapper {
