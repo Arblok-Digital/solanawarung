@@ -6,7 +6,8 @@ import {
   query, 
   where, 
   onSnapshot,
-  serverTimestamp 
+  serverTimestamp,
+  runTransaction
 } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import { Order, OrderStatus } from '../../types';
@@ -21,12 +22,25 @@ export const createOrder = async (orderData: Omit<Order, 'id' | 'createdAt'>) =>
 };
 
 export const updateOrderStatus = async (id: string, status: OrderStatus, signature?: string) => {
-  const docRef = doc(db, COLLECTION_NAME, id);
-  const updateData: any = { status };
-  if (signature) {
-    updateData.transactionSignature = signature;
-  }
-  await updateDoc(docRef, updateData);
+  return await runTransaction(db, async (transaction) => {
+    const docRef = doc(db, COLLECTION_NAME, id);
+    const orderDoc = await transaction.get(docRef);
+    
+    if (!orderDoc.exists()) {
+      throw new Error("Pesanan tidak ditemukan");
+    }
+
+    const updateData: any = { 
+      status,
+      updatedAt: serverTimestamp()
+    };
+    
+    if (signature) {
+      updateData.transactionSignature = signature;
+    }
+
+    transaction.update(docRef, updateData);
+  });
 };
 
 export const subscribeToUserOrders = (userId: string, role: 'buyer' | 'seller', callback: (orders: Order[]) => void) => {

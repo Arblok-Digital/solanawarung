@@ -1,28 +1,31 @@
-// @ts-nocheck
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { ProductAnalysis } from '../../types';
 
 // WARNING: Exposing API Key in client is insecure for production.
 // Move to server-side proxy for production deployment.
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
+if (!apiKey) {
+  console.error("PENTING: VITE_GEMINI_API_KEY belum terpasang di .env! Fitur Scan Foto tidak akan jalan.");
+}
+
 const genAI = new GoogleGenerativeAI(apiKey);
 // Menggunakan model gemini-1.5-flash yang stabil
-const model = genAI.getGenerativeModel({ 
-  model: 'gemini-1.5-flash-latest',
+const model = genAI.getGenerativeModel({
+  model: 'gemini-1.5-flash',
   generationConfig: {
-    responseMimeType: "application/json",
+    responseMimeType: "application/json"
   }
 });
 
 export const analyzeProductImage = async (base64Image: string): Promise<ProductAnalysis> => {
-  const prompt = `Analyze this UMKM product image for an Indonesian marketplace (SolanaWarung). 
-  Return a JSON object with:
-  - name: (a catchy product name)
-  - category: (one of: Makanan, Minuman, Pakaian, Kerajinan, Elektronik, Lainnya)
-  - description: (short compelling description in Indonesian)
-  - estimatedPrice: (a reasonable price in Digital Rupiah/CBDC, where 1 unit = 1000 IDR approx. Return an absolute number like 15000)
+  const prompt = `Analisis gambar produk UMKM ini untuk marketplace Indonesia (SolanaWarung).
+  Berikan respons dalam format JSON dengan field berikut:
+  - name: (nama produk yang menarik)
+  - category: (pilih satu: Makanan dan Minuman, Kerajinan Tangan, Pakaian, Pertanian, Elektronik, Lainnya)
+  - description: (deskripsi singkat dan persuasif dalam Bahasa Indonesia)
+  - estimatedPrice: (harga wajar dalam Rupiah, berikan angka bulat saja contoh: 15000)
   
-  Only return JSON. No markdown tags.`;
+  Hanya kembalikan JSON murni.`;
 
   try {
     const result = await model.generateContent([
@@ -38,9 +41,31 @@ export const analyzeProductImage = async (base64Image: string): Promise<ProductA
     const response = await result.response;
     const text = response.text();
     
-    return JSON.parse(text) as ProductAnalysis;
+    if (!text) throw new Error('AI tidak memberikan respon');
+
+    try {
+      // Pembersihan JSON untuk menangani output markdown
+      const cleanJson = text
+        .replace(/```json/g, '')
+        .replace(/```/g, '')
+        .trim();
+      return JSON.parse(cleanJson) as ProductAnalysis;
+    } catch (e) {
+      console.error('Parsing error in Vision:', text);
+      throw new Error('Gagal memproses data produk dari AI');
+    }
+
   } catch (error) {
     console.error('Gemini Vision error:', error);
-    throw new Error('AI analysis failed to analyze product image');
+    if (error instanceof Error && error.message.includes('404')) {
+      throw new Error('Model AI tidak ditemukan (404). Pastikan "Generative Language API" sudah ENABLED di Google Cloud Console.');
+    }
+    if (error instanceof Error && error.message.includes('403')) {
+      throw new Error('Akses AI Ditolak (403). Periksa izin Service Account pada API Key "solana warung".');
+    }
+    if (error instanceof Error && error.message.includes('fetch')) {
+      throw new Error('Gagal menghubungi server Gemini. Periksa koneksi atau validitas API Key di .env.');
+    }
+    throw new Error('Gagal menganalisis gambar. Pastikan API Key di .env sudah benar.');
   }
 };

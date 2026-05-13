@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Order, Product } from '../../types';
 
@@ -6,7 +5,7 @@ import { Order, Product } from '../../types';
 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
 if (!apiKey) {
-  console.warn("Gemini API Key is missing. Analytics will not work.");
+  console.error("PENTING: VITE_GEMINI_API_KEY belum terpasang di .env! Fitur Analitik tidak akan jalan.");
 }
 
 const genAI = new GoogleGenerativeAI(apiKey ?? '');
@@ -22,13 +21,20 @@ export const generateBusinessInsights = async (
   products: Product[],
   orders: Order[]
 ): Promise<BusinessInsight | null> => {
-  if (!apiKey) return null;
-  if (products.length === 0 && orders.length === 0) return null;
+  if (!apiKey) {
+    console.warn("generateBusinessInsights dibatalkan: API Key kosong.");
+    return null;
+  }
+  
+  // Minimal data check to avoid empty prompts
+  if (products.length === 0) return null;
 
   try {
-    const model = genAI.getGenerativeModel({ 
+    // Menggunakan model gemini-1.5-flash standar (paling stabil untuk v1beta)
+    const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
       generationConfig: {
+        temperature: 0.7,
         responseMimeType: "application/json",
       }
     });
@@ -53,13 +59,37 @@ export const generateBusinessInsights = async (
       }
     `;
 
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
+    const result = await model.generateContent({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }]
+    });
     
-    return JSON.parse(text) as BusinessInsight;
+    const response = result.response;
+    let text = response.text().trim();
     
+    try {
+      // Pembersihan JSON yang lebih agresif untuk mencegah error parsing
+      const cleanJson = text
+        .replace(/```json/g, '')
+        .replace(/```/g, '')
+        .trim();
+      return JSON.parse(cleanJson) as BusinessInsight;
+    } catch (parseError) {
+      console.error('Failed to parse Gemini JSON response:', text);
+      return {
+        summary: "Gagal menganalisis data saat ini.",
+        recommendations: ["Coba lagi dalam beberapa saat"],
+        predictedTrend: "stable",
+        actionableStep: "Refresh halaman dashboard"
+      };
+    }
   } catch (error) {
     console.error('Failed to generate business insights:', error);
+    if (error instanceof Error && error.message.includes('404')) {
+      console.warn("TIP: Error 404. Pastikan 'Generative Language API' sudah di-enable di project gen-lang-client-0343011251.");
+    }
+    if (error instanceof Error && error.message.includes('403')) {
+      console.warn("TIP: Error 403. Cek apakah Service Account 'vertex-express' punya role 'Generative Language Client' di IAM.");
+    }
     return null;
   }
 };

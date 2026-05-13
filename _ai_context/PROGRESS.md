@@ -7,7 +7,7 @@
 ## STATUS KESELURUHAN
 - **Fase saat ini**: Fase 1 — Kompetisi #JuaraVibeCoding 2026
 - **Target submit**: Sebelum deadline kompetisi
-- **Progress**: Step 01-05 selesai, Step 06 (Dashboard & UI Alignment) 95% selesai
+- **Progress**: Step 01-06 selesai, Step 07 (Polish & Deploy) AKTIF
 
 ---
 
@@ -145,8 +145,18 @@
 > Daftar utang teknis dan masalah yang perlu diperbaiki
 
 - **Technical Debt (Build Bypass)**: Beberapa file service menggunakan `// @ts-nocheck` agar build production untuk Landing Page berhasil. File ini harus diperbaiki tipe datanya:
-  - `src/services/gemini/vision.ts`
-  - `src/services/gemini/analytics.ts`
+- `src/services/gemini/vision.ts` ✅ FIXED (Using gemini-1.5-flash-latest for GCP Keys)
+- `src/services/gemini/analytics.ts` ✅ FIXED (Unified model naming to latest)
+ - `src/services/gemini/analytics.ts` ✅ FIXED (Model naming sync & 404 diagnostics)
+ - `src/services/gemini/vision.ts` ✅ FIXED (Reverted to gemini-1.5-flash model, improved 404 tip)
+ - `src/services/gemini/vision.ts` ✅ FIXED (Model naming sync & 404 diagnostics)
+ - `src/services/gemini/analytics.ts` ✅ FIXED (Confirmed working on default DB)
+---
+**✅ FIXED**: CORS issue resolved for 'solana-warung-storage' bucket.
+**✅ FIXED**: Firestore pointed to "(default)" database with correct Rules.
+ **✅ FIXED**: Database schema updated to reflect AI Listing, Escrow, and Analytics flows.
+ **✅ FIXED**: Mock products now include `isAiAnalyzed` flag and `escrowId` references.
+ **🔄 NEXT**: UI Polishing (Toasts & Skeletons) and Firebase Hosting deployment.
   - `src/services/firebase/auth.ts`
   - `src/services/solana/cbdc.ts`
   - `src/services/solana/escrow.ts`

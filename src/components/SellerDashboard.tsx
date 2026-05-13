@@ -162,10 +162,10 @@ export default function SellerDashboard() {
                     required
                   >
                     <option value="">Pilih Kategori</option>
-                    <option value="Makanan">Makanan</option>
-                    <option value="Minuman">Minuman</option>
+                    <option value="Makanan dan Minuman">Makanan dan Minuman</option>
+                    <option value="Kerajinan Tangan">Kerajinan Tangan</option>
                     <option value="Pakaian">Pakaian</option>
-                    <option value="Kerajinan">Kerajinan</option>
+                    <option value="Pertanian">Pertanian</option>
                     <option value="Elektronik">Elektronik</option>
                     <option value="Lainnya">Lainnya</option>
                   </select>
