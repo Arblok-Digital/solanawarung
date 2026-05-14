@@ -7,7 +7,7 @@
 ## STATUS KESELURUHAN
 - **Fase saat ini**: Fase 1 — Kompetisi #JuaraVibeCoding 2026
 - **Target submit**: Sebelum deadline kompetisi
-- **Progress**: Step 01-06 selesai, Step 07 (Polish & Deploy) AKTIF
+- **Progress**: Step 01-06 selesai, Step 07 (Polish & Deploy) 20%
 
 ---
 
@@ -150,13 +150,23 @@
  - `src/services/gemini/analytics.ts` ✅ FIXED (Model naming sync & 404 diagnostics)
  - `src/services/gemini/vision.ts` ✅ FIXED (Reverted to gemini-1.5-flash model, improved 404 tip)
  - `src/services/gemini/vision.ts` ✅ FIXED (Model naming sync & 404 diagnostics)
- - `src/services/gemini/analytics.ts` ✅ FIXED (Confirmed working on default DB)
+ - `src/services/gemini/analytics.ts` ✅ FIXED (Reverted to gemini-1.5-flash model)
 ---
 **✅ FIXED**: CORS issue resolved for 'solana-warung-storage' bucket.
-**✅ FIXED**: Firestore pointed to "(default)" database with correct Rules.
- **✅ FIXED**: Database schema updated to reflect AI Listing, Escrow, and Analytics flows.
- **✅ FIXED**: Mock products now include `isAiAnalyzed` flag and `escrowId` references.
- **🔄 NEXT**: UI Polishing (Toasts & Skeletons) and Firebase Hosting deployment.
+ **✅ FIXED**: Firebase Auth & Storage Upload functional on new project.
+ **❌ BLOCKED**: Gemini Vision AI (404) on v1beta endpoint.
+ **✅ SELESAI**: Script Seeding otomatis (`seed.ts`) sudah mendukung Wallet, Produk, dan Order History.
+ **✅ SELESAI**: Index Firestore untuk query pesanan telah aktif (Enabled).
+ **✅ FIXED**: `processCheckout` service standardized with STACK.md field names and status.
+ **✅ FIXED**: Inconsistent field names in `orders` collection (`harga` -> `amount`, `namaProduct` -> `productName`).
+ **✅ FIXED**: `processCheckout` now perfectly syncs with `OrdersPanel` and `seed.ts` schema.
+ **✅ SELESAI**: Index Firestore untuk `orders` dan `transactions` telah dikonfigurasi.
+ **✅ SELESAI**: Index Firestore untuk Buyer & Seller (`createdAt` sorting) sudah aktif.
+ **✅ FIXED**: Status pesanan diselaraskan menggunakan `OrderStatus.PENDING_ESCROW` agar tombol Seller muncul.
+ **✅ SELESAI**: Verifikasi Checkout Flow. Buyer bisa beli & data masuk Firestore secara atomik.
+ **✅ SELESAI**: Implementasi tahapan "PROCESSING" & "SHIPPED" serta Notifikasi Trust Escrow untuk Buyer.
+ **✅ SELESAI**: Kustomisasi CSS permanen & Refinement spacing tombol Web3 Wallet (Padding 24px, min-width, selector spesifik).
+ **🔄 AKTIF**: Final verifikasi alur status & pencairan saldo ke Seller.
   - `src/services/firebase/auth.ts`
   - `src/services/solana/cbdc.ts`
   - `src/services/solana/escrow.ts`

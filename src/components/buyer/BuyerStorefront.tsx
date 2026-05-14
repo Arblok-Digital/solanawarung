@@ -4,15 +4,17 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { PublicKey } from '@solana/web3.js';
 import { getAllProducts } from '../../services/firebase/products';
-import { createOrder } from '../../services/firebase/orders';
+import { processCheckout } from '../../services/firebase/checkout';
 import { createEscrowTransaction } from '../../services/solana/escrow';
 import { Product, OrderStatus } from '../../types';
 import { ProductGrid } from '../seller/ProductGrid';
 import { ProductDetail } from './ProductDetail';
+import { useAuth } from '../../hooks/useAuth';
 
 const CATEGORIES = ['Semua', 'Makanan', 'Minuman', 'Pakaian', 'Kerajinan', 'Elektronik', 'Lainnya'];
 
 export const BuyerStorefront: React.FC = () => {
+  const { user } = useAuth();
   const wallet = useWallet();
   const { setVisible } = useWalletModal();
   const [products, setProducts] = useState<Product[]>([]);
@@ -39,6 +41,11 @@ export const BuyerStorefront: React.FC = () => {
   };
 
   const handlePurchase = async (product: Product) => {
+    if (!user) {
+      alert('Silakan login terlebih dahulu untuk bertransaksi.');
+      return;
+    }
+
     if (!wallet.connected || !wallet.publicKey) {
       try {
         if (!wallet.wallet) {
@@ -66,35 +73,37 @@ export const BuyerStorefront: React.FC = () => {
         console.log("Transaction simulated for demo.");
       }
 
-      await createOrder({
-        buyerId: wallet.publicKey?.toString() || 'demo-buyer',
+      // Jalankan Atomic Checkout (Invisible Blockchain)
+      await processCheckout({
+        buyerId: user.uid,
         sellerId: product.sellerId || '',
         productId: product.id || '',
         productName: product.name,
         amount: product.price,
-        status: OrderStatus.PENDING_ESCROW,
-        transactionSignature: signature,
+        sellerName: 'Toko UMKM'
       });
 
       alert(`✅ Pembelian berhasil!\n\nSignature: ${signature}\n\nLihat di Solana Explorer:\nhttps://explorer.solana.com/tx/${signature}?cluster=devnet`);
       setSelectedProduct(null);
     } catch (error) {
-      console.log('Transaction failed/cancelled, using Simulation Mode for demo...');
+      console.warn('Web3 mode failed, switching to Simulation Mode (Invisible Blockchain)...');
       
-      // FALLBACK: Tetep bikin order biar fitur Dashboard & AI bisa dites tanpa SOL
-      const signature = "SIMULATED-" + Date.now();
-      await createOrder({
-        buyerId: wallet.publicKey?.toString() || 'demo-buyer',
+      try {
+        // FALLBACK: Gunakan processCheckout agar database tetap sinkron (R19)
+        await processCheckout({
+          buyerId: user.uid,
         sellerId: product.sellerId || '',
         productId: product.id || '',
         productName: product.name,
         amount: product.price,
-        status: OrderStatus.PENDING_ESCROW,
-        transactionSignature: signature,
-      });
+          sellerName: 'Toko UMKM'
+        });
 
-      alert(`⚠️ SOL Devnet Kosong? No Problem!\n\nSistem beralih ke SIMULATION MODE agar Anda tetap bisa mengetes fitur Dashboard & AI Insight.\n\nSignature: ${signature}`);
-      setSelectedProduct(null);
+        alert(`⚠️ Pembelian Berhasil (Mode Simulasi)\n\nSistem menggunakan Digital Rupiah agar Anda tetap bisa mengetes fitur Dashboard & AI Insight.`);
+        setSelectedProduct(null);
+      } catch (simError: any) {
+        alert('Gagal: ' + simError.message);
+      }
     } finally {
       setPurchaseLoading(false);
     }

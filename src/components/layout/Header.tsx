@@ -50,12 +50,12 @@ export const Header: React.FC = () => {
         </div>
       </div>
       
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center gap-4">
         {/* Seed Data Button */}
         <button 
           onClick={handleSeed}
           disabled={seeding}
-          className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 rounded-lg transition-all text-[10px] font-black uppercase tracking-widest cursor-pointer group"
+          className="flex items-center gap-2 px-4 h-[38px] bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 rounded-[10px] transition-all text-[10px] font-black uppercase tracking-widest cursor-pointer group"
         >
           {seeding ? <Loader2 size={12} className="animate-spin" /> : <Database size={12} />}
           Seed Data
@@ -63,7 +63,7 @@ export const Header: React.FC = () => {
 
         {/* Wallet Connector */}
         <div className="wallet-adapter-wrapper">
-          <WalletMultiButton className="!bg-gradient-to-r !from-purple-600 !to-blue-600 hover:!opacity-90 !text-white !rounded-xl !px-4 !py-2 !h-auto !text-[11px] !font-bold !uppercase !tracking-wider !transition-all !shadow-lg !shadow-purple-500/20 !flex !items-center !gap-2 !border-none">
+          <WalletMultiButton>
             Web3 Wallet
           </WalletMultiButton>
         </div>
@@ -71,7 +71,7 @@ export const Header: React.FC = () => {
         {/* Dev Mode Role Switcher */}
         <button 
           onClick={toggleRole}
-          className="flex items-center gap-2 px-3 py-1.5 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 text-purple-400 rounded-lg transition-all text-[10px] font-black uppercase tracking-widest cursor-pointer group"
+          className="flex items-center gap-2 px-4 h-[38px] bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 text-purple-400 rounded-[10px] transition-all text-[10px] font-black uppercase tracking-widest cursor-pointer group"
           title="Switch Role (Dev Mode)"
         >
           <Code size={12} className="group-hover:rotate-12 transition-transform" />

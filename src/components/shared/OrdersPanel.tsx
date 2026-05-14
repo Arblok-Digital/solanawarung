@@ -42,6 +42,7 @@ export const OrdersPanel: React.FC = () => {
   const getStatusStyle = (status: OrderStatus) => {
     switch (status) {
       case OrderStatus.PENDING_ESCROW: return 'bg-amber-900/20 text-amber-400 border-amber-900/50';
+      case 'PROCESSING': return 'bg-purple-900/20 text-purple-400 border-purple-900/50';
       case OrderStatus.ESCROW: return 'bg-blue-900/20 text-blue-400 border-blue-900/50';
       case OrderStatus.COMPLETED: return 'bg-emerald-900/20 text-emerald-400 border-emerald-900/50';
       case OrderStatus.CANCELLED: return 'bg-red-900/20 text-red-400 border-red-900/50';
@@ -107,13 +108,16 @@ export const OrdersPanel: React.FC = () => {
                   <div>
                     <div className="flex items-center gap-3 mb-1">
                       <h4 className="text-lg font-black text-white">{order.productName || 'Produk UMKM'}</h4>
-                      <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${getStatusStyle(order.status)}`}>
-                        {order.status.replace('_', ' ')}
+                      <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${getStatusStyle(order.status as OrderStatus)}`}>
+                        {order.status === OrderStatus.PENDING_ESCROW && 'Pesanan Baru'}
+                        {order.status === 'PROCESSING' && 'Sedang Disiapkan'}
+                        {order.status === OrderStatus.ESCROW && 'Dalam Pengiriman'}
+                        {order.status === OrderStatus.COMPLETED && 'Selesai'}
                       </span>
                     </div>
                     <div className="flex flex-wrap items-center gap-y-2 gap-x-4 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                      <span className="flex items-center gap-1.5"><Clock size={12}/> {order.createdAt?.toDate().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                      <span className="flex items-center gap-1.5"><ShieldCheck size={12} className="text-blue-500"/> ID: {order.id?.substring(0, 8)}</span>
+                      <span className="flex items-center gap-1.5"><Clock size={12}/> {order.createdAt?.toDate?.()?.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) || 'Baru saja'}</span>
+                      <span className="flex items-center gap-1.5"><ShieldCheck size={12} className="text-blue-500"/> ID: {order.id?.substring(0, 8) || '...'}</span>
                       {order.transactionSignature && (
                         <a href={`https://explorer.solana.com/tx/${order.transactionSignature}?cluster=devnet`} target="_blank" rel="noreferrer" 
                            className="flex items-center gap-1.5 text-blue-500 hover:underline">
@@ -121,29 +125,55 @@ export const OrdersPanel: React.FC = () => {
                         </a>
                       )}
                     </div>
+
+                    {/* Trust Indicator for Buyer (R19) */}
+                    {profile?.role === 'buyer' && order.status !== OrderStatus.COMPLETED && order.status !== OrderStatus.CANCELLED && (
+                      <div className="mt-3 flex items-center gap-2 bg-[#14F195]/5 border border-[#14F195]/10 px-3 py-1.5 rounded-lg w-fit animate-pulse">
+                        <ShieldCheck size={12} className="text-[#14F195]" />
+                        <span className="text-[9px] font-black text-[#14F195] uppercase tracking-widest">
+                          Dana Anda Aman di Rekening Bersama Otomatis (Escrow)
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 <div className="flex flex-col md:flex-row items-center gap-4">
                   <div className="text-right md:pr-6 md:border-r border-slate-100 w-full md:w-auto">
                     <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Pembayaran</p>
-                    <p className="text-xl font-black text-[#14F195]">Rp {order.amount.toLocaleString('id-ID')}</p>
+                    <p className="text-xl font-black text-[#14F195]">Rp {order.amount?.toLocaleString('id-ID') || '0'}</p>
                   </div>
 
                   <div className="flex items-center gap-2 w-full md:w-auto">
                     {/* Seller Actions */}
                     {profile?.role === 'seller' && order.status === OrderStatus.PENDING_ESCROW && (
                       <button 
-                        onClick={() => handleUpdateStatus(order.id!, OrderStatus.ESCROW)} // Changed to dark theme colors
+                        onClick={() => handleUpdateStatus(order.id!, 'PROCESSING' as OrderStatus)}
                         className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-[#9945FF] hover:bg-[#7B5EA7] text-white px-6 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-[#9945FF]/20 transition-all active:scale-95"
                       >
-                        <Truck size={14} /> Konfirmasi & Kirim
+                        <Package size={14} /> Terima & Proses
+                      </button>
+                    )}
+
+                    {profile?.role === 'seller' && order.status === 'PROCESSING' && (
+                      <button 
+                        onClick={() => handleUpdateStatus(order.id!, OrderStatus.ESCROW)}
+                        className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-blue-600/20 transition-all active:scale-95"
+                      >
+                        <Truck size={14} /> Kirim Pesanan
                       </button>
                     )}
                     
                     {profile?.role === 'seller' && order.status === OrderStatus.ESCROW && (
                       <div className="flex items-center gap-2 text-blue-400 font-bold text-xs bg-blue-900/20 px-4 py-3 rounded-2xl border border-blue-900/50">
                         <Loader2 className="animate-spin" size={14} /> Menunggu Buyer
+                      </div>
+                    )}
+
+                    {/* Buyer Processing State Info */}
+                    {profile?.role === 'buyer' && order.status === 'PROCESSING' && (
+                      <div className="flex items-center gap-2 text-purple-400 font-black text-[10px] uppercase tracking-widest bg-purple-900/20 px-6 py-3.5 rounded-2xl border border-purple-900/50">
+                        <Clock size={14} /> Seller Sedang Menyiapkan Barang
                       </div>
                     )}
 
