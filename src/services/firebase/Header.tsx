@@ -55,7 +55,7 @@ export const Header: React.FC = () => {
         <button 
           onClick={handleSeed}
           disabled={seeding}
-          aria-label="Seed Data"
+          aria-label="Generate data demo"
           className="flex items-center gap-2 px-4 h-[38px] bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 rounded-[10px] transition-all text-[10px] font-black uppercase tracking-widest cursor-pointer group"
         >
           {seeding ? <Loader2 size={12} className="animate-spin" /> : <Database size={12} />}

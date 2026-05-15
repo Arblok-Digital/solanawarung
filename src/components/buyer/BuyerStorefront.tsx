@@ -11,7 +11,7 @@ import { ProductGrid } from '../seller/ProductGrid';
 import { ProductDetail } from './ProductDetail';
 import { useAuth } from '../../hooks/useAuth';
 
-const CATEGORIES = ['Semua', 'Makanan', 'Minuman', 'Pakaian', 'Kerajinan', 'Elektronik', 'Lainnya'];
+const CATEGORIES = ['Semua', 'Makanan', 'Minuman', 'Fashion', 'Kerajinan', 'Elektronik', 'Digital', 'Jasa', 'Lainnya'];
 
 export const BuyerStorefront: React.FC = () => {
   const { user } = useAuth();

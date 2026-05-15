@@ -2,11 +2,18 @@ import { collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, 
 import { db } from '../../config/firebase';
 
 const MOCK_PRODUCTS = [
-  { name: 'Sambal Matah Spesial', category: 'Makanan dan Minuman', price: 25000, stock: 50, description: 'Sambal khas Bali dengan bahan segar pilihan.', isAiAnalyzed: true },
-  { name: 'Kopi Luwak Arabika', category: 'Makanan dan Minuman', price: 150000, stock: 20, description: 'Kopi premium dengan aroma yang sangat khas.', isAiAnalyzed: true },
-  { name: 'Batik Tulis Solo', category: 'Pakaian', price: 350000, stock: 5, description: 'Batik tulis asli dengan motif parang klasik.', isAiAnalyzed: true },
-  { name: 'Kripik Tempe Renyah', category: 'Makanan dan Minuman', price: 15000, stock: 100, description: 'Camilan sehat dan gurih tanpa pengawet.', isAiAnalyzed: true },
-  { name: 'Tas Rotan Handmade', category: 'Kerajinan Tangan', price: 120000, stock: 15, description: 'Tas anyaman rotan estetik untuk fashion harian.', isAiAnalyzed: true },
+  { name: 'Sambal Matah Spesial', category: 'Makanan', price: 25000, stock: 50, description: 'Sambal khas Bali dengan bahan segar pilihan. Pedas mantap!', isAiAnalyzed: true },
+  { name: 'Kopi Arabika Gayo', category: 'Minuman', price: 85000, stock: 20, description: 'Kopi premium dengan aroma kacang dan rempah yang kuat.', isAiAnalyzed: true },
+  { name: 'Batik Tulis Solo', category: 'Fashion', price: 350000, stock: 5, description: 'Batik tulis asli dengan motif parang klasik dari pengrajin Solo.', isAiAnalyzed: true },
+  { name: 'Tas Rotan Handmade', category: 'Kerajinan', price: 120000, stock: 15, description: 'Tas anyaman rotan estetik, cocok untuk pelengkap fashion harian.', isAiAnalyzed: true },
+  { name: 'Smartphone Holder Kayu', category: 'Elektronik', price: 45000, stock: 30, description: 'Dudukan HP minimalis dari kayu jati solid.', isAiAnalyzed: true },
+  { name: 'NFT Wayang Digital', category: 'Digital', price: 750000, stock: 1, description: 'Aset digital seni wayang kulit eksklusif di SolanaWarung.', isAiAnalyzed: true },
+  { name: 'Jasa Desain Logo UMKM', category: 'Jasa', price: 250000, stock: 10, description: 'Branding profesional untuk tokomu biar makin dikenal luas.', isAiAnalyzed: true },
+  { name: 'Keripik Tempe Renyah', category: 'Makanan', price: 15000, stock: 100, description: 'Camilan sehat dan gurih tanpa bahan pengawet.', isAiAnalyzed: true },
+  { name: 'Teh Telang Biru', category: 'Minuman', price: 35000, stock: 40, description: 'Teh bunga telang organik kaya akan antioksidan.', isAiAnalyzed: true },
+  { name: 'Jaket Denim Lukis', category: 'Fashion', price: 450000, stock: 3, description: 'Jaket denim dengan lukisan tangan kustom yang unik.', isAiAnalyzed: true },
+  { name: 'Lampu Meja Bambu', category: 'Kerajinan', price: 185000, stock: 12, description: 'Lampu hias bambu untuk suasana ruangan yang hangat.', isAiAnalyzed: true },
+  { name: 'E-Book Strategi UMKM', category: 'Digital', price: 50000, stock: 500, description: 'Panduan lengkap cara sukses berjualan di era Digital Rupiah.', isAiAnalyzed: true },
 ];
 
 export const seedDemoData = async (userId: string) => {
@@ -59,11 +66,18 @@ export const seedDemoData = async (userId: string) => {
     // 3. Seed Products
     const productRefs = [];
     const IMAGE_IDS = [
-      '1512132411229-c30391241dd8', // Sambal/Food (Updated)
+      '1512132411229-c30391241dd8', // Sambal
       '1495474472287-4d71bcdd2085', // Kopi
-      '1523381294911-8d3cead13475', // Batik/Cloth
-      '1599487488170-d11ec9c172f0', // Kripik/Snack (Updated)
-      '1584917865442-de89df76afd3'  // Tas/Craft (Updated)
+      '1523381294911-8d3cead13475', // Batik
+      '1584917865442-de89df76afd3', // Tas Rotan
+      '1550745165-9bc0b252726f', // Elektronik/Tech
+      '1614850523296-e84246ad3015', // Digital/Abstract
+      '1542744173-8e7e53415bb0', // Jasa/Business
+      '1599487488170-d11ec9c172f0', // Keripik
+      '1556679343-c73ef37a6341', // Minuman Biru
+      '1551488831-00ddcb6c6bd3', // Jaket
+      '1513519245088-0e1290d40738', // Lampu Bambu
+      '1532012190547-642130df3675'  // E-book/Books
     ];
 
     for (let i = 0; i < MOCK_PRODUCTS.length; i++) {

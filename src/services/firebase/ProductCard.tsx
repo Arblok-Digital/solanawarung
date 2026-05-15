@@ -1,23 +1,25 @@
 import React from 'react';
 import { 
-  Package, Trash2, Sparkles, ShoppingCart, Pencil, Utensils, 
-  Coffee, Shirt, Gem, Laptop, Globe, Briefcase 
+  Package, Trash2, Sparkles, ShoppingCart, Pencil,
+  Utensils, Coffee, Shirt, Gem, Laptop, Globe, Briefcase 
 } from 'lucide-react';
 import { Product } from '../../types';
 
 const categoryConfig: { [key: string]: { icon: React.ElementType, color: string, keyword: string } } = {
-  'Makanan': { icon: Utensils, color: 'text-orange-400', keyword: 'food,culinary' },
-  'Minuman': { icon: Coffee, color: 'text-blue-400', keyword: 'drink,beverage' },
-  'Fashion': { icon: Shirt, color: 'text-pink-400', keyword: 'clothing,fashion' },
-  'Kerajinan': { icon: Gem, color: 'text-yellow-400', keyword: 'craft,art' },
-  'Elektronik': { icon: Laptop, color: 'text-cyan-400', keyword: 'gadget,tech' },
-  'Digital': { icon: Globe, color: 'text-purple-400', keyword: 'digital,crypto' },
-  'Jasa': { icon: Briefcase, color: 'text-green-400', keyword: 'service,work' },
-  'Lainnya': { icon: Package, color: 'text-gray-400', keyword: 'product' },
+  'Makanan': { icon: Utensils, color: 'text-orange-400', keyword: 'culinary,food,indonesia' },
+  'Minuman': { icon: Coffee, color: 'text-blue-400', keyword: 'beverage,drink,coffee' },
+  'Fashion': { icon: Shirt, color: 'text-pink-400', keyword: 'fashion,clothing,batik' },
+  'Kerajinan': { icon: Gem, color: 'text-yellow-400', keyword: 'craft,handmade,art' },
+  'Elektronik': { icon: Laptop, color: 'text-cyan-400', keyword: 'gadget,technology' },
+  'Digital': { icon: Globe, color: 'text-purple-400', keyword: 'digital,abstract,nft' },
+  'Jasa': { icon: Briefcase, color: 'text-green-400', keyword: 'professional,service,consultant' },
+  'Lainnya': { icon: Package, color: 'text-gray-400', keyword: 'product,box' },
 };
 
+// Fungsi untuk mendapatkan URL gambar demo yang sinkron dengan kategori
 const getDemoImageUrl = (category: string, name: string) => {
   const config = categoryConfig[category] || categoryConfig['Lainnya'];
+  // Menggunakan Unsplash Source untuk gambar yang relevan dan High Quality
   return `https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&q=80&w=800&keyword=${config.keyword},${encodeURIComponent(name)}`;
 };
 
@@ -29,6 +31,10 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onEdit, onDelete }) => {
   const config = categoryConfig[product.category] || categoryConfig['Lainnya'];
+  const PlaceholderIcon = config.icon;
+  const PlaceholderColor = config.color;
+
+  // Jika imageUrl kosong atau mengandung kata 'placeholder', gunakan Smart Mapping Unsplash
   const displayImage = (!product.imageUrl || product.imageUrl.includes('placeholder')) 
     ? getDemoImageUrl(product.category, product.name)
     : product.imageUrl;
@@ -76,20 +82,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onEdit, onDel
             <span className="text-xl font-black text-[#14F195]">{product.price.toLocaleString()}</span>
             <span className="text-[10px] font-bold text-slate-400 uppercase">CBDC</span>
           </div>
-          <div className="flex gap-1">
-            {onEdit && (
-              <button 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onEdit(product);
-                }}
-                className="p-2 text-slate-400 hover:text-blue-400 hover:bg-blue-400/10 rounded-xl transition-all"
-                aria-label="Edit Produk"
-              >
-                <Pencil size={16} />
-              </button>
-            )}
-            {onDelete && (
+          {onDelete && (
              <button 
                 onClick={(e) => {
                   e.stopPropagation();
@@ -100,7 +93,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onEdit, onDel
               >
                 <Trash2 size={16} />
               </button>
-            )}
+          )}
           </div>
         </div>
       </div>

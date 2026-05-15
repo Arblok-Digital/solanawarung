@@ -7,7 +7,7 @@
 ## STATUS KESELURUHAN
 - **Fase saat ini**: Fase 1 — Kompetisi #JuaraVibeCoding 2026
 - **Target submit**: Sebelum deadline kompetisi
-- **Progress**: Step 01-07 selesai, Menuju Deploy & About Page 100%
+- **Progress**: Step 01-06 selesai, Step 07 (Polish & Deploy) 80%
 
 ---
 
@@ -93,8 +93,8 @@
 
 ---
 
-### ✅ STEP 07 — Data Demo + Polish + Deploy
-- **Status**: SELESAI
+### 💤 STEP 07 — Data Demo + Polish + Deploy
+- **Status**: NANTI (sebelum submit)
 - **Scope**:
   - Seed 3 toko seller dengan produk berbeda
   - Minimal 12 produk dengan foto menarik
@@ -150,6 +150,7 @@
 - `src/components/seller/ProductForm.tsx` ✅ FIXED (Menggunakan gemini-2.5-flash)
  - `src/components/landing/LandingPage.tsx` ✅ FIXED (Accessibility, Semantic Landmarks & Syntax Repair)
  - `src/components/layout/Header.tsx` ✅ FIXED (Aria-labels for icon buttons)
+ - `src/components/seller/ProductCard.tsx` ✅ FIXED (Category-specific image placeholders)
 ---
 **✅ FIXED**: CORS issue resolved for 'solana-warung-storage' bucket.
  **✅ FIXED**: Firebase Auth & Storage Upload functional on new project.

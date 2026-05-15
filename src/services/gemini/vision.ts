@@ -35,10 +35,11 @@ export const analyzeProductImage = async (base64Image: string): Promise<ProductA
   const prompt = `Analisis gambar produk UMKM ini untuk marketplace Indonesia (SolanaWarung).
   Berikan respons dalam format JSON dengan field berikut:
   - name: (nama produk yang menarik)
-  - category: (pilih satu: Makanan dan Minuman, Kerajinan Tangan, Pakaian, Pertanian, Elektronik, Lainnya)
+  - category: (pilih satu: Makanan, Minuman, Fashion, Kerajinan, Elektronik, Digital, Jasa, Lainnya)
   - description: (deskripsi singkat dan persuasif dalam Bahasa Indonesia)
   - estimatedPrice: (harga wajar dalam Rupiah, berikan angka bulat saja contoh: 15000)
   
+  PENTING: Gunakan kategori yang paling sesuai dari daftar di atas.
   Hanya kembalikan JSON murni.`;
 
   try {

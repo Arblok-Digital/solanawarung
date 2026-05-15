@@ -70,10 +70,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       </div>
 
       <div className="p-4 space-y-2 border-t border-slate-800/50">
-        <button className="w-full flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-white transition-colors text-sm font-medium">
+        <button className="w-full flex items-center gap-3 px-4 py-3 text-slate-300 hover:text-white transition-colors text-sm font-medium">
           <Settings size={18} /> Pengaturan
         </button>
-        <button className="w-full flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-white transition-colors text-sm font-medium">
+        <button className="w-full flex items-center gap-3 px-4 py-3 text-slate-300 hover:text-white transition-colors text-sm font-medium">
           <HelpCircle size={18} /> Bantuan
         </button>
       </div>
