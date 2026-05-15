@@ -82,7 +82,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onEdit, onDel
             <span className="text-xl font-black text-[#14F195]">{product.price.toLocaleString()}</span>
             <span className="text-[10px] font-bold text-slate-400 uppercase">CBDC</span>
           </div>
-          {onDelete && (
+          <div className="flex gap-1">
+            {onEdit && (
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEdit(product);
+                }}
+                className="p-2 text-slate-400 hover:text-blue-400 hover:bg-blue-400/10 rounded-xl transition-all"
+                aria-label="Edit Produk"
+              >
+                <Pencil size={16} />
+              </button>
+            )}
+            {onDelete && (
              <button 
                 onClick={(e) => {
                   e.stopPropagation();

@@ -10,8 +10,9 @@ import { Product, OrderStatus } from '../../types';
 import { ProductGrid } from '../seller/ProductGrid';
 import { ProductDetail } from './ProductDetail';
 import { useAuth } from '../../hooks/useAuth';
+import { CategoryFilter } from '../shared/CategoryFilter';
 
-const CATEGORIES = ['Semua', 'Makanan', 'Minuman', 'Fashion', 'Kerajinan', 'Elektronik', 'Digital', 'Jasa', 'Lainnya'];
+const CATEGORIES = ['all', 'Makanan', 'Minuman', 'Fashion', 'Kerajinan', 'Elektronik', 'Digital', 'Jasa', 'Lainnya'];
 
 export const BuyerStorefront: React.FC = () => {
   const { user } = useAuth();
@@ -21,7 +22,7 @@ export const BuyerStorefront: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [purchaseLoading, setPurchaseLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState('Semua');
+  const [activeCategory, setActiveCategory] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
@@ -125,7 +126,7 @@ export const BuyerStorefront: React.FC = () => {
       (p.category?.toLowerCase() || '').includes(searchQuery.toLowerCase());
     
     // Case-insensitive matching untuk kategori
-    const matchesCategory = activeCategory === 'Semua' || 
+    const matchesCategory = activeCategory === 'all' || 
       p.category?.toLowerCase() === activeCategory.toLowerCase();
       
     return matchesSearch && matchesCategory;
@@ -153,7 +154,7 @@ export const BuyerStorefront: React.FC = () => {
       </section>
 
       {/* Search & Filters */}
-      <section className="flex flex-col md:flex-row items-start md:items-center gap-6">
+      <section className="space-y-6">
         <div className="relative group flex-1 w-full max-w-xl">
           <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={20} />
           <input 
@@ -165,22 +166,10 @@ export const BuyerStorefront: React.FC = () => {
           />
         </div>
         
-        {/* Category Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar w-full md:w-auto bg-black/20 p-1.5 rounded-2xl border border-white/5">
-          {CATEGORIES.map(cat => (
-            <button 
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap cursor-pointer
-                ${activeCategory === cat 
-                  ? 'btn-category-active' 
-                  : 'btn-category-inactive text-slate-400 hover:text-white'
-                }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+        <CategoryFilter 
+          activeCategory={activeCategory} 
+          onCategoryChange={setActiveCategory} 
+        />
       </section>
       
       {/* Product Grid Container */}

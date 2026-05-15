@@ -3,6 +3,8 @@ import { LogOut, Wifi, Code, Database, Loader2 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
+// Tambahkan import ini agar modal Wallet muncul dengan benar
+import '@solana/wallet-adapter-react-ui/styles.css';
 // Custom style for Wallet Button to match our premium theme
 import '../../styles/wallet-button.css';
 
@@ -63,11 +65,9 @@ export const Header: React.FC = () => {
         </button>
 
         {/* Wallet Connector */}
-        <div className="wallet-adapter-wrapper">
-          <WalletMultiButton>
-            Web3 Wallet
-          </WalletMultiButton>
-        </div>
+        <WalletMultiButton>
+          Connect Wallet
+        </WalletMultiButton>
 
         {/* Dev Mode Role Switcher */}
         <button 

@@ -1,6 +1,7 @@
 import { FC, ReactNode, useMemo } from 'react';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
 import {
     WalletModalProvider
 } from '@solana/wallet-adapter-react-ui';
@@ -18,7 +19,7 @@ export const SolanaWalletProvider: FC<{ children: ReactNode }> = ({ children }) 
 
     const wallets = useMemo(
         () => [
-            // PhantomWalletAdapter otomatis terdeteksi, tidak perlu di-instantiate manual
+            // PhantomWalletAdapter is now automatically detected as a Standard Wallet
         ],
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [network]

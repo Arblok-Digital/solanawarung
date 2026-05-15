@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { LogOut, Wifi, Code, Database, Loader2 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { useWallet, useConnection } from '@solana/wallet-adapter-react';
-import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 
 // Default styles for the wallet adapter modal - Wajib agar modal muncul
 import '@solana/wallet-adapter-react-ui/styles.css';
@@ -13,20 +11,6 @@ import '../../styles/wallet-button.css';
 export const Header: React.FC = () => {
   const { user, profile, logout, switchRole, seedData } = useAuth();
   const [seeding, setSeeding] = useState(false);
-
-  const { publicKey, connected } = useWallet();
-  const { connection } = useConnection();
-  const [balance, setBalance] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (connected && publicKey) {
-      connection.getBalance(publicKey).then((bal) => {
-        setBalance(bal / LAMPORTS_PER_SOL);
-      });
-    } else {
-      setBalance(null);
-    }
-  }, [publicKey, connected, connection]);
 
   const toggleRole = () => {
     const nextRole = profile?.role === 'seller' ? 'buyer' : 'seller';
@@ -81,15 +65,9 @@ export const Header: React.FC = () => {
         </button>
 
         {/* Wallet Connector */}
-        <div className="flex items-center gap-3">
-          {connected && balance !== null && (
-            <div className="text-right hidden sm:block border-r border-slate-700/50 pr-3">
-              <p className="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Balance</p>
-              <p className="text-[11px] font-black text-[#14F195]">{balance.toFixed(4)} SOL</p>
-            </div>
-          )}
-          <WalletMultiButton />
-        </div>
+        <WalletMultiButton>
+          Connect Wallet
+        </WalletMultiButton>
 
         {/* Dev Mode Role Switcher */}
         <button 
