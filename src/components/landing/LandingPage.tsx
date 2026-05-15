@@ -64,13 +64,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
         </div>
       </nav>
 
-      <section id="hero" className="pt-[180px] pb-[100px] relative text-center">
-        <div className="hero-glow-1"></div>
-        <div className="hero-glow-2"></div>
+      <main id="main-content">
+        <section id="hero" className="pt-[180px] pb-[100px] relative text-center">
+          <div className="hero-glow-bg"></div>
+          <div className="hero-glow-1"></div>
+          <div className="hero-glow-2"></div>
         <div className="container mx-auto px-6">
-          <span className="hero-badge reveal inline-block bg-[#9945FF]/10 border border-[#9945FF]/20 text-[#9945FF] px-4 py-2 rounded-full text-[11px] font-extrabold uppercase tracking-widest mb-6">Web3 for UMKM Indonesia</span>
+          <span className="hero-badge hero-badge-float reveal inline-block bg-[#9945FF]/10 border border-[#9945FF]/20 text-[#c084fc] px-4 py-2 rounded-full text-[11px] font-extrabold uppercase tracking-widest mb-6">Web3 for UMKM Indonesia</span>
           <h1 className="reveal text-5xl md:text-7xl font-extrabold mb-6 leading-[1.1] tracking-tighter bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent">
-            Jualan Lebih Mudah.<br />Dibayar Lebih Aman.<br />Tumbuh dengan AI.
+            Jualan Lebih Mudah.<br /><span className="highlight-safe">Dibayar Lebih Aman</span>.<br /><span className="highlight-ai">Tumbuh dengan AI</span>.
           </h1>
           <p className="reveal text-lg text-[#94A3B8] max-w-[700px] mx-auto mb-10 font-medium">
             SolanaWarung adalah marketplace UMKM Indonesia pertama yang menggunakan Gemini AI untuk listing produk otomatis dan Digital Rupiah untuk transaksi yang transparan.
@@ -83,20 +85,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
 
           <div className="stats-grid reveal grid grid-cols-1 md:grid-cols-3 max-w-[800px] mx-auto border-t border-white/10 pt-10">
             <div className="stat-item p-4">
-              <h4 className="text-xl font-extrabold mb-1">10.000+</h4>
+              <h2 className="text-xl font-extrabold mb-1">10.000+</h2>
               <p className="text-[11px] uppercase tracking-widest text-[#94A3B8]">Seller UMKM</p>
             </div>
             <div className="stat-item p-4">
-              <h4 className="text-xl font-extrabold mb-1">Rp 0</h4>
+              <h2 className="text-xl font-extrabold mb-1">Rp 0</h2>
               <p className="text-[11px] uppercase tracking-widest text-[#94A3B8]">Biaya Pendaftaran</p>
             </div>
             <div className="stat-item p-4">
-              <h4 className="text-xl font-extrabold mb-1">Gemini AI</h4>
+              <h2 className="text-xl font-extrabold mb-1">Gemini AI</h2>
               <p className="text-[11px] uppercase tracking-widest text-[#94A3B8]">Listing Otomatis</p>
             </div>
           </div>
         </div>
-      </section>
+        </section>
 
       <section id="about" className="py-[100px] bg-gradient-to-b from-transparent to-white/[0.01]">
         <div className="container mx-auto px-6">
@@ -141,25 +143,25 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
                 <div className="step-item relative">
                   <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">01</span>
                   <UserPlus className="text-[#9945FF] mb-5 relative z-10" size={50} />
-                  <h4 className="text-lg font-extrabold mb-2 relative z-10">Daftar Akun</h4>
+                  <h2 className="text-lg font-extrabold mb-2 relative z-10">Daftar Akun</h2>
                   <p className="text-sm text-[#94A3B8] relative z-10">Proses cuma 30 detik pakai akun Google. Gak perlu form ribet.</p>
                 </div>
                 <div className="step-item relative">
                   <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">02</span>
                   <Store className="text-[#9945FF] mb-5 relative z-10" size={50} />
-                  <h4 className="text-lg font-extrabold mb-2 relative z-10">Aktifkan Toko</h4>
+                  <h2 className="text-lg font-extrabold mb-2 relative z-10">Aktifkan Toko</h2>
                   <p className="text-sm text-[#94A3B8] relative z-10">Satu klik tombol "Jadikan Seller" di profil, tokomu langsung live.</p>
                 </div>
                 <div className="step-item relative">
                   <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">03</span>
                   <Camera className="text-[#9945FF] mb-5 relative z-10" size={50} />
-                  <h4 className="text-lg font-extrabold mb-2 relative z-10">Foto Produkmu</h4>
+                  <h2 className="text-lg font-extrabold mb-2 relative z-10">Foto Produkmu</h2>
                   <p className="text-sm text-[#94A3B8] relative z-10">Upload foto dari HP. AI langsung bikin deskripsi & kategori otomatis.</p>
                 </div>
                 <div className="step-item relative">
                   <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">04</span>
                   <CheckCircle className="text-[#9945FF] mb-5 relative z-10" size={50} />
-                  <h4 className="text-lg font-extrabold mb-2 relative z-10">Terima Pesanan</h4>
+                  <h2 className="text-lg font-extrabold mb-2 relative z-10">Terima Pesanan</h2>
                   <p className="text-sm text-[#94A3B8] relative z-10">Konfirmasi pesanan, kirim barang, dana langsung masuk dompet digital.</p>
                 </div>
               </div>
@@ -170,25 +172,25 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
                 <div className="step-item relative">
                   <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">01</span>
                   <Search className="text-[#9945FF] mb-5 relative z-10" size={50} />
-                  <h4 className="text-lg font-extrabold mb-2 relative z-10">Browse Produk</h4>
+                  <h2 className="text-lg font-extrabold mb-2 relative z-10">Browse Produk</h2>
                   <p className="text-sm text-[#94A3B8] relative z-10">Cari produk UMKM favoritmu langsung tanpa harus login dulu.</p>
                 </div>
                 <div className="step-item relative">
                   <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">02</span>
                   <Wallet className="text-[#9945FF] mb-5 relative z-10" size={50} />
-                  <h4 className="text-lg font-extrabold mb-2 relative z-10">Isi Saldo</h4>
+                  <h2 className="text-lg font-extrabold mb-2 relative z-10">Isi Saldo</h2>
                   <p className="text-sm text-[#94A3B8] relative z-10">Top-up saldo Digital Rupiah instan buat mulai belanja aman.</p>
                 </div>
                 <div className="step-item relative">
                   <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">03</span>
                   <ShieldCheck className="text-[#9945FF] mb-5 relative z-10" size={50} />
-                  <h4 className="text-lg font-extrabold mb-2 relative z-10">Bayar Aman</h4>
+                  <h2 className="text-lg font-extrabold mb-2 relative z-10">Bayar Aman</h2>
                   <p className="text-sm text-[#94A3B8] relative z-10">Dana dilindungi sistem Escrow. Aman dari penipuan jual-beli.</p>
                 </div>
                 <div className="step-item relative">
                   <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">04</span>
                   <Package className="text-[#9945FF] mb-5 relative z-10" size={50} />
-                  <h4 className="text-lg font-extrabold mb-2 relative z-10">Terima Barang</h4>
+                  <h2 className="text-lg font-extrabold mb-2 relative z-10">Terima Barang</h2>
                   <p className="text-sm text-[#94A3B8] relative z-10">Barang sampai, konfirmasi, dan dukung UMKM lokal terus berkembang.</p>
                 </div>
               </div>
@@ -231,7 +233,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
             ].map((item, idx) => (
               <div key={idx} className={`faq-item reveal glass rounded-2xl overflow-hidden transition-all ${openFaq === idx ? 'active' : ''}`}>
                 <div className="faq-header p-8 flex justify-between items-center cursor-pointer" onClick={() => setOpenFaq(openFaq === idx ? null : idx)}>
-                  <h4 className="font-bold text-base">{item.q}</h4>
+                  <h3 className="font-bold text-base">{item.q}</h3>
                   <Plus size={20} className="faq-icon" />
                 </div>
                 <div className="faq-content px-8 text-[#94A3B8] text-sm leading-relaxed">
@@ -253,8 +255,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
           </div>
         </div>
       </section>
+      </main>
 
-      <footer className="py-20 border-t border-white/10">
+      <footer className="py-20 border-t border-white/10 relative z-10">
         <div className="container mx-auto px-6">
           <div className="footer-grid flex justify-between flex-wrap gap-10 mb-[60px]">
             <div className="footer-info max-w-[300px]">
@@ -266,14 +269,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
             </div>
             <div className="footer-links flex gap-20">
               <div className="link-col">
-                <h5 className="text-sm font-extrabold uppercase tracking-widest mb-5">Platform</h5>
+                <h3 className="text-sm font-extrabold uppercase tracking-widest mb-5">Platform</h3>
                 <div className="space-y-3">
                   <a href="#" onClick={(e) => {e.preventDefault(); onEnter();}} className="block text-sm text-[#94A3B8] hover:text-[#14F195]">Marketplace</a>
                   <a href="#how-to" className="block text-sm text-[#94A3B8] hover:text-[#14F195]">Cara Pakai</a>
                 </div>
               </div>
               <div className="link-col">
-                <h5 className="text-sm font-extrabold uppercase tracking-widest mb-5">Perusahaan</h5>
+                <h3 className="text-sm font-extrabold uppercase tracking-widest mb-5">Perusahaan</h3>
                 <div className="space-y-3">
                   <a href="#" className="block text-sm text-[#94A3B8] hover:text-[#14F195]">Tentang Kami</a>
                   <a href="#" className="block text-sm text-[#94A3B8] hover:text-[#14F195]">Hubungi Kami</a>
@@ -282,8 +285,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
             </div>
           </div>
           <div className="footer-bottom flex justify-between items-center pt-10 border-t border-white/5 text-[11px] text-white/20 font-bold uppercase tracking-widest">
-            <span>&copy; 2026 SolanaWarung — Arblok Digital, Tasikmalaya</span>
-            <span className="flex items-center gap-2">Dibangun dengan Gemini AI × Google Cloud × Solana</span>
+            <span className="text-slate-400">&copy; 2026 SolanaWarung — Arblok Digital, Tasikmalaya</span>
+            <span className="flex items-center gap-2 text-slate-400">Dibangun dengan Gemini AI × Google Cloud × Solana</span>
           </div>
         </div>
       </footer>

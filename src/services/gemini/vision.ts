@@ -9,13 +9,27 @@ if (!apiKey) {
 }
 
 const genAI = new GoogleGenerativeAI(apiKey);
-// Menggunakan model gemini-1.5-flash yang stabil
 const model = genAI.getGenerativeModel({
-  model: 'gemini-1.5-flash',
-  generationConfig: {
-    responseMimeType: "application/json"
-  }
+  model: 'gemini-2.5-flash',
 });
+
+// --- FUNGSI SEMENTARA UNTUK DEBUGGING MODEL ---
+export const checkModels = async () => {
+  console.log("--- Memeriksa Model Gemini yang Tersedia ---");
+  try {
+    const { models } = await genAI.listModels();
+    for (const model of models) {
+      console.log(`Nama Model: ${model.name}, Versi: ${model.version}, Supports generateContent: ${model.supportedGenerationMethods?.includes('generateContent')}`);
+    }
+    console.log("--- Selesai Memeriksa Model ---");
+    console.log("Cari model yang 'supportedGenerationMethods' nya mengandung 'generateContent'.");
+    console.log("Jika 'gemini-2.5-flash' tidak muncul atau tidak mendukung generateContent, gunakan nama model yang lain.");
+  } catch (error) {
+    console.error("Gagal mengambil daftar model:", error);
+    console.error("Pastikan API Key Anda valid dan 'Generative Language API' sudah di-enable di Google Cloud Console.");
+  }
+};
+// --- AKHIR FUNGSI SEMENTARA ---
 
 export const analyzeProductImage = async (base64Image: string): Promise<ProductAnalysis> => {
   const prompt = `Analisis gambar produk UMKM ini untuk marketplace Indonesia (SolanaWarung).
@@ -28,15 +42,23 @@ export const analyzeProductImage = async (base64Image: string): Promise<ProductA
   Hanya kembalikan JSON murni.`;
 
   try {
-    const result = await model.generateContent([
-      prompt,
-      {
-        inlineData: {
-          data: base64Image.split(',')[1],
-          mimeType: 'image/jpeg',
-        },
-      },
-    ]);
+    const result = await model.generateContent({
+      contents: [{
+        role: 'user',
+        parts: [
+          { text: prompt },
+          {
+            inlineData: {
+              data: base64Image.split(',')[1],
+              mimeType: 'image/jpeg',
+            },
+          },
+        ]
+      }],
+      generationConfig: {
+        temperature: 0.4,
+      }
+    });
 
     const response = await result.response;
     const text = response.text();

@@ -30,13 +30,8 @@ export const generateBusinessInsights = async (
   if (products.length === 0) return null;
 
   try {
-    // Menggunakan model gemini-1.5-flash standar (paling stabil untuk v1beta)
     const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
-      generationConfig: {
-        temperature: 0.7,
-        responseMimeType: "application/json",
-      }
+      model: "gemini-2.5-flash",
     });
 
     const prompt = `
@@ -60,7 +55,10 @@ export const generateBusinessInsights = async (
     `;
 
     const result = await model.generateContent({
-      contents: [{ role: 'user', parts: [{ text: prompt }] }]
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: {
+        temperature: 0.4,
+      }
     });
     
     const response = result.response;

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Camera, Loader2, CheckCircle2, Type, Tag, DollarSign, Package, X, Sparkles, Upload } from 'lucide-react';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { analyzeProductImage } from '../../services/gemini/vision';
+import { generateBusinessInsights } from '../../services/gemini/analytics'; // Asumsi helper AI teks ada di sini
 import { uploadImage } from '../../services/firebase/storage';
 
 interface ProductFormProps {
@@ -51,14 +53,59 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onSave, onClose }) => 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSaving(true);
+    setIsSaving(true); // Ini memicu state loading "Vibe Juara"
+    
     try {
+      // 1. AI FINAL POLISH (Optimization) - R17 & R20
+      let finalDescription = formData.description;
+      
+      try {
+        const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+        if (apiKey) {
+          console.log("🤖 AI sedang memoles deskripsi...");
+          const genAI = new GoogleGenerativeAI(apiKey);
+          const model = genAI.getGenerativeModel({ 
+            model: "gemini-2.5-flash" 
+          });
+
+          const prompt = `Sebagai asisten bisnis UMKM Indonesia, optimalkan deskripsi produk berikut agar lebih menarik pembeli (copywriting persuasif).
+          Nama Produk: ${formData.name}
+          Deskripsi Awal: ${formData.description}
+          
+          Aturan:
+          1. Gunakan Bahasa Indonesia yang ramah tapi profesional.
+          2. Tambahkan poin keunggulan jika memungkinkan.
+          3. Jangan terlalu panjang (max 3-4 kalimat).
+          
+          Hanya kembalikan teks deskripsi hasil optimasi.`;
+
+          const result = await model.generateContent({
+            contents: [{ role: 'user', parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.4,
+            }
+          });
+          const response = await result.response;
+          const polishedText = response.text();
+          
+          // Sesuai instruksi: Tambahkan console.log untuk verifikasi proses
+          console.log("AI Result:", polishedText);
+          
+          if (polishedText) finalDescription = polishedText;
+        }
+      } catch (aiError) {
+        console.warn("AI Polish skip:", aiError);
+      }
+
+      // 2. UPLOAD IMAGE
       let imageUrl = imagePreview;
       if (imagePreview && imagePreview.startsWith('data:image')) {
         const filename = `products/${Date.now()}.jpg`;
         imageUrl = await uploadImage(imagePreview, filename);
       }
-      await onSave({ ...formData, imageUrl });
+
+      // 3. SAVE TO FIRESTORE
+      await onSave({ ...formData, description: finalDescription, imageUrl });
       onClose();
     } catch (error) {
       console.error('Submit error:', error);
@@ -232,10 +279,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({ onSave, onClose }) => 
               <button 
                 type="submit" 
                 disabled={isSaving || isAnalyzing}
-                className="flex-[2] py-4 px-6 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-2xl font-black text-[11px] uppercase tracking-widest flex items-center justify-center gap-3 transition-all hover:shadow-xl hover:shadow-blue-500/20 active:scale-95 disabled:opacity-50 cursor-pointer shadow-lg"
+                className={`flex-[2] py-4 px-6 rounded-2xl font-black text-[11px] uppercase tracking-widest flex items-center justify-center gap-3 transition-all active:scale-95 disabled:opacity-50 cursor-pointer shadow-lg ${isSaving ? 'btn-ai-pulse bg-[#14F195] text-black' : 'bg-gradient-to-r from-blue-600 to-indigo-700 text-white hover:shadow-blue-500/20'}`}
               >
                 {isSaving ? (
-                  <><Loader2 className="animate-spin" size={18} /> Menyimpan...</>
+                  <><Loader2 className="animate-spin" size={18} /> 🤖 AI sedang menganalisis produk lo...</>
                 ) : (
                   <><CheckCircle2 size={18} /> Gelar Dagangan Sekarang</>
                 )}

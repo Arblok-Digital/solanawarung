@@ -7,7 +7,7 @@
 ## STATUS KESELURUHAN
 - **Fase saat ini**: Fase 1 — Kompetisi #JuaraVibeCoding 2026
 - **Target submit**: Sebelum deadline kompetisi
-- **Progress**: Step 01-06 selesai, Step 07 (Polish & Deploy) 20%
+- **Progress**: Step 01-06 selesai, Step 07 (Polish & Deploy) 35%
 
 ---
 
@@ -145,12 +145,10 @@
 > Daftar utang teknis dan masalah yang perlu diperbaiki
 
 - **Technical Debt (Build Bypass)**: Beberapa file service menggunakan `// @ts-nocheck` agar build production untuk Landing Page berhasil. File ini harus diperbaiki tipe datanya:
-- `src/services/gemini/vision.ts` ✅ FIXED (Using gemini-1.5-flash-latest for GCP Keys)
-- `src/services/gemini/analytics.ts` ✅ FIXED (Unified model naming to latest)
- - `src/services/gemini/analytics.ts` ✅ FIXED (Model naming sync & 404 diagnostics)
- - `src/services/gemini/vision.ts` ✅ FIXED (Reverted to gemini-1.5-flash model, improved 404 tip)
- - `src/services/gemini/vision.ts` ✅ FIXED (Model naming sync & 404 diagnostics)
- - `src/services/gemini/analytics.ts` ✅ FIXED (Reverted to gemini-1.5-flash model)
+- `src/services/gemini/vision.ts` ✅ FIXED (Menggunakan gemini-1.5-flash, stable version)
+- `src/services/gemini/analytics.ts` ✅ FIXED (Menggunakan gemini-1.5-flash, stable version)
+- `src/components/seller/ProductForm.tsx` ✅ FIXED (Menggunakan gemini-2.5-flash)
+ - `src/components/landing/LandingPage.tsx` ✅ FIXED (Accessibility, Semantic Landmarks & Syntax Repair)
 ---
 **✅ FIXED**: CORS issue resolved for 'solana-warung-storage' bucket.
  **✅ FIXED**: Firebase Auth & Storage Upload functional on new project.
@@ -165,7 +163,9 @@
  **✅ FIXED**: Status pesanan diselaraskan menggunakan `OrderStatus.PENDING_ESCROW` agar tombol Seller muncul.
  **✅ SELESAI**: Verifikasi Checkout Flow. Buyer bisa beli & data masuk Firestore secara atomik.
  **✅ SELESAI**: Implementasi tahapan "PROCESSING" & "SHIPPED" serta Notifikasi Trust Escrow untuk Buyer.
- **✅ SELESAI**: Kustomisasi CSS permanen & Refinement spacing tombol Web3 Wallet (Padding 24px, min-width, selector spesifik).
+ **✅ SELESAI**: Kustomisasi CSS permanen & Refinement spacing tombol Web3 Wallet.
+ **✅ SELESAI**: Implementasi Neon Pulse & Glass Elevation pada kategori produk (Premium Vibe).
+ **✅ SELESAI**: Refinement UI Empty State (Glowing package icon & breathing animation).
  **🔄 AKTIF**: Final verifikasi alur status & pencairan saldo ke Seller.
   - `src/services/firebase/auth.ts`
   - `src/services/solana/cbdc.ts`

@@ -56,7 +56,7 @@ Dokumen ini adalah "Single Source of Truth" untuk memahami struktur, logika, dan
 
 ### B. AI-Powered Product Listing
 1. **Seller** upload foto di `ProductForm`.
-2. `gemini/vision.ts` mengirim gambar ke model Gemini 1.5 Pro.
+2. `gemini/vision.ts` mengirim gambar ke model gemini-2.5-flash.
 3. Gemini mengembalikan JSON: `{ name, description, category, suggestedPrice }`.
 4. Form terisi otomatis, Seller tinggal konfirmasi.
 

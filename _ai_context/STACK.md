@@ -24,7 +24,7 @@
 ### AI
 - **Gemini Vision**: Analisis foto produk → generate listing
 - **Gemini Text**: Analytics bisnis → saran dalam bahasa Indonesia
-- **Model**: gemini-1.5-flash (cepat dan hemat quota)
+- **Model**: gemini-2.5-flash (v2.5+ production mode)
 
 ### Blockchain
 - **Network**: Solana Devnet (BUKAN mainnet)
@@ -225,10 +225,10 @@ SOLANA_PROGRAM_ID=
 - **Input**: Foto produk dalam base64
 - **Output**: `{ nama, kategori, deskripsi, estimasiHarga }`
 - **Prompt bahasa**: Indonesia
-- **Model**: gemini-1.5-flash
+- **Model**: gemini-2.5-flash
 
 ### getBusinessInsight(orderData)
 - **Input**: Data order seller 30 hari terakhir
 - **Output**: `{ ringkasan, rekomendasi[], produkPerluRestock[], ideProdukBaru }`
 - **Prompt bahasa**: Indonesia — konteks UMKM
-- **Model**: gemini-1.5-flash
+- **Model**: gemini-2.5-flash
