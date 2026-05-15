@@ -35,6 +35,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onEdit, onDel
 
   return (
     <div 
+      onClick={() => onEdit?.(product)}
       className="rounded-[2rem] border border-white/5 bg-[#0D0D12] overflow-hidden group hover:shadow-2xl hover:shadow-[#14F195]/5 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full cursor-pointer"
     >
       {/* Image */}
@@ -48,7 +49,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onEdit, onDel
         ) : null}
         
         {/* Overlay Actions */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-between p-4">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-between p-4 pointer-events-none">
           <div className="flex gap-2">
             <div className="p-2.5 bg-white/10 backdrop-blur rounded-xl text-[#14F195] shadow-lg shadow-black/20">
               <ShoppingCart size={16} />

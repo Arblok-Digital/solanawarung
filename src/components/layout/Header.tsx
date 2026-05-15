@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { LogOut, Wifi, Code, Database, Loader2 } from 'lucide-react';
+import { LogOut, Wifi, Code, Database, Loader2, Sparkles, Coins } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { getCBDCBalance } from '../../services/solana/cbdc';
 
 // Default styles for the wallet adapter modal - Wajib agar modal muncul
 import '@solana/wallet-adapter-react-ui/styles.css';
@@ -13,19 +14,32 @@ import '../../styles/wallet-button.css';
 export const Header: React.FC = () => {
   const { user, profile, logout, switchRole, seedData } = useAuth();
   const [seeding, setSeeding] = useState(false);
+  const [minting, setMinting] = useState(false);
 
   const { publicKey, connected } = useWallet();
   const { connection } = useConnection();
   const [balance, setBalance] = useState<number | null>(null);
+  const [cbdcBalance, setCbdcBalance] = useState<number>(0);
 
   useEffect(() => {
-    if (connected && publicKey) {
-      connection.getBalance(publicKey).then((bal) => {
-        setBalance(bal / LAMPORTS_PER_SOL);
-      });
-    } else {
-      setBalance(null);
-    }
+    const updateBalances = async () => {
+      if (connected && publicKey) {
+        // Fetch SOL
+        const solBal = await connection.getBalance(publicKey);
+        setBalance(solBal / LAMPORTS_PER_SOL);
+
+        // Fetch Digital Rupiah (CBDC)
+        const idrBal = await getCBDCBalance(publicKey);
+        setCbdcBalance(idrBal);
+      } else {
+        setBalance(null);
+        setCbdcBalance(0);
+      }
+    };
+
+    updateBalances();
+    const id = setInterval(updateBalances, 10000); // Polling per 10 detik
+    return () => clearInterval(id);
   }, [publicKey, connected, connection]);
 
   const toggleRole = () => {
@@ -68,6 +82,18 @@ export const Header: React.FC = () => {
         </div>
       </div>
       
+      {/* MINT CBDC SIMULATION (Devnet Only) */}
+      {connected && (
+        <button 
+          onClick={() => alert("Minting 1,000,000 IDR-D (Simulated for Demo)")}
+          disabled={minting}
+          className="hidden lg:flex items-center gap-2 px-3 h-[38px] bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 text-blue-400 rounded-[10px] transition-all text-[9px] font-black uppercase tracking-widest cursor-pointer"
+        >
+          {minting ? <Loader2 size={10} className="animate-spin" /> : <Coins size={10} />}
+          Mint IDR-D
+        </button>
+      )}
+
       <div className="flex items-center gap-4">
         {/* Seed Data Button */}
         <button 
@@ -82,12 +108,20 @@ export const Header: React.FC = () => {
 
         {/* Wallet Connector */}
         <div className="flex items-center gap-3">
-          {connected && balance !== null && (
-            <div className="text-right hidden sm:block border-r border-slate-700/50 pr-3">
-              <p className="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Balance</p>
-              <p className="text-[11px] font-black text-[#14F195]">{balance.toFixed(4)} SOL</p>
-            </div>
-          )}
+          <div className="flex gap-4">
+            {connected && balance !== null && (
+              <div className="text-right hidden sm:block border-r border-slate-700/50 pr-3">
+                <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Solana</p>
+                <p className="text-[11px] font-black text-[#14F195]">{balance.toFixed(4)}</p>
+              </div>
+            )}
+            {connected && (
+              <div className="text-right hidden sm:block border-r border-slate-700/50 pr-3">
+                <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest">IDR-D</p>
+                <p className="text-[11px] font-black text-blue-400">{cbdcBalance.toLocaleString('id-ID')}</p>
+              </div>
+            )}
+          </div>
           <WalletMultiButton />
         </div>
 

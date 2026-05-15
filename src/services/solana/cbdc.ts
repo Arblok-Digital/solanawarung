@@ -3,6 +3,7 @@ import {
   getOrCreateAssociatedTokenAccount, 
   createMintToInstruction,
   getAccount,
+  getAssociatedTokenAddress,
   TOKEN_PROGRAM_ID,
   ASSOCIATED_TOKEN_PROGRAM_ID
 } from '@solana/spl-token';
@@ -10,7 +11,8 @@ import {
   Transaction, 
   PublicKey, 
   sendAndConfirmTransaction, 
-  Keypair 
+  Keypair,
+  SystemProgram
 } from '@solana/web3.js';
 import { connection, CBDC_MINT } from '../../config/solana';
 
@@ -54,17 +56,37 @@ export const getCBDCBalance = async (walletPublicKey: PublicKey): Promise<number
   if (!CBDC_MINT) return 0;
   
   try {
-    const tokenAccounts = await connection.getParsedTokenAccountsByOwner(walletPublicKey, {
-      mint: CBDC_MINT
-    });
-    
-    if (tokenAccounts.value.length > 0) {
-      const amount = tokenAccounts.value[0].account.data.parsed.info.tokenAmount.uiAmount;
-      return amount || 0;
-    }
-    return 0;
+    const ata = await getAssociatedTokenAddress(CBDC_MINT, walletPublicKey);
+    const balance = await connection.getTokenAccountBalance(ata);
+    return balance.value.uiAmount || 0;
   } catch (error) {
-    console.error('Failed to fetch CBDC balance:', error);
+    // Jika error, berarti ATA belum dibuat, anggap saldo 0
     return 0;
   }
+};
+
+/**
+ * MINT CBDC (Digital Rupiah)
+ * Untuk simulasi pengisian saldo IDR-D di Devnet
+ */
+export const createMintCBDCTransaction = async (walletPublicKey: PublicKey, amount: number) => {
+  if (!CBDC_MINT) throw new Error("CBDC Mint not configured");
+
+  const ata = await getAssociatedTokenAddress(CBDC_MINT, walletPublicKey);
+  
+  // Catatan: createMintToInstruction membutuhkan Mint Authority signature.
+  // Di mode simulasi JuaraVibeCoding, biasanya kita asumsikan authority 
+  // dipegang oleh pengembang atau faucet khusus.
+  const tx = new Transaction().add(
+    createMintToInstruction(
+      CBDC_MINT,
+      ata,
+      walletPublicKey, // Asumsi user adalah authority untuk dummy mint ini
+      amount * 100, // Menyesuaikan decimal (asumsi 2 decimal untuk Rupiah)
+      [],
+      TOKEN_PROGRAM_ID
+    )
+  );
+
+  return tx;
 };

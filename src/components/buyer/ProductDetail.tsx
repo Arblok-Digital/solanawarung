@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingCart, ShieldCheck, Truck, ArrowLeft, Package, Star, Clock, Loader2 } from 'lucide-react';
+import { ShoppingCart, ShieldCheck, Truck, ArrowLeft, Package, Star, Clock, Loader2, Wallet, CreditCard, X, ChevronRight } from 'lucide-react';
 import { Product } from '../../types';
 import { useAuth } from '../../hooks/useAuth';
 import { processCheckout } from '../../services/firebase/checkout';
@@ -19,21 +19,18 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
 }: ProductDetailProps) => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
-  const handlePurchase = async () => {
-    if (!user) {
-      alert('Silakan login terlebih dahulu.');
-      return;
-    }
-
-    const confirmMsg = `Konfirmasi Pembelian:\n\nProduk: ${product.name}\nHarga: Rp ${product.price.toLocaleString('id-ID')}\n\nLanjutkan pembayaran dengan Digital Rupiah?`;
+  const handleFinalCheckout = async (method: 'web3' | 'internal') => {
+    setShowPaymentOptions(false);
     
-    if (confirm(confirmMsg)) {
+    if (method === 'internal') {
+      // Opsi B: Dompet Digital (Simulasi/Internal)
       setLoading(true);
       try {
         await processCheckout({
           buyerId: user.uid,
-          sellerId: product.sellerId || '',
+          sellerId: product.sellerId || 'demo-seller',
           productId: product.id || '',
           productName: product.name,
           amount: product.price,
@@ -47,11 +44,24 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
       } finally {
         setLoading(false);
       }
+    } else {
+      // Opsi A: Real Web3 (Solana/CBDC)
+      if (onPurchase) {
+        await onPurchase(product);
+      }
     }
   };
 
+  const handlePurchaseClick = () => {
+    if (!user) {
+      alert('Silakan login terlebih dahulu.');
+      return;
+    }
+    setShowPaymentOptions(true);
+  };
+
   return (
-    <div className="p-4 sm:p-8 max-w-6xl mx-auto animate-in fade-in duration-500">
+    <div className="p-4 sm:p-8 max-w-6xl mx-auto animate-in fade-in duration-500 relative">
       <button 
         onClick={onBack}
         className="flex items-center gap-2 text-slate-400 hover:text-blue-600 transition-colors mb-8 group"
@@ -132,7 +142,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
 
           <div className="pt-4">
             <button 
-              onClick={onPurchase ? () => onPurchase(product) : handlePurchase}
+              onClick={handlePurchaseClick}
               disabled={loading || parentLoading || product.stock === 0}
               className="w-full py-5 bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-3xl font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-3 shadow-2xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 active:translate-y-0 transition-all disabled:opacity-50 cursor-pointer"
             >
@@ -148,6 +158,56 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Modal Pilihan Pembayaran */}
+      {showPaymentOptions && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-[#0D0D12] border border-white/10 p-8 rounded-[2.5rem] max-w-md w-full shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-black text-white tracking-tight">Metode Pembayaran</h3>
+              <button onClick={() => setShowPaymentOptions(false)} className="p-2 hover:bg-white/5 rounded-xl text-slate-400">
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              {/* Opsi Web3 */}
+              <button 
+                onClick={() => handleFinalCheckout('web3')}
+                className="w-full p-5 rounded-[1.5rem] border border-[#14f195]/20 bg-[#14f195]/5 hover:bg-[#14f195]/10 hover:border-[#14f195]/40 transition-all flex items-center gap-4 group"
+              >
+                <div className="w-12 h-12 rounded-2xl bg-[#14f195]/20 flex items-center justify-center text-[#14f195] group-hover:scale-110 transition-transform">
+                  <Wallet size={24} />
+                </div>
+                <div className="text-left flex-1">
+                  <p className="font-black text-sm text-white uppercase tracking-wider">Real Web3 Transaction</p>
+                  <p className="text-[11px] text-slate-400 font-medium mt-0.5">Via Solana Devnet & Wallet</p>
+                </div>
+                <ChevronRight size={16} className="text-slate-600 group-hover:text-[#14f195] transition-colors" />
+              </button>
+
+              {/* Opsi Dompet Digital Biasa */}
+              <button 
+                onClick={() => handleFinalCheckout('internal')}
+                className="w-full p-5 rounded-[1.5rem] border border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 hover:border-blue-500/40 transition-all flex items-center gap-4 group"
+              >
+                <div className="w-12 h-12 rounded-2xl bg-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
+                  <CreditCard size={24} />
+                </div>
+                <div className="text-left flex-1">
+                  <p className="font-black text-sm text-white uppercase tracking-wider">Dompet Digital Warung</p>
+                  <p className="text-[11px] text-slate-400 font-medium mt-0.5">Saldo Internal (Simulasi Cepat)</p>
+                </div>
+                <ChevronRight size={16} className="text-slate-600 group-hover:text-blue-400 transition-colors" />
+              </button>
+            </div>
+
+            <p className="mt-6 text-center text-[10px] text-slate-500 font-bold uppercase tracking-widest leading-relaxed px-4">
+              Semua transaksi dilindungi oleh sistem Escrow Otomatis SolanaWarung
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
