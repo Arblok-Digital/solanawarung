@@ -3,7 +3,9 @@ import { LogOut, Wifi, Code, Database, Loader2, Sparkles, Coins } from 'lucide-r
 import { useAuth } from '../../hooks/useAuth';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
-import { LAMPORTS_PER_SOL } from '@solana/web3.js';
+import { LAMPORTS_PER_SOL, Transaction, PublicKey } from '@solana/web3.js';
+import { createMintToInstruction, getAssociatedTokenAddress, TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import { CBDC_MINT } from '../../config/solana';
 import { getCBDCBalance } from '../../services/solana/cbdc';
 
 // Default styles for the wallet adapter modal - Wajib agar modal muncul
@@ -16,27 +18,27 @@ export const Header: React.FC = () => {
   const [seeding, setSeeding] = useState(false);
   const [minting, setMinting] = useState(false);
 
-  const { publicKey, connected } = useWallet();
+  const { publicKey, connected, sendTransaction } = useWallet();
   const { connection } = useConnection();
   const [balance, setBalance] = useState<number | null>(null);
   const [cbdcBalance, setCbdcBalance] = useState<number>(0);
 
+  const updateBalances = async () => {
+    if (connected && publicKey) {
+      // Fetch SOL
+      const solBal = await connection.getBalance(publicKey);
+      setBalance(solBal / LAMPORTS_PER_SOL);
+
+      // Fetch Digital Rupiah (CBDC)
+      const idrBal = await getCBDCBalance(publicKey);
+      setCbdcBalance(idrBal);
+    } else {
+      setBalance(null);
+      setCbdcBalance(0);
+    }
+  };
+
   useEffect(() => {
-    const updateBalances = async () => {
-      if (connected && publicKey) {
-        // Fetch SOL
-        const solBal = await connection.getBalance(publicKey);
-        setBalance(solBal / LAMPORTS_PER_SOL);
-
-        // Fetch Digital Rupiah (CBDC)
-        const idrBal = await getCBDCBalance(publicKey);
-        setCbdcBalance(idrBal);
-      } else {
-        setBalance(null);
-        setCbdcBalance(0);
-      }
-    };
-
     updateBalances();
     const id = setInterval(updateBalances, 10000); // Polling per 10 detik
     return () => clearInterval(id);
@@ -85,7 +87,59 @@ export const Header: React.FC = () => {
       {/* MINT CBDC SIMULATION (Devnet Only) */}
       {connected && (
         <button 
-          onClick={() => alert("Minting 1,000,000 IDR-D (Simulated for Demo)")}
+          onClick={async () => {
+            // 1. Validasi ketersediaan Wallet & Config
+            if (!publicKey || !connected) return alert("Konekin wallet dulu bro!"); // Pastikan wallet konek
+            if (!CBDC_MINT) return alert("Alamat Mint Digital Rupiah (CBDC_MINT) belum dikonfigurasi di src/config/solana.ts!"); // Safety check if config is missed
+
+            setMinting(true);
+            try {
+              // 1. Ambil blockhash terbaru untuk strategi konfirmasi yang stabil
+              const latestBlockhash = await connection.getLatestBlockhash();
+
+              // 2. Konversi string/null ke Object PublicKey untuk menghindari error 'toBuffer'
+              const mintPublicKey = new PublicKey(CBDC_MINT);
+              
+              // 3. Ambil Associated Token Address (ATA)
+              const ata = await getAssociatedTokenAddress(mintPublicKey, publicKey);
+              if (!ata) throw new Error("Gagal menghitung alamat Token Account.");
+
+              const amount = 1000000 * Math.pow(10, 9); // Mint 1jt token (asumsi 9 desimal)
+              
+              const transaction = new Transaction().add(
+                createMintToInstruction(
+                  mintPublicKey,
+                  ata,
+                  publicKey, // Authority (User bertindak sebagai authority di dummy mint ini)
+                  amount,
+                  [],
+                  TOKEN_PROGRAM_ID
+                )
+              );
+
+              const signature = await sendTransaction(transaction, connection);
+              
+              // UX Optimis: Refresh saldo setelah 3 detik tanpa menunggu konfirmasi penuh
+              setTimeout(() => {
+                updateBalances();
+              }, 3000);
+
+              // 4. Konfirmasi transaksi dengan strategi Latest Blockhash (Anti-timeout)
+              await connection.confirmTransaction({
+                signature,
+                blockhash: latestBlockhash.blockhash,
+                lastValidBlockHeight: latestBlockhash.lastValidBlockHeight
+              }, 'confirmed');
+              
+              alert("✅ Minting Sukses! Saldo Digital Rupiah Anda telah diperbarui di blockchain Devnet.");
+              updateBalances();
+            } catch (err: any) {
+              console.error("Minting gagal:", err);
+              alert("Minting Gagal: " + (err.message || "User menolak transaksi atau authority tidak valid."));
+            } finally {
+              setMinting(false);
+            }
+          }}
           disabled={minting}
           className="hidden lg:flex items-center gap-2 px-3 h-[38px] bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 text-blue-400 rounded-[10px] transition-all text-[9px] font-black uppercase tracking-widest cursor-pointer"
         >

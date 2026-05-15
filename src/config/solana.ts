@@ -1,8 +1,11 @@
-import { Connection, PublicKey } from '@solana/web3.js';
+import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
 
-export const SOLANA_NETWORK = 'devnet';
-export const SOLANA_RPC_URL = 'https://api.devnet.solana.com';
+// Inisialisasi koneksi ke Solana Devnet
+export const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
 
-export const connection = new Connection(SOLANA_RPC_URL, 'confirmed');
-
-export const CBDC_MINT = process.env.VITE_CBDC_MINT_ADDRESS ? new PublicKey(process.env.VITE_CBDC_MINT_ADDRESS) : null;
+// Alamat Public Key untuk Token Digital Rupiah (CBDC) di Devnet
+// Ini adalah contoh alamat. Kamu bisa menggantinya dengan alamat mint token SPL
+// yang kamu deploy sendiri di Devnet.
+// Contoh: Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr
+// Ganti ini dengan alamat token mint kamu di Devnet
+export const CBDC_MINT = new PublicKey("Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr");
