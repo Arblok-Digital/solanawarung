@@ -1,0 +1,29 @@
+# Stage 1: Build
+FROM node:20-alpine as build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+
+# Build-time ARGs for Vite
+ARG VITE_FIREBASE_API_KEY
+ARG VITE_FIREBASE_PROJECT_ID
+ARG VITE_GEMINI_API_KEY
+ARG VITE_SOLANA_NETWORK
+ARG VITE_CBDC_MINT_ADDRESS
+
+# Inject ARGs into ENV for build process
+ENV VITE_FIREBASE_API_KEY=$VITE_FIREBASE_API_KEY
+ENV VITE_FIREBASE_PROJECT_ID=$VITE_FIREBASE_PROJECT_ID
+ENV VITE_GEMINI_API_KEY=$VITE_GEMINI_API_KEY
+ENV VITE_SOLANA_NETWORK=$VITE_SOLANA_NETWORK
+ENV VITE_CBDC_MINT_ADDRESS=$VITE_CBDC_MINT_ADDRESS
+
+RUN npm run build
+
+# Stage 2: Serve
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
