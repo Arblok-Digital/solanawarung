@@ -8,4 +8,6 @@ export const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
 // yang kamu deploy sendiri di Devnet.
 // Contoh: Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr
 // Ganti ini dengan alamat token mint kamu di Devnet
-export const CBDC_MINT = new PublicKey("Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr");
+export const CBDC_MINT = import.meta.env.VITE_CBDC_MINT_ADDRESS 
+  ? new PublicKey(import.meta.env.VITE_CBDC_MINT_ADDRESS) 
+  : null;

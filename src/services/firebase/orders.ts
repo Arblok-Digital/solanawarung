@@ -32,11 +32,25 @@ export const updateOrderStatus = async (id: string, status: OrderStatus, signatu
     }
 
     const orderData = orderDoc.data() as Order;
+    
+    // Automation: If status is PREPARING or SHIPPING, set main status to ESCROW
+    let finalStatus = status;
+    let deliveryStatus = orderData.deliveryStatus;
+
+    if (status === OrderStatus.PREPARING || status === OrderStatus.SHIPPING) {
+      finalStatus = OrderStatus.ESCROW;
+      deliveryStatus = status as any;
+    }
+
     const updateData: any = { 
-      status,
+      status: finalStatus,
       updatedAt: serverTimestamp()
     };
     
+    if (deliveryStatus) {
+      updateData.deliveryStatus = deliveryStatus;
+    }
+
     if (signature) {
       updateData.transactionSignature = signature;
     }

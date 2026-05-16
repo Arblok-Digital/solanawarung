@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token::{self, Token, TokenAccount, Transfer};
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"); // Placeholder, will need update after first build
+declare_id!("Ga6pierAanLbJPV6FsxZyB8zgXhbr5spbEB5tce42EVm"); // Placeholder, will need update after first build
 
 #[program]
 pub mod solanawarung_escrow {
@@ -33,17 +33,21 @@ pub mod solanawarung_escrow {
     }
 
     pub fn release_funds(ctx: Context<ReleaseFunds>) -> Result<()> {
-        let escrow_account = &mut ctx.accounts.escrow_account;
-        require!(!escrow_account.is_released, EscrowError::AlreadyReleased);
+        let amount = ctx.accounts.escrow_account.amount;
+        let buyer_key = ctx.accounts.escrow_account.buyer.key();
+        let seller_key = ctx.accounts.escrow_account.seller.key();
+        let order_id = ctx.accounts.escrow_account.order_id.clone();
+        let bump = ctx.bumps.escrow_account;
+
+        require!(!ctx.accounts.escrow_account.is_released, EscrowError::AlreadyReleased);
 
         // Transfer tokens from escrow to seller
-        let amount = escrow_account.amount;
         let seeds = &[
             b"escrow",
-            escrow_account.buyer.as_ref(),
-            escrow_account.seller.as_ref(),
-            escrow_account.order_id.as_bytes(),
-            &[ctx.bumps.escrow_account],
+            buyer_key.as_ref(),
+            seller_key.as_ref(),
+            order_id.as_bytes(),
+            &[bump],
         ];
         let signer = &[&seeds[..]];
 
@@ -56,6 +60,7 @@ pub mod solanawarung_escrow {
         let cpi_ctx = CpiContext::new_with_signer(cpi_program, cpi_accounts, signer);
         token::transfer(cpi_ctx, amount)?;
 
+        let escrow_account = &mut ctx.accounts.escrow_account;
         escrow_account.is_released = true;
         Ok(())
     }

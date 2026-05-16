@@ -6,3 +6,12 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Anchor related
+target/
+.anchor/
+test-ledger/
+
+# IDE files
+.vscode/
+.idea/

@@ -9,14 +9,24 @@ interface CheckoutParams {
   productName: string;
   amount: number;
   sellerName: string;
+  txHash?: string;
+  orderId?: string;
 }
 
 /**
  * FLOW 02: Checkout (Invisible Blockchain)
  * Menggunakan Firestore Transaction (R09) untuk menjamin saldo & stok sinkron.
  */
-export const processCheckout = async ({ buyerId, sellerId, productId, productName, amount, sellerName }: CheckoutParams) => {
+export const processCheckout = async ({ buyerId, sellerId, productId, productName, amount, sellerName, txHash, orderId }: CheckoutParams) => {
   return await runTransaction(db, async (transaction: Transaction) => {
+    // 0. Idempotency Check (Check if order already exists)
+    const finalOrderId = orderId || doc(collection(db, 'orders')).id;
+    const orderRef = doc(db, 'orders', finalOrderId);
+    const existingOrder = await transaction.get(orderRef);
+    if (existingOrder.exists()) {
+      return finalOrderId;
+    }
+
     // 1. Get Wallet Balance
     const walletRef = doc(db, 'wallets', buyerId);
     const walletDoc = await transaction.get(walletRef);
@@ -44,20 +54,19 @@ export const processCheckout = async ({ buyerId, sellerId, productId, productNam
       stock: (productDoc.data().stock || 1) - 1
     });
 
-    // 5. Create Escrow Record (Dibuat dulu untuk ambil ID-nya)
+    // 5. Create Escrow Record
     const escrowRef = doc(collection(db, 'escrow'));
     
-    // 6. Create Order (Sesuai STACK.md)
-    const orderRef = doc(collection(db, 'orders'));
+    // 6. Create Order
     transaction.set(orderRef, {
       buyerId,
       sellerId,
       productId,
       productName: productName,
       amount: amount,
-      status: OrderStatus.PENDING_ESCROW, // Sesuaikan dengan Enum untuk UI
+      status: OrderStatus.PENDING_ESCROW,
       escrowId: escrowRef.id,
-      txHash: 'SIMULATED-TX-' + Math.random().toString(36).substring(7),
+      txHash: txHash || 'SIMULATED-TX-' + Math.random().toString(36).substring(7),
       createdAt: serverTimestamp()
     });
 
@@ -74,7 +83,7 @@ export const processCheckout = async ({ buyerId, sellerId, productId, productNam
 
     // 8. Finalize Escrow Record
     transaction.set(escrowRef, {
-      orderId: orderRef.id,
+      orderId: finalOrderId,
       buyerId,
       sellerId,
       jumlah: amount,

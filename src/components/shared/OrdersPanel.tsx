@@ -11,11 +11,17 @@ import {
   Loader2
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
+import { PublicKey } from '@solana/web3.js';
 import { Order, OrderStatus } from '../../types';
 import { subscribeToUserOrders, updateOrderStatus } from '../../services/firebase/orders';
+import { releaseFundsTransaction } from '../../services/solana/escrow';
+import { getUserProfile } from '../../services/firebase/auth';
 
 export const OrdersPanel: React.FC = () => {
   const { user, profile } = useAuth();
+  const { connection } = useConnection();
+  const wallet = useWallet();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState<OrderStatus | 'ALL'>('ALL');
@@ -31,28 +37,122 @@ export const OrdersPanel: React.FC = () => {
     return () => unsub();
   }, [user, profile]);
 
-  const handleUpdateStatus = async (orderId: string, nextStatus: OrderStatus) => {
+  const handleUpdateStatus = async (orderId: string, nextStatus: OrderStatus, order?: Order) => {
+    console.log("Updating order", orderId, "to", nextStatus);
     try {
-      await updateOrderStatus(orderId, nextStatus);
+      // FLOW 04: Finalize Order
+      if (nextStatus === OrderStatus.COMPLETED && order && profile?.role === 'buyer') {
+        const isWeb3 = order.transactionSignature && !order.transactionSignature.startsWith('SIMULATED');
+        
+        const confirmMsg = isWeb3 
+          ? 'Konfirmasi penerimaan barang? Ini akan melepaskan dana Digital Rupiah ke penjual di blockchain.'
+          : 'Konfirmasi penerimaan barang? (Simulasi pelepasan dana Digital Rupiah ke penjual)';
+          
+        const confirmRelease = confirm(confirmMsg);
+        if (!confirmRelease) return;
+        
+        setLoading(true);
+
+        if (isWeb3) {
+          // REAL WEB3 RELEASE
+          if (!wallet.connected || !wallet.publicKey) {
+            alert('Mohon hubungkan wallet Phantom untuk melakukan konfirmasi penerimaan barang.');
+            setLoading(false);
+            return;
+          }
+
+          try {
+            const sellerProfile = await getUserProfile(order.sellerId);
+            const sellerWalletAddr = sellerProfile?.walletAddress || order.sellerId;
+            
+            let sellerPubkey: PublicKey;
+            try {
+              sellerPubkey = new PublicKey(sellerWalletAddr);
+            } catch (e) {
+              sellerPubkey = new PublicKey("2GsHVNZnTijNshVp6BmHjXTm9MtWeBW4j4FVNCCXaQhW"); 
+            }
+
+            const tx = await releaseFundsTransaction(wallet, sellerPubkey, order.id!);
+            const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+            
+            const signature = await wallet.sendTransaction(tx, connection, {
+              skipPreflight: true,
+              maxRetries: 3
+            });
+            
+            await connection.confirmTransaction({
+              signature,
+              blockhash,
+              lastValidBlockHeight
+            }, 'confirmed');
+            
+            await updateOrderStatus(orderId, nextStatus, signature);
+            alert('✅ Sukses! Dana telah dilepaskan ke penjual di blockchain.');
+          } catch (err: any) {
+            console.error('Escrow release failed:', err);
+            alert('Gagal melepaskan dana di blockchain: ' + (err.message || 'Error tidak diketahui'));
+            setLoading(false);
+            return;
+          }
+        } else {
+          // SIMULATED RELEASE
+          await updateOrderStatus(orderId, nextStatus, 'SIMULATED-RELEASE-' + Math.random().toString(36).substring(7));
+          alert('✅ Sukses! Dana simulasi telah dilepaskan ke penjual.');
+        }
+      } else {
+        await updateOrderStatus(orderId, nextStatus);
+      }
     } catch (err) {
+      console.error('Update status failed:', err);
       alert('Gagal mengupdate status pesanan');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const getStatusStyle = (status: OrderStatus) => {
+  const getStatusStyle = (status: OrderStatus, deliveryStatus?: string) => {
+    if (status === OrderStatus.COMPLETED) return 'bg-emerald-900/20 text-emerald-400 border-emerald-900/50';
+    if (status === OrderStatus.PENDING_ESCROW) return 'bg-amber-900/20 text-amber-400 border-amber-900/50';
+    if (status === OrderStatus.ESCROW) {
+      if (deliveryStatus === 'PREPARING') return 'bg-blue-900/20 text-blue-400 border-blue-900/50';
+      if (deliveryStatus === 'SHIPPING') return 'bg-purple-900/20 text-purple-400 border-purple-900/50';
+      return 'bg-blue-900/20 text-blue-400 border-blue-900/50';
+    }
+    if (status === OrderStatus.CANCELLED) return 'bg-red-900/20 text-red-400 border-red-900/50';
+    return 'bg-gray-900/20 text-gray-400 border-gray-900/50';
+  };
+
+  const getTimelineStep = (status: string) => {
     switch (status) {
-      case OrderStatus.PENDING_ESCROW: return 'bg-amber-900/20 text-amber-400 border-amber-900/50';
-      case 'PROCESSING': return 'bg-purple-900/20 text-purple-400 border-purple-900/50';
-      case OrderStatus.ESCROW: return 'bg-blue-900/20 text-blue-400 border-blue-900/50';
-      case OrderStatus.COMPLETED: return 'bg-emerald-900/20 text-emerald-400 border-emerald-900/50';
-      case OrderStatus.CANCELLED: return 'bg-red-900/20 text-red-400 border-red-900/50';
-      default: return 'bg-gray-900/20 text-gray-400 border-gray-900/50';
+      case OrderStatus.PENDING_ESCROW: return 1;
+      case OrderStatus.PREPARING: return 2;
+      case OrderStatus.SHIPPING: return 3;
+      case OrderStatus.COMPLETED: return 4;
+      default: return 1;
     }
   };
 
-  const filteredOrders = activeFilter === 'ALL' 
-    ? orders 
-    : orders.filter(o => o.status === activeFilter);
+  const filteredOrders = orders.filter(o => {
+    if (activeFilter === 'ALL') return true;
+    
+    // Strict Tab Filtering Logic
+    if (activeFilter === OrderStatus.PENDING_ESCROW) {
+      return o.status === OrderStatus.PENDING_ESCROW;
+    }
+    
+    if (activeFilter === OrderStatus.ESCROW) {
+      // Escrow tab captures the entire fulfillment pipeline
+      return o.status === OrderStatus.ESCROW || 
+             o.status === OrderStatus.PREPARING || 
+             o.status === OrderStatus.SHIPPING;
+    }
+    
+    if (activeFilter === OrderStatus.COMPLETED) {
+      return o.status === OrderStatus.COMPLETED;
+    }
+    
+    return o.status === activeFilter;
+  });
 
   if (loading) {
     return (
@@ -79,7 +179,7 @@ export const OrdersPanel: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/10 shadow-sm overflow-x-auto no-scrollbar">
-          {['ALL', ...Object.values(OrderStatus)].map((filter) => (
+          {['ALL', OrderStatus.PENDING_ESCROW, OrderStatus.ESCROW, OrderStatus.COMPLETED].map((filter) => (
             <button
               key={filter}
               onClick={() => setActiveFilter(filter as any)}
@@ -98,7 +198,11 @@ export const OrdersPanel: React.FC = () => {
         {filteredOrders.length > 0 ? (
           filteredOrders.map((order) => (
             <div key={order.id} className="bg-[#0D0D12] rounded-[2rem] border border-white/5 p-6 md:p-8 hover:shadow-2xl transition-all group border-l-4" 
-                 style={{ borderLeftColor: order.status === OrderStatus.PENDING_ESCROW ? '#f59e0b' : order.status === OrderStatus.ESCROW ? '#3b82f6' : '#10b981' }}>
+                 style={{ 
+                   borderLeftColor: order.status === OrderStatus.PENDING_ESCROW ? '#f59e0b' : 
+                                    order.status === OrderStatus.ESCROW ? (order.deliveryStatus === 'SHIPPING' ? '#a855f7' : '#3b82f6') : 
+                                    '#10b981' 
+                 }}>
               
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                 <div className="flex items-start gap-5">
@@ -108,11 +212,41 @@ export const OrdersPanel: React.FC = () => {
                   <div>
                     <div className="flex items-center gap-3 mb-1">
                       <h4 className="text-lg font-black text-white">{order.productName || 'Produk UMKM'}</h4>
-                      <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${getStatusStyle(order.status as OrderStatus)}`}>
-                        {order.status === OrderStatus.PENDING_ESCROW && 'Pesanan Baru'}
-                        {order.status === 'PROCESSING' && 'Sedang Disiapkan'}
-                        {order.status === OrderStatus.ESCROW && 'Dalam Pengiriman'}
-                        {order.status === OrderStatus.COMPLETED && 'Selesai'}
+                      <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border ${getStatusStyle(order.status as OrderStatus, order.deliveryStatus)}`}>
+                        {order.status === OrderStatus.PENDING_ESCROW && (profile?.role === 'seller' ? 'Pesanan Baru Masuk' : 'MENUNGGU KONFIRMASI PENJUAL')}
+                        {order.status === OrderStatus.ESCROW && order.deliveryStatus === 'PREPARING' && (profile?.role === 'seller' ? 'SEDANG DI-PACKING' : 'PENJUAL SEDANG PACKING')}
+                        {order.status === OrderStatus.ESCROW && order.deliveryStatus === 'SHIPPING' && 'PESANAN SEDANG DIKIRIM'}
+                        {order.status === OrderStatus.COMPLETED && 'PESANAN SELESAI'}
+                      </span>
+                    </div>
+                    
+                    {/* Visual Timeline (Buyer & Seller) */}
+                    <div className="flex items-center gap-2 mb-4 mt-2">
+                      {[1, 2, 3, 4].map((step) => {
+                        let isStepActive = false;
+                        const currentStatus = order.deliveryStatus || order.status;
+                        if (step === 1) isStepActive = true;
+                        if (step === 2 && (currentStatus === 'PREPARING' || currentStatus === 'SHIPPING' || currentStatus === 'COMPLETED')) isStepActive = true;
+                        if (step === 3 && (currentStatus === 'SHIPPING' || currentStatus === 'COMPLETED')) isStepActive = true;
+                        if (step === 4 && currentStatus === 'COMPLETED') isStepActive = true;
+
+                        return (
+                          <div key={step} className="flex items-center gap-2">
+                            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black 
+                              ${isStepActive ? 'bg-blue-600 text-white' : 'bg-white/5 text-slate-600 border border-white/5'}`}>
+                              {step}
+                            </div>
+                            {step < 4 && (
+                              <div className={`w-8 h-0.5 rounded-full ${isStepActive ? 'bg-blue-600' : 'bg-white/5'}`}></div>
+                            )}
+                          </div>
+                        );
+                      })}
+                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-2">
+                        {order.status === OrderStatus.PENDING_ESCROW && (profile?.role === 'seller' ? 'Siapkan barang & konfirmasi pesanan' : 'Menunggu Konfirmasi Penjual')}
+                        {order.status === OrderStatus.ESCROW && order.deliveryStatus === 'PREPARING' && (profile?.role === 'seller' ? 'Segera kirim setelah packing selesai' : 'Penjual sedang packing pesanan Anda')}
+                        {order.status === OrderStatus.ESCROW && order.deliveryStatus === 'SHIPPING' && (profile?.role === 'seller' ? 'Menunggu konfirmasi barang diterima' : 'Pesanan sedang dikirim via Kurir')}
+                        {order.status === OrderStatus.COMPLETED && 'Pesanan telah selesai & dana dilepaskan'}
                       </span>
                     </div>
                     <div className="flex flex-wrap items-center gap-y-2 gap-x-4 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
@@ -148,43 +282,55 @@ export const OrdersPanel: React.FC = () => {
                     {/* Seller Actions */}
                     {profile?.role === 'seller' && order.status === OrderStatus.PENDING_ESCROW && (
                       <button 
-                        onClick={() => handleUpdateStatus(order.id!, 'PROCESSING' as OrderStatus)}
+                        onClick={() => handleUpdateStatus(order.id!, OrderStatus.PREPARING)}
                         className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-[#9945FF] hover:bg-[#7B5EA7] text-white px-6 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-[#9945FF]/20 transition-all active:scale-95"
                       >
-                        <Package size={14} /> Terima & Proses
+                        <CheckCircle2 size={14} /> Konfirmasi & Packing
                       </button>
                     )}
 
-                    {profile?.role === 'seller' && order.status === 'PROCESSING' && (
+                    {profile?.role === 'seller' && order.status === OrderStatus.ESCROW && order.deliveryStatus === 'PREPARING' && (
                       <button 
-                        onClick={() => handleUpdateStatus(order.id!, OrderStatus.ESCROW)}
-                        className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-blue-600/20 transition-all active:scale-95"
+                        onClick={() => handleUpdateStatus(order.id!, OrderStatus.SHIPPING)}
+                        className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-blue-500/20 transition-all active:scale-95"
                       >
-                        <Truck size={14} /> Kirim Pesanan
+                        <Truck size={14} /> Kirim Barang
                       </button>
                     )}
                     
-                    {profile?.role === 'seller' && order.status === OrderStatus.ESCROW && (
+                    {profile?.role === 'seller' && order.status === OrderStatus.ESCROW && order.deliveryStatus === 'SHIPPING' && (
                       <div className="flex items-center gap-2 text-blue-400 font-bold text-xs bg-blue-900/20 px-4 py-3 rounded-2xl border border-blue-900/50">
-                        <Loader2 className="animate-spin" size={14} /> Menunggu Buyer
-                      </div>
-                    )}
-
-                    {/* Buyer Processing State Info */}
-                    {profile?.role === 'buyer' && order.status === 'PROCESSING' && (
-                      <div className="flex items-center gap-2 text-purple-400 font-black text-[10px] uppercase tracking-widest bg-purple-900/20 px-6 py-3.5 rounded-2xl border border-purple-900/50">
-                        <Clock size={14} /> Seller Sedang Menyiapkan Barang
+                        <Loader2 className="animate-spin" size={14} /> Menunggu Konfirmasi Buyer
                       </div>
                     )}
 
                     {/* Buyer Actions */}
-                    {profile?.role === 'buyer' && order.status === OrderStatus.ESCROW && (
-                      <button 
-                        onClick={() => handleUpdateStatus(order.id!, OrderStatus.COMPLETED)} // Changed to dark theme colors
-                        className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-200 transition-all active:scale-95"
-                      >
-                        <CheckCircle2 size={14} /> Pesanan Diterima
-                      </button>
+                    {profile?.role === 'buyer' && order.status === OrderStatus.PENDING_ESCROW && (
+                      <div className="flex items-center gap-2 text-amber-400 font-black text-[10px] uppercase tracking-widest bg-amber-900/20 px-6 py-3.5 rounded-2xl border border-amber-900/50">
+                        <Clock size={14} /> Menunggu Konfirmasi Penjual
+                      </div>
+                    )}
+                    
+                    {profile?.role === 'buyer' && order.status === OrderStatus.ESCROW && order.deliveryStatus === 'PREPARING' && (
+                      <div className="flex items-center gap-2 text-amber-400 font-black text-[10px] uppercase tracking-widest bg-amber-900/20 px-6 py-3.5 rounded-2xl border border-amber-900/50">
+                        <Clock size={14} /> 📦 Penjual sedang menyiapkan & packing pesanan Anda
+                      </div>
+                    )}
+
+                    {profile?.role === 'buyer' && order.status === OrderStatus.ESCROW && order.deliveryStatus === 'SHIPPING' && (
+                      <div className="flex flex-col md:flex-row items-center gap-3 w-full">
+                        <div className="flex items-center gap-2 text-blue-400 font-black text-[10px] uppercase tracking-widest bg-blue-900/20 px-4 py-3 rounded-2xl border border-blue-900/50 w-full md:w-auto">
+                          <Truck size={14} /> 🚚 Pesanan dalam perjalanan via Ekspedisi
+                        </div>
+                        <button 
+                          onClick={() => handleUpdateStatus(order.id!, OrderStatus.COMPLETED, order)}
+                          className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3.5 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-200 transition-all active:scale-95 disabled:opacity-50"
+                          disabled={loading}
+                        >
+                          {loading ? <Loader2 className="animate-spin" size={14} /> : <ShieldCheck size={14} />} 
+                          {loading ? 'Memproses...' : 'Selesaikan Pesanan'}
+                        </button>
+                      </div>
                     )}
 
                     {order.status === OrderStatus.COMPLETED && (

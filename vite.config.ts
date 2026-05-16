@@ -10,12 +10,15 @@ export default defineConfig(({ command }) => ({
     react(),
     tailwindcss(),
     nodePolyfills({
-      include: ['buffer', 'crypto', 'stream', 'util'],
+      include: ['buffer', 'crypto', 'stream', 'util', 'process'],
       globals: {
         Buffer: true,
       },
     }),
   ],
+  define: {
+    global: 'window',
+  },
   server: {
     port: 3000,
     // Proxy untuk menghindari CORS saat development (Hanya lokal)

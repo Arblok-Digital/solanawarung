@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { PublicKey } from '@solana/web3.js';
 import { getAllProducts } from '../../services/firebase/products';
@@ -16,6 +16,7 @@ const CATEGORIES = ['all', 'Makanan', 'Minuman', 'Fashion', 'Kerajinan', 'Elektr
 
 export const BuyerStorefront: React.FC = () => {
   const { user } = useAuth();
+  const { connection } = useConnection();
   const wallet = useWallet();
   const { setVisible } = useWalletModal();
   const [products, setProducts] = useState<Product[]>([]);
@@ -61,50 +62,85 @@ export const BuyerStorefront: React.FC = () => {
     }
 
     setPurchaseLoading(true);
+    const orderId = `ORD-${Date.now()}`;
+    let signature = "";
+    
     try {
-      const orderId = `ORD-${Date.now()}`;
-      const sellerPubkey = new PublicKey(product.sellerId || "11111111111111111111111111111111");
-
-      const tx = await createEscrowTransaction(wallet, sellerPubkey, orderId, product.price);
-
-      let signature = "demo-sig-" + Date.now();
+      let sellerPubkey: PublicKey;
       try {
-        signature = await wallet.sendTransaction(tx, (wallet as any).connecting);
-      } catch (txError) {
-        console.log("Transaction simulated for demo.");
+        sellerPubkey = new PublicKey(product.sellerId);
+      } catch (e) {
+        sellerPubkey = new PublicKey("2GsHVNZnTijNshVp6BmHjXTm9MtWeBW4j4FVNCCXaQhW");
       }
 
-      // Jalankan Atomic Checkout (Invisible Blockchain)
+      // 1. Create On-Chain Escrow Transaction
+      const tx = await createEscrowTransaction(
+        wallet, 
+        sellerPubkey, 
+        orderId, 
+        product.price * 100
+      );
+
+      // 2. Send Transaction (FAST TRACK)
+      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
+      signature = await wallet.sendTransaction(tx, connection, {
+        skipPreflight: true,
+        maxRetries: 3
+      });
+      
+      console.log("Transaction sent. Signature:", signature);
+
+      // 3. Robust Confirmation & Polling Logic
+      let confirmed = false;
+      try {
+        // First try standard confirmation
+        await connection.confirmTransaction({
+          signature,
+          blockhash,
+          lastValidBlockHeight
+        }, 'confirmed');
+        confirmed = true;
+      } catch (confirmError: any) {
+        console.warn("Initial confirmation failed, starting manual polling...", confirmError.message);
+        
+        // Polling loop (Max 30 seconds for devnet)
+        const pollStart = Date.now();
+        while (Date.now() - pollStart < 30000) {
+          const status = await connection.getSignatureStatus(signature);
+          if (status?.value) {
+            if (status.value.err) {
+              throw new Error(`On-chain Transaction Error: ${JSON.stringify(status.value.err)}`);
+            }
+            if (status.value.confirmationStatus === 'confirmed' || status.value.confirmationStatus === 'finalized') {
+              confirmed = true;
+              break;
+            }
+          }
+          await new Promise(r => setTimeout(r, 2000));
+        }
+      }
+
+      if (!confirmed) {
+        throw new Error("Gagal konfirmasi transaksi dalam 30 detik. Silakan cek wallet Anda.");
+      }
+
+      // 4. Sync with Firebase (Initial Status: PENDING_ESCROW for demo flow)
       await processCheckout({
         buyerId: user.uid,
         sellerId: product.sellerId || '',
         productId: product.id || '',
         productName: product.name,
         amount: product.price,
-        sellerName: 'Toko UMKM'
+        sellerName: 'Toko UMKM',
+        txHash: signature,
+        orderId: orderId
       });
 
-      alert(`✅ Pembelian berhasil!\n\nSignature: ${signature}\n\nLihat di Solana Explorer:\nhttps://explorer.solana.com/tx/${signature}?cluster=devnet`);
+      alert(`✅ PEMBELIAN WEB3 BERHASIL!\n\nDana Anda telah diamankan di Smart Contract (Escrow).\n\nSignature: ${signature}\n\nLihat di Solana Explorer:\nhttps://explorer.solana.com/tx/${signature}?cluster=devnet`);
       setSelectedProduct(null);
-    } catch (error) {
-      console.warn('Web3 mode failed, switching to Simulation Mode (Invisible Blockchain)...');
-      
-      try {
-        // FALLBACK: Gunakan processCheckout agar database tetap sinkron (R19)
-        await processCheckout({
-          buyerId: user.uid,
-        sellerId: product.sellerId || '',
-        productId: product.id || '',
-        productName: product.name,
-        amount: product.price,
-          sellerName: 'Toko UMKM'
-        });
-
-        alert(`⚠️ Pembelian Berhasil (Mode Simulasi)\n\nSistem menggunakan Digital Rupiah agar Anda tetap bisa mengetes fitur Dashboard & AI Insight.`);
-        setSelectedProduct(null);
-      } catch (simError: any) {
-        alert('Gagal: ' + simError.message);
-      }
+    } catch (error: any) {
+      console.error('Transaction failed:', error);
+      alert('Transaksi Web3 Gagal: ' + (error.message || 'Error tidak diketahui'));
     } finally {
       setPurchaseLoading(false);
     }

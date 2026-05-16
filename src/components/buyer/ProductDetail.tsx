@@ -30,11 +30,11 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
       try {
         await processCheckout({
           buyerId: user.uid,
-          sellerId: product.sellerId || 'demo-seller',
+          sellerId: user.uid, // MOCK: Same ID for demo visualization
           productId: product.id || '',
           productName: product.name,
           amount: product.price,
-          sellerName: 'Toko UMKM'
+          sellerName: 'Toko UMKM (Simulasi)'
         });
 
         alert('✅ PEMBAYARAN BERHASIL!\n\nDana Anda telah diamankan di Rekening Bersama. Penjual akan segera memproses pesanan Anda.');

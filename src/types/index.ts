@@ -2,6 +2,8 @@ import { Timestamp } from 'firebase/firestore';
 
 export enum OrderStatus {
   PENDING_ESCROW = 'PENDING_ESCROW',
+  PREPARING = 'PREPARING',
+  SHIPPING = 'SHIPPING',
   ESCROW = 'ESCROW',
   COMPLETED = 'COMPLETED',
   CANCELLED = 'CANCELLED'
@@ -27,6 +29,7 @@ export interface Order {
   productName: string;
   amount: number;
   status: OrderStatus;
+  deliveryStatus?: 'PREPARING' | 'SHIPPING';
   transactionSignature?: string;
   createdAt?: Timestamp;
 }
