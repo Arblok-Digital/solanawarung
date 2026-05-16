@@ -1,0 +1,32 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '--build-arg'
+      - 'VITE_FIREBASE_API_KEY=$_VITE_FIREBASE_API_KEY'
+      - '--build-arg'
+      - 'VITE_FIREBASE_PROJECT_ID=$_VITE_FIREBASE_PROJECT_ID'
+      - '--build-arg'
+      - 'VITE_GEMINI_API_KEY=$_VITE_GEMINI_API_KEY'
+      - '--build-arg'
+      - 'VITE_SOLANA_NETWORK=$_VITE_SOLANA_NETWORK'
+      - '--build-arg'
+      - 'VITE_CBDC_MINT_ADDRESS=$_VITE_CBDC_MINT_ADDRESS'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/solanawarung'
+      - '.'
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/solanawarung']
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'solanawarung'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/solanawarung'
+      - '--region'
+      - 'asia-southeast2'
+      - '--allow-unauthenticated'
+images:
+  - 'gcr.io/$PROJECT_ID/solanawarung'
