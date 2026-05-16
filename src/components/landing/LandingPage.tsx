@@ -65,12 +65,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
       </nav>
 
       <section id="hero" className="pt-[180px] pb-[100px] relative text-center">
+        <div className="hero-glow-bg"></div>
         <div className="hero-glow-1"></div>
         <div className="hero-glow-2"></div>
         <div className="container mx-auto px-6">
-          <span className="hero-badge reveal inline-block bg-[#9945FF]/10 border border-[#9945FF]/20 text-[#9945FF] px-4 py-2 rounded-full text-[11px] font-extrabold uppercase tracking-widest mb-6">Web3 for UMKM Indonesia</span>
+          <span className="hero-badge hero-badge-float reveal inline-block bg-[#9945FF]/10 border border-[#9945FF]/20 text-[#9945FF] px-4 py-2 rounded-full text-[11px] font-extrabold uppercase tracking-widest mb-6">Web3 for UMKM Indonesia</span>
           <h1 className="reveal text-5xl md:text-7xl font-extrabold mb-6 leading-[1.1] tracking-tighter bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent">
-            Jualan Lebih Mudah.<br />Dibayar Lebih Aman.<br />Tumbuh dengan AI.
+            Jualan Lebih Mudah.<br /><span className="highlight-safe">Dibayar Lebih Aman.</span><br /><span className="highlight-ai">Tumbuh dengan AI.</span>
           </h1>
           <p className="reveal text-lg text-[#94A3B8] max-w-[700px] mx-auto mb-10 font-medium">
             SolanaWarung adalah marketplace UMKM Indonesia pertama yang menggunakan Gemini AI untuk listing produk otomatis dan Digital Rupiah untuk transaksi yang transparan.

@@ -52,3 +52,64 @@ button.wallet-adapter-button.wallet-adapter-button-trigger:hover {
 .wallet-adapter-button-end-icon {
     display: none !important;
 }
+
+/* EFEK NEON PULSE UNTUK TOMBOL AKTIF */
+.btn-category-active {
+    background: #14F195 !important;
+    color: black !important;
+    box-shadow: 0 0 20px rgba(20, 241, 149, 0.4) !important;
+    animation: neon-pulse 2s infinite ease-in-out;
+    border-color: #14F195 !important;
+}
+
+@keyframes neon-pulse {
+    0% { box-shadow: 0 0 15px rgba(20, 241, 149, 0.4); }
+    50% { box-shadow: 0 0 30px rgba(20, 241, 149, 0.7); }
+    100% { box-shadow: 0 0 15px rgba(20, 241, 149, 0.4); }
+}
+
+/* EFEK GLASS UNTUK TOMBOL NON-AKTIF */
+.btn-category-inactive {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.btn-category-inactive:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    transform: translateY(-2px);
+}
+
+/* Efek Cahaya di belakang Icon Package */
+.empty-state-glow {
+    position: relative;
+    z-index: 1;
+}
+
+.empty-state-glow::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(20, 241, 149, 0.15) 0%, rgba(153, 69, 255, 0.05) 100%);
+    filter: blur(40px);
+    z-index: -1;
+    animation: glow-breathe 4s infinite ease-in-out;
+}
+
+@keyframes glow-breathe {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* Mempercantik kotak border putus-putus */
+.empty-state-card {
+    background: linear-gradient(135deg, rgba(13, 13, 18, 0.8), rgba(20, 20, 30, 0.8)) !important;
+    border: 1px dashed rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px);
+}

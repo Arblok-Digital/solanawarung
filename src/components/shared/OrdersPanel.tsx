@@ -202,9 +202,9 @@ export const OrdersPanel: React.FC = () => {
             </div>
           ))
         ) : (
-          <div className="bg-[#0D0D12] rounded-[3rem] p-20 border border-white/5 text-center shadow-sm">
-            <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-600">
-              <Package size={32} />
+          <div className="empty-state-card bg-[#0D0D12] rounded-[3rem] p-20 border border-white/5 text-center shadow-sm">
+            <div className="empty-state-glow w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6 text-[#14F195]">
+              <Package size={32} className="relative z-10" />
             </div>
             <h3 className="text-xl font-black text-white mb-2">Belum ada pesanan</h3>
             <p className="text-slate-400 text-sm max-w-xs mx-auto mb-8">

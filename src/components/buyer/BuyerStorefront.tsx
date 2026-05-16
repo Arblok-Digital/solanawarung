@@ -171,10 +171,10 @@ export const BuyerStorefront: React.FC = () => {
             <button 
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap cursor-pointer border
+              className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap cursor-pointer
                 ${activeCategory === cat 
-                  ? 'bg-[#14F195] text-black border-[#14F195] shadow-lg shadow-[#14F195]/20' 
-                  : 'bg-white/5 border-white/5 text-slate-400 hover:border-white/20 hover:text-white'
+                  ? 'btn-category-active' 
+                  : 'btn-category-inactive text-slate-400 hover:text-white'
                 }`}
             >
               {cat}

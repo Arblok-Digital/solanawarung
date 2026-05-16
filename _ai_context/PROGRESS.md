@@ -165,7 +165,9 @@
  **✅ FIXED**: Status pesanan diselaraskan menggunakan `OrderStatus.PENDING_ESCROW` agar tombol Seller muncul.
  **✅ SELESAI**: Verifikasi Checkout Flow. Buyer bisa beli & data masuk Firestore secara atomik.
  **✅ SELESAI**: Implementasi tahapan "PROCESSING" & "SHIPPED" serta Notifikasi Trust Escrow untuk Buyer.
- **✅ SELESAI**: Kustomisasi CSS permanen & Refinement spacing tombol Web3 Wallet (Padding 24px, min-width, selector spesifik).
+ **✅ SELESAI**: Kustomisasi CSS permanen & Refinement spacing tombol Web3 Wallet.
+ **✅ SELESAI**: Implementasi Neon Pulse & Glass Elevation pada kategori produk (Premium Vibe).
+ **✅ SELESAI**: Refinement UI Empty State (Glowing package icon & breathing animation).
  **🔄 AKTIF**: Final verifikasi alur status & pencairan saldo ke Seller.
   - `src/services/firebase/auth.ts`
   - `src/services/solana/cbdc.ts`

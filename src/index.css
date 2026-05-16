@@ -183,3 +183,44 @@ aside, [class*="Sidebar"], [class*="sidebar"] {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* ═══════════════════════════════════════════
+   HERO SECTION UPGRADES
+   ═══════════════════════════════════════════ */
+
+/* Highlight kata kunci dengan warna Solana & AI */
+.highlight-safe { 
+  color: #9945FF !important; 
+  text-shadow: 0 0 20px rgba(153, 69, 255, 0.3); 
+}
+
+.highlight-ai { 
+  color: #14F195 !important; 
+  text-shadow: 0 0 20px rgba(20, 241, 149, 0.3); 
+}
+
+/* Animasi Floating untuk Badge */
+.hero-badge-float {
+  animation: floating 3s ease-in-out infinite;
+  background: rgba(153, 69, 255, 0.1) !important;
+  border: 1px solid rgba(153, 69, 255, 0.3) !important;
+}
+
+@keyframes floating {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Tambahkan Background Glow di belakang Hero */
+.hero-glow-bg {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 400px;
+  background: radial-gradient(circle, rgba(153, 69, 255, 0.08) 0%, transparent 70%);
+  filter: blur(80px);
+  z-index: -1;
+  pointer-events: none;
+}
