@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Search, Camera, Wallet, TrendingUp, UserPlus, Store, 
+import {
+  Search, Camera, Wallet, TrendingUp, UserPlus, Store,
   CheckCircle, Package, ArrowRight, ShieldCheck, Plus,
 } from 'lucide-react';
 
@@ -27,7 +27,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
 
   return (
     <div className="min-h-screen bg-[#0A0A0F] text-white font-sans overflow-x-hidden">
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         :root {
             --bg-color: #0A0A0F;
             --primary-green: #14F195;
@@ -60,7 +61,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
             <div className="w-9 h-9 bg-gradient-to-br from-[#14F195] to-[#9945FF] rounded-xl flex items-center justify-center font-black text-lg italic text-white">S</div>
             <span>SolanaWarung</span>
           </div>
-          <button onClick={onEnter} className="btn btn-secondary">Masuk Marketplace</button>
+          <div className="flex items-center gap-6">
+            <a href="/vision.html" className="text-sm font-bold text-slate-400 hover:text-white transition-colors">Visi &amp; Misi</a>
+            <button onClick={onEnter} className="btn btn-secondary">Masuk Marketplace</button>
+          </div>
         </div>
       </nav>
 
@@ -69,192 +73,192 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
           <div className="hero-glow-bg"></div>
           <div className="hero-glow-1"></div>
           <div className="hero-glow-2"></div>
-        <div className="container mx-auto px-6">
-          <span className="hero-badge hero-badge-float reveal inline-block bg-[#9945FF]/10 border border-[#9945FF]/20 text-[#c084fc] px-4 py-2 rounded-full text-[11px] font-extrabold uppercase tracking-widest mb-6">Web3 for UMKM Indonesia</span>
-          <h1 className="reveal text-5xl md:text-7xl font-extrabold mb-6 leading-[1.1] tracking-tighter bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent">
-            Jualan Lebih Mudah.<br /><span className="highlight-safe">Dibayar Lebih Aman</span>.<br /><span className="highlight-ai">Tumbuh dengan AI</span>.
-          </h1>
-          <p className="reveal text-lg text-[#94A3B8] max-w-[700px] mx-auto mb-10 font-medium">
-            SolanaWarung adalah marketplace UMKM Indonesia pertama yang menggunakan Gemini AI untuk listing produk otomatis dan Digital Rupiah untuk transaksi yang transparan.
-          </p>
-          
-          <div className="hero-actions reveal flex justify-center gap-4 mb-14">
-            <button onClick={onEnter} className="btn btn-primary">Mulai Jualan Gratis <ArrowRight size={16} /></button>
-            <button onClick={onEnter} className="btn btn-secondary">Lihat Marketplace</button>
-          </div>
+          <div className="container mx-auto px-6">
+            <span className="hero-badge hero-badge-float reveal inline-block bg-[#9945FF]/10 border border-[#9945FF]/20 text-[#c084fc] px-4 py-2 rounded-full text-[11px] font-extrabold uppercase tracking-widest mb-6">Web3 for UMKM Indonesia</span>
+            <h1 className="reveal text-5xl md:text-7xl font-extrabold mb-6 leading-[1.1] tracking-tighter bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent">
+              Jualan Lebih Mudah.<br /><span className="highlight-safe">Dibayar Lebih Aman</span>.<br /><span className="highlight-ai">Tumbuh dengan AI</span>.
+            </h1>
+            <p className="reveal text-lg text-[#94A3B8] max-w-[700px] mx-auto mb-10 font-medium">
+              SolanaWarung adalah marketplace UMKM Indonesia pertama yang menggunakan Gemini AI untuk listing produk otomatis dan Digital Rupiah untuk transaksi yang transparan.
+            </p>
 
-          <div className="stats-grid reveal grid grid-cols-1 md:grid-cols-3 max-w-[800px] mx-auto border-t border-white/10 pt-10">
-            <div className="stat-item p-4">
-              <h2 className="text-xl font-extrabold mb-1">10.000+</h2>
-              <p className="text-[11px] uppercase tracking-widest text-[#94A3B8]">Seller UMKM</p>
+            <div className="hero-actions reveal flex justify-center gap-4 mb-14">
+              <button onClick={onEnter} className="btn btn-primary">Mulai Jualan Gratis <ArrowRight size={16} /></button>
+              <a href="/vision.html" className="btn btn-secondary">Visi &amp; Misi CBDC</a>
             </div>
-            <div className="stat-item p-4">
-              <h2 className="text-xl font-extrabold mb-1">Rp 0</h2>
-              <p className="text-[11px] uppercase tracking-widest text-[#94A3B8]">Biaya Pendaftaran</p>
-            </div>
-            <div className="stat-item p-4">
-              <h2 className="text-xl font-extrabold mb-1">Gemini AI</h2>
-              <p className="text-[11px] uppercase tracking-widest text-[#94A3B8]">Listing Otomatis</p>
+
+            <div className="stats-grid reveal grid grid-cols-1 md:grid-cols-3 max-w-[800px] mx-auto border-t border-white/10 pt-10">
+              <div className="stat-item p-4">
+                <h2 className="text-xl font-extrabold mb-1">10.000+</h2>
+                <p className="text-[11px] uppercase tracking-widest text-[#94A3B8]">Seller UMKM</p>
+              </div>
+              <div className="stat-item p-4">
+                <h2 className="text-xl font-extrabold mb-1">Rp 0</h2>
+                <p className="text-[11px] uppercase tracking-widest text-[#94A3B8]">Biaya Pendaftaran</p>
+              </div>
+              <div className="stat-item p-4">
+                <h2 className="text-xl font-extrabold mb-1">Gemini AI</h2>
+                <p className="text-[11px] uppercase tracking-widest text-[#94A3B8]">Listing Otomatis</p>
+              </div>
             </div>
           </div>
-        </div>
         </section>
 
-      <section id="about" className="py-[100px] bg-gradient-to-b from-transparent to-white/[0.01]">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-[60px] reveal">
-            <h2 className="text-[40px] font-extrabold tracking-tight">Kenalan Dulu sama SolanaWarung</h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="reveal p-10 rounded-[32px] glass hover:border-[#14F195] transition-all">
-              <div className="w-[60px] h-[60px] bg-[#14F195]/10 rounded-[18px] flex items-center justify-center text-[#14F195] mb-6"><Camera size={28} /></div>
-              <h3 className="text-[22px] font-extrabold mb-3">Foto, Langsung Jadi Produk</h3>
-              <p className="text-[#94A3B8] text-[15px] leading-relaxed">Cukup foto produkmu, AI kami langsung analisis dan buatkan deskripsi, kategori, serta estimasi harga yang tepat.</p>
-            </div>
-            <div className="reveal p-10 rounded-[32px] glass hover:border-[#14F195] transition-all">
-              <div className="w-[60px] h-[60px] bg-[#14F195]/10 rounded-[18px] flex items-center justify-center text-[#14F195] mb-6"><Wallet size={28} /></div>
-              <h3 className="text-[22px] font-extrabold mb-3">Bayar Pakai Digital Rupiah</h3>
-              <p className="text-[#94A3B8] text-[15px] leading-relaxed">Transaksi menggunakan Digital Rupiah yang aman. Dana pembeli ditahan dulu sampai barang dikonfirmasi diterima.</p>
-            </div>
-            <div className="reveal p-10 rounded-[32px] glass hover:border-[#14F195] transition-all">
-              <div className="w-[60px] h-[60px] bg-[#14F195]/10 rounded-[18px] flex items-center justify-center text-[#14F195] mb-6"><TrendingUp size={28} /></div>
-              <h3 className="text-[22px] font-extrabold mb-3">Dapat Saran Bisnis AI</h3>
-              <p className="text-[#94A3B8] text-[15px] leading-relaxed">Setiap minggu, AI kami analisis penjualanmu dan kasih saran optimasi stok dan ide produk baru.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="how-to" className="py-[100px]">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-[60px] reveal">
-            <h2 className="text-[40px] font-extrabold tracking-tight">Cara Menggunakan</h2>
-          </div>
-
-          <div className="reveal p-8 md:p-[60px] rounded-[40px] glass">
-            <div className="flex bg-black/20 p-1.5 rounded-2xl w-fit mx-auto mb-[60px]">
-              <button onClick={() => setActiveTab('seller')} className={`px-6 py-3 rounded-xl font-bold text-sm transition-all ${activeTab === 'seller' ? 'bg-[#9945FF] text-white shadow-lg' : 'text-[#94A3B8]'}`}>Mode Seller</button>
-              <button onClick={() => setActiveTab('buyer')} className={`px-6 py-3 rounded-xl font-bold text-sm transition-all ${activeTab === 'buyer' ? 'bg-[#9945FF] text-white shadow-lg' : 'text-[#94A3B8]'}`}>Mode Buyer</button>
+        <section id="about" className="py-[100px] bg-gradient-to-b from-transparent to-white/[0.01]">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-[60px] reveal">
+              <h2 className="text-[40px] font-extrabold tracking-tight">Kenalan Dulu sama SolanaWarung</h2>
             </div>
 
-            <div id="seller-steps" className={`tab-content ${activeTab === 'seller' ? 'active' : ''}`}>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-                <div className="step-item relative">
-                  <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">01</span>
-                  <UserPlus className="text-[#9945FF] mb-5 relative z-10" size={50} />
-                  <h2 className="text-lg font-extrabold mb-2 relative z-10">Daftar Akun</h2>
-                  <p className="text-sm text-[#94A3B8] relative z-10">Proses cuma 30 detik pakai akun Google. Gak perlu form ribet.</p>
-                </div>
-                <div className="step-item relative">
-                  <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">02</span>
-                  <Store className="text-[#9945FF] mb-5 relative z-10" size={50} />
-                  <h2 className="text-lg font-extrabold mb-2 relative z-10">Aktifkan Toko</h2>
-                  <p className="text-sm text-[#94A3B8] relative z-10">Satu klik tombol "Jadikan Seller" di profil, tokomu langsung live.</p>
-                </div>
-                <div className="step-item relative">
-                  <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">03</span>
-                  <Camera className="text-[#9945FF] mb-5 relative z-10" size={50} />
-                  <h2 className="text-lg font-extrabold mb-2 relative z-10">Foto Produkmu</h2>
-                  <p className="text-sm text-[#94A3B8] relative z-10">Upload foto dari HP. AI langsung bikin deskripsi & kategori otomatis.</p>
-                </div>
-                <div className="step-item relative">
-                  <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">04</span>
-                  <CheckCircle className="text-[#9945FF] mb-5 relative z-10" size={50} />
-                  <h2 className="text-lg font-extrabold mb-2 relative z-10">Terima Pesanan</h2>
-                  <p className="text-sm text-[#94A3B8] relative z-10">Konfirmasi pesanan, kirim barang, dana langsung masuk dompet digital.</p>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="reveal p-10 rounded-[32px] glass hover:border-[#14F195] transition-all">
+                <div className="w-[60px] h-[60px] bg-[#14F195]/10 rounded-[18px] flex items-center justify-center text-[#14F195] mb-6"><Camera size={28} /></div>
+                <h3 className="text-[22px] font-extrabold mb-3">Foto, Langsung Jadi Produk</h3>
+                <p className="text-[#94A3B8] text-[15px] leading-relaxed">Cukup foto produkmu, AI kami langsung analisis dan buatkan deskripsi, kategori, serta estimasi harga yang tepat.</p>
               </div>
-            </div>
-
-            <div id="buyer-steps" className={`tab-content ${activeTab === 'buyer' ? 'active' : ''}`}>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-                <div className="step-item relative">
-                  <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">01</span>
-                  <Search className="text-[#9945FF] mb-5 relative z-10" size={50} />
-                  <h2 className="text-lg font-extrabold mb-2 relative z-10">Browse Produk</h2>
-                  <p className="text-sm text-[#94A3B8] relative z-10">Cari produk UMKM favoritmu langsung tanpa harus login dulu.</p>
-                </div>
-                <div className="step-item relative">
-                  <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">02</span>
-                  <Wallet className="text-[#9945FF] mb-5 relative z-10" size={50} />
-                  <h2 className="text-lg font-extrabold mb-2 relative z-10">Isi Saldo</h2>
-                  <p className="text-sm text-[#94A3B8] relative z-10">Top-up saldo Digital Rupiah instan buat mulai belanja aman.</p>
-                </div>
-                <div className="step-item relative">
-                  <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">03</span>
-                  <ShieldCheck className="text-[#9945FF] mb-5 relative z-10" size={50} />
-                  <h2 className="text-lg font-extrabold mb-2 relative z-10">Bayar Aman</h2>
-                  <p className="text-sm text-[#94A3B8] relative z-10">Dana dilindungi sistem Escrow. Aman dari penipuan jual-beli.</p>
-                </div>
-                <div className="step-item relative">
-                  <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">04</span>
-                  <Package className="text-[#9945FF] mb-5 relative z-10" size={50} />
-                  <h2 className="text-lg font-extrabold mb-2 relative z-10">Terima Barang</h2>
-                  <p className="text-sm text-[#94A3B8] relative z-10">Barang sampai, konfirmasi, dan dukung UMKM lokal terus berkembang.</p>
-                </div>
+              <div className="reveal p-10 rounded-[32px] glass hover:border-[#14F195] transition-all">
+                <div className="w-[60px] h-[60px] bg-[#14F195]/10 rounded-[18px] flex items-center justify-center text-[#14F195] mb-6"><Wallet size={28} /></div>
+                <h3 className="text-[22px] font-extrabold mb-3">Bayar Pakai Digital Rupiah</h3>
+                <p className="text-[#94A3B8] text-[15px] leading-relaxed">Transaksi menggunakan Digital Rupiah yang aman. Dana pembeli ditahan dulu sampai barang dikonfirmasi diterima.</p>
+              </div>
+              <div className="reveal p-10 rounded-[32px] glass hover:border-[#14F195] transition-all">
+                <div className="w-[60px] h-[60px] bg-[#14F195]/10 rounded-[18px] flex items-center justify-center text-[#14F195] mb-6"><TrendingUp size={28} /></div>
+                <h3 className="text-[22px] font-extrabold mb-3">Dapat Saran Bisnis AI</h3>
+                <p className="text-[#94A3B8] text-[15px] leading-relaxed">Setiap minggu, AI kami analisis penjualanmu dan kasih saran optimasi stok dan ide produk baru.</p>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* SECTION ROADMAP — Memanggil File HTML Asli */}
-      <section id="roadmap" className="py-[100px] bg-[#060608]">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-[60px] reveal">
-            <span className="hero-badge inline-block bg-[#14F195]/10 border border-[#14F195]/20 text-[#14F195] px-4 py-2 rounded-full text-[11px] font-extrabold uppercase tracking-widest mb-6">Visi & Strategi</span>
-            <h2 className="text-[40px] font-extrabold tracking-tight">Roadmap Ekosistem</h2>
-            <p className="text-[#94A3B8] mt-4">Dokumen teknis dan rencana jangka panjang SolanaWarung.</p>
-          </div>
-          
-          <div className="reveal w-full aspect-video md:aspect-[16/9] rounded-[40px] overflow-hidden border border-white/10 shadow-2xl bg-black">
-            <iframe 
-              src="./solanawarung-ecosystem.html" 
-              className="w-full h-full border-none"
-              title="SolanaWarung Ecosystem Roadmap"
-            />
-          </div>
-        </div>
-      </section>
+        <section id="how-to" className="py-[100px]">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-[60px] reveal">
+              <h2 className="text-[40px] font-extrabold tracking-tight">Cara Menggunakan</h2>
+            </div>
 
-      <section id="faq" className="py-[100px]">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-[60px] reveal">
-            <h2 className="text-[40px] font-extrabold tracking-tight">Pertanyaan Sering Diajukan</h2>
-          </div>
-          
-          <div className="faq-grid max-w-[800px] mx-auto flex flex-col gap-4">
-            {[
-              { q: "Apakah SolanaWarung gratis?", a: "Daftar dan buka toko di SolanaWarung sepenuhnya gratis. Tidak ada biaya bulanan. Kami hanya mengambil komisi sangat kecil dari setiap transaksi yang berhasil." },
-              { q: "Harus paham Blockchain?", a: "Sama sekali tidak. Kamu cukup daftar dengan akun Google. Teknologi blockchain bekerja \"di balik layar\" untuk keamanan tanpa kamu harus pusing cara kerjanya." },
-              { q: "Apa itu Digital Rupiah?", a: "Digital Rupiah adalah versi digital Rupiah yang transparan dan aman. Saat ini kami menggunakan simulasi berbasis CBDC agar sistem siap saat BI meluncurkannya nanti." },
-              { q: "Gimana kalau barang gak datang?", a: "Dana kamu ditahan oleh sistem Escrow kami. Seller baru terima uang setelah barang dikonfirmasi sampai. Kalau ada masalah, dana bisa dikembalikan 100%." }
-            ].map((item, idx) => (
-              <div key={idx} className={`faq-item reveal glass rounded-2xl overflow-hidden transition-all ${openFaq === idx ? 'active' : ''}`}>
-                <div className="faq-header p-8 flex justify-between items-center cursor-pointer" onClick={() => setOpenFaq(openFaq === idx ? null : idx)}>
-                  <h3 className="font-bold text-base">{item.q}</h3>
-                  <Plus size={20} className="faq-icon" />
-                </div>
-                <div className="faq-content px-8 text-[#94A3B8] text-sm leading-relaxed">
-                  {item.a}
+            <div className="reveal p-8 md:p-[60px] rounded-[40px] glass">
+              <div className="flex bg-black/20 p-1.5 rounded-2xl w-fit mx-auto mb-[60px]">
+                <button onClick={() => setActiveTab('seller')} className={`px-6 py-3 rounded-xl font-bold text-sm transition-all ${activeTab === 'seller' ? 'bg-[#9945FF] text-white shadow-lg' : 'text-[#94A3B8]'}`}>Mode Seller</button>
+                <button onClick={() => setActiveTab('buyer')} className={`px-6 py-3 rounded-xl font-bold text-sm transition-all ${activeTab === 'buyer' ? 'bg-[#9945FF] text-white shadow-lg' : 'text-[#94A3B8]'}`}>Mode Buyer</button>
+              </div>
+
+              <div id="seller-steps" className={`tab-content ${activeTab === 'seller' ? 'active' : ''}`}>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+                  <div className="step-item relative">
+                    <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">01</span>
+                    <UserPlus className="text-[#9945FF] mb-5 relative z-10" size={50} />
+                    <h2 className="text-lg font-extrabold mb-2 relative z-10">Daftar Akun</h2>
+                    <p className="text-sm text-[#94A3B8] relative z-10">Proses cuma 30 detik pakai akun Google. Gak perlu form ribet.</p>
+                  </div>
+                  <div className="step-item relative">
+                    <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">02</span>
+                    <Store className="text-[#9945FF] mb-5 relative z-10" size={50} />
+                    <h2 className="text-lg font-extrabold mb-2 relative z-10">Aktifkan Toko</h2>
+                    <p className="text-sm text-[#94A3B8] relative z-10">Satu klik tombol "Jadikan Seller" di profil, tokomu langsung live.</p>
+                  </div>
+                  <div className="step-item relative">
+                    <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">03</span>
+                    <Camera className="text-[#9945FF] mb-5 relative z-10" size={50} />
+                    <h2 className="text-lg font-extrabold mb-2 relative z-10">Foto Produkmu</h2>
+                    <p className="text-sm text-[#94A3B8] relative z-10">Upload foto dari HP. AI langsung bikin deskripsi & kategori otomatis.</p>
+                  </div>
+                  <div className="step-item relative">
+                    <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">04</span>
+                    <CheckCircle className="text-[#9945FF] mb-5 relative z-10" size={50} />
+                    <h2 className="text-lg font-extrabold mb-2 relative z-10">Terima Pesanan</h2>
+                    <p className="text-sm text-[#94A3B8] relative z-10">Konfirmasi pesanan, kirim barang, dana langsung masuk dompet digital.</p>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      <section id="cta-final" className="py-[100px] text-center">
-        <div className="container mx-auto px-6">
-          <div className="cta-box reveal bg-gradient-to-br from-[#13131F] to-[#0A0A0F] border border-white/10 p-20 rounded-[40px] relative overflow-hidden">
-            <h2 className="text-5xl font-black mb-4 relative z-10 leading-tight">Siap Bawa Warungmu ke Level Berikutnya?</h2>
-            <p className="text-[#94A3B8] text-lg mb-10 relative z-10">Bergabung dengan ribuan UMKM Indonesia yang sudah pakai SolanaWarung. Gratis, mudah, dan bertenaga AI.</p>
-            <button onClick={onEnter} className="btn btn-primary text-base px-10 py-5">Mulai Sekarang — Gratis</button>
-            <span className="block mt-4 text-xs text-white/30 relative z-10">Tidak perlu kartu kredit. Daftar dengan akun Google dalam 30 detik.</span>
+              <div id="buyer-steps" className={`tab-content ${activeTab === 'buyer' ? 'active' : ''}`}>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+                  <div className="step-item relative">
+                    <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">01</span>
+                    <Search className="text-[#9945FF] mb-5 relative z-10" size={50} />
+                    <h2 className="text-lg font-extrabold mb-2 relative z-10">Browse Produk</h2>
+                    <p className="text-sm text-[#94A3B8] relative z-10">Cari produk UMKM favoritmu langsung tanpa harus login dulu.</p>
+                  </div>
+                  <div className="step-item relative">
+                    <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">02</span>
+                    <Wallet className="text-[#9945FF] mb-5 relative z-10" size={50} />
+                    <h2 className="text-lg font-extrabold mb-2 relative z-10">Isi Saldo</h2>
+                    <p className="text-sm text-[#94A3B8] relative z-10">Top-up saldo Digital Rupiah instan buat mulai belanja aman.</p>
+                  </div>
+                  <div className="step-item relative">
+                    <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">03</span>
+                    <ShieldCheck className="text-[#9945FF] mb-5 relative z-10" size={50} />
+                    <h2 className="text-lg font-extrabold mb-2 relative z-10">Bayar Aman</h2>
+                    <p className="text-sm text-[#94A3B8] relative z-10">Dana dilindungi sistem Escrow. Aman dari penipuan jual-beli.</p>
+                  </div>
+                  <div className="step-item relative">
+                    <span className="step-num text-5xl font-black text-white/5 absolute -top-3 -left-3">04</span>
+                    <Package className="text-[#9945FF] mb-5 relative z-10" size={50} />
+                    <h2 className="text-lg font-extrabold mb-2 relative z-10">Terima Barang</h2>
+                    <p className="text-sm text-[#94A3B8] relative z-10">Barang sampai, konfirmasi, dan dukung UMKM lokal terus berkembang.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* SECTION ROADMAP — Memanggil File HTML Asli */}
+        <section id="roadmap" className="py-[100px] bg-[#060608]">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-[60px] reveal">
+              <span className="hero-badge inline-block bg-[#14F195]/10 border border-[#14F195]/20 text-[#14F195] px-4 py-2 rounded-full text-[11px] font-extrabold uppercase tracking-widest mb-6">Visi & Strategi</span>
+              <h2 className="text-[40px] font-extrabold tracking-tight">Roadmap Ekosistem</h2>
+              <p className="text-[#94A3B8] mt-4">Dokumen teknis dan rencana jangka panjang SolanaWarung.</p>
+            </div>
+
+            <div className="reveal w-full aspect-video md:aspect-[16/9] rounded-[40px] overflow-hidden border border-white/10 shadow-2xl bg-black">
+              <iframe
+                src="./solanawarung-ecosystem.html"
+                className="w-full h-full border-none"
+                title="SolanaWarung Ecosystem Roadmap"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section id="faq" className="py-[100px]">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-[60px] reveal">
+              <h2 className="text-[40px] font-extrabold tracking-tight">Pertanyaan Sering Diajukan</h2>
+            </div>
+
+            <div className="faq-grid max-w-[800px] mx-auto flex flex-col gap-4">
+              {[
+                { q: "Apakah SolanaWarung gratis?", a: "Daftar dan buka toko di SolanaWarung sepenuhnya gratis. Tidak ada biaya bulanan. Kami hanya mengambil komisi sangat kecil dari setiap transaksi yang berhasil." },
+                { q: "Harus paham Blockchain?", a: "Sama sekali tidak. Kamu cukup daftar dengan akun Google. Teknologi blockchain bekerja \"di balik layar\" untuk keamanan tanpa kamu harus pusing cara kerjanya." },
+                { q: "Apa itu Digital Rupiah?", a: "Digital Rupiah adalah versi digital Rupiah yang transparan dan aman. Saat ini kami menggunakan simulasi berbasis CBDC agar sistem siap saat BI meluncurkannya nanti." },
+                { q: "Gimana kalau barang gak datang?", a: "Dana kamu ditahan oleh sistem Escrow kami. Seller baru terima uang setelah barang dikonfirmasi sampai. Kalau ada masalah, dana bisa dikembalikan 100%." }
+              ].map((item, idx) => (
+                <div key={idx} className={`faq-item reveal glass rounded-2xl overflow-hidden transition-all ${openFaq === idx ? 'active' : ''}`}>
+                  <div className="faq-header p-8 flex justify-between items-center cursor-pointer" onClick={() => setOpenFaq(openFaq === idx ? null : idx)}>
+                    <h3 className="font-bold text-base">{item.q}</h3>
+                    <Plus size={20} className="faq-icon" />
+                  </div>
+                  <div className="faq-content px-8 text-[#94A3B8] text-sm leading-relaxed">
+                    {item.a}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="cta-final" className="py-[100px] text-center">
+          <div className="container mx-auto px-6">
+            <div className="cta-box reveal bg-gradient-to-br from-[#13131F] to-[#0A0A0F] border border-white/10 p-20 rounded-[40px] relative overflow-hidden">
+              <h2 className="text-5xl font-black mb-4 relative z-10 leading-tight">Siap Bawa Warungmu ke Level Berikutnya?</h2>
+              <p className="text-[#94A3B8] text-lg mb-10 relative z-10">Bergabung dengan ribuan UMKM Indonesia yang sudah pakai SolanaWarung. Gratis, mudah, dan bertenaga AI.</p>
+              <button onClick={onEnter} className="btn btn-primary text-base px-10 py-5">Mulai Sekarang — Gratis</button>
+              <span className="block mt-4 text-xs text-white/30 relative z-10">Tidak perlu kartu kredit. Daftar dengan akun Google dalam 30 detik.</span>
+            </div>
+          </div>
+        </section>
       </main>
 
       <footer className="py-20 border-t border-white/10 relative z-10">
@@ -271,7 +275,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
               <div className="link-col">
                 <h3 className="text-sm font-extrabold uppercase tracking-widest mb-5">Platform</h3>
                 <div className="space-y-3">
-                  <a href="#" onClick={(e) => {e.preventDefault(); onEnter();}} className="block text-sm text-[#94A3B8] hover:text-[#14F195]">Marketplace</a>
+                  <a href="#" onClick={(e) => { e.preventDefault(); onEnter(); }} className="block text-sm text-[#94A3B8] hover:text-[#14F195]">Marketplace</a>
                   <a href="#how-to" className="block text-sm text-[#94A3B8] hover:text-[#14F195]">Cara Pakai</a>
                 </div>
               </div>
