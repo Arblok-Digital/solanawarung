@@ -1,6 +1,7 @@
 import React from 'react';
 import { Header } from '../layout/Header';
 import { Sidebar } from '../layout/Sidebar';
+import { BottomNav } from '../layout/BottomNav';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -24,6 +25,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           {children}
         </section>
       </main>
+      <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
     </div>
   );
 };

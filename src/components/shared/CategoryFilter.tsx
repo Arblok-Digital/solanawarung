@@ -23,31 +23,29 @@ interface CategoryFilterProps {
 
 export const CategoryFilter: React.FC<CategoryFilterProps> = ({ activeCategory, onCategoryChange }) => {
   return (
-    <div className="w-full mt-24 py-6 px-8 bg-[#060608]/80 backdrop-blur-xl border-b border-white/5 shadow-2xl flex relative z-20">
-      <div className="container mx-auto">
-        <div className="flex flex-wrap gap-4 mt-6 mb-8 w-full">
-          {categories.map((cat) => {
-            const Icon = cat.icon;
-            const isActive = activeCategory === cat.id;
-            
-            return (
-              <button
-                key={cat.id}
-                onClick={() => onCategoryChange(cat.id)}
-                className={`
-                  flex items-center gap-2.5 px-6 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all duration-300 active:scale-95
-                  ${isActive 
-                    ? 'bg-gradient-to-r from-[#14F195] to-[#9945FF] text-black shadow-lg shadow-emerald-500/20 scale-105' 
-                    : 'btn-category-inactive text-slate-300 border border-white/5'
-                  }
-                `}
-              >
-                <Icon size={14} className={isActive ? 'animate-pulse' : ''} />
-                {cat.name}
-              </button>
-            );
-          })}
-        </div>
+    <div className="w-full py-3 md:py-4">
+      <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+        {categories.map((cat) => {
+          const Icon = cat.icon;
+          const isActive = activeCategory === cat.id;
+          
+          return (
+            <button
+              key={cat.id}
+              onClick={() => onCategoryChange(cat.id)}
+              className={`
+                flex items-center gap-1.5 md:gap-2 px-3 md:px-5 py-2 md:py-3 rounded-xl md:rounded-2xl text-[10px] md:text-[11px] font-black uppercase tracking-widest transition-all duration-300 active:scale-95 whitespace-nowrap shrink-0
+                ${isActive 
+                  ? 'bg-gradient-to-r from-[#14F195] to-[#9945FF] text-black shadow-lg shadow-emerald-500/20' 
+                  : 'bg-white/5 text-slate-400 border border-white/5 hover:border-white/10'
+                }
+              `}
+            >
+              <Icon size={12} className={isActive ? 'animate-pulse' : ''} />
+              {cat.name}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

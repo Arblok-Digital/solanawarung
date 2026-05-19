@@ -65,19 +65,19 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="h-16 bg-[#0c111d] text-white flex items-center justify-between px-8 shrink-0 shadow-lg z-20 relative">
+    <header className="h-14 md:h-16 bg-[#0c111d] text-white flex items-center justify-between px-3 md:px-8 shrink-0 shadow-lg z-20 relative">
       {/* Subtle gradient line at bottom */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
       
-      <div className="flex items-center space-x-3">
-        <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center font-black text-lg italic shadow-lg shadow-blue-500/20">S</div>
-        <div>
-          <h1 className="text-base font-black tracking-tight leading-none">
+      <div className="flex items-center space-x-2 md:space-x-3 min-w-0">
+        <div className="w-8 h-8 md:w-9 md:h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg md:rounded-xl flex items-center justify-center font-black text-base md:text-lg italic shadow-lg shadow-blue-500/20 shrink-0">S</div>
+        <div className="min-w-0">
+          <h1 className="text-sm md:text-base font-black tracking-tight leading-none truncate">
             {profile?.role === 'seller' && profile?.warungName ? profile.warungName : 'SolanaWarung'}
           </h1>
-          <div className="flex items-center gap-1.5 mt-0.5">
-            <Wifi size={8} className="text-emerald-400" />
-            <span className="text-[9px] text-slate-300 uppercase tracking-[0.2em] font-bold">
+          <div className="flex items-center gap-1 md:gap-1.5 mt-0.5">
+            <Wifi size={7} className="text-emerald-400 shrink-0" />
+            <span className="text-[8px] md:text-[9px] text-slate-300 uppercase tracking-[0.15em] md:tracking-[0.2em] font-bold truncate">
               {profile?.role === 'seller' ? 'Powered by SolanaWarung • Devnet' : 'Buyer Space • Devnet'}
             </span>
           </div>
@@ -148,21 +148,21 @@ export const Header: React.FC = () => {
         </button>
       )}
 
-      <div className="flex items-center gap-4">
-        {/* Seed Data Button */}
+      <div className="flex items-center gap-1.5 md:gap-4">
+        {/* Seed Data Button — icon only on mobile */}
         <button 
           onClick={handleSeed}
           disabled={seeding}
           aria-label="Seed Data"
-          className="flex items-center gap-2 px-4 h-[38px] bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 rounded-[10px] transition-all text-[10px] font-black uppercase tracking-widest cursor-pointer group"
+          className="flex items-center gap-1.5 md:gap-2 px-2 md:px-4 h-8 md:h-[38px] bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 rounded-lg md:rounded-[10px] transition-all text-[9px] md:text-[10px] font-black uppercase tracking-widest cursor-pointer group"
         >
-          {seeding ? <Loader2 size={12} className="animate-spin" /> : <Database size={12} />}
-          Seed Data
+          {seeding ? <Loader2 size={10} className="animate-spin" /> : <Database size={10} />}
+          <span className="hidden sm:inline">Seed Data</span>
         </button>
 
         {/* Wallet Connector */}
-        <div className="flex items-center gap-3">
-          <div className="flex gap-4">
+        <div className="flex items-center gap-2 md:gap-3">
+          <div className="flex gap-2 md:gap-4">
             {connected && balance !== null && (
               <div className="text-right hidden sm:block border-r border-slate-700/50 pr-3">
                 <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Solana</p>
@@ -179,17 +179,18 @@ export const Header: React.FC = () => {
           <WalletMultiButton />
         </div>
 
-        {/* Dev Mode Role Switcher */}
+        {/* Dev Mode Role Switcher — icon only on mobile */}
         <button 
           onClick={toggleRole}
           aria-label={`Ganti ke mode ${profile?.role === 'seller' ? 'Pembeli' : 'Penjual'}`}
-          className="flex items-center gap-2 px-4 h-[38px] bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 text-purple-400 rounded-[10px] transition-all text-[10px] font-black uppercase tracking-widest cursor-pointer group"
+          className="flex items-center gap-1.5 md:gap-2 px-2 md:px-4 h-8 md:h-[38px] bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 text-purple-400 rounded-lg md:rounded-[10px] transition-all text-[9px] md:text-[10px] font-black uppercase tracking-widest cursor-pointer group"
           title="Switch Role (Dev Mode)"
         >
-          <Code size={12} className="group-hover:rotate-12 transition-transform" />
-          Switch to {profile?.role === 'seller' ? 'Buyer' : 'Seller'}
+          <Code size={10} className="group-hover:rotate-12 transition-transform" />
+          <span className="hidden sm:inline">Switch to {profile?.role === 'seller' ? 'Buyer' : 'Seller'}</span>
         </button>
 
+        {/* User info — desktop only */}
         <div className="hidden md:flex items-center gap-3 text-xs text-slate-400 font-medium border-r border-slate-700/50 pr-4">
           <div className="text-right">
             <p className="text-slate-200 text-xs font-bold leading-tight">{user?.displayName || 'User'}</p>
@@ -207,12 +208,14 @@ export const Header: React.FC = () => {
             </div>
           )}
         </div>
+
+        {/* Logout — always visible */}
         <button 
           onClick={logout}
           aria-label="Keluar dari akun"
-          className="p-2 hover:bg-white/5 rounded-xl text-slate-500 hover:text-red-400 transition-all cursor-pointer"
+          className="p-2 hover:bg-white/5 rounded-lg md:rounded-xl text-slate-500 hover:text-red-400 transition-all cursor-pointer"
         >
-          <LogOut size={18} />
+          <LogOut size={16} />
         </button>
       </div>
     </header>

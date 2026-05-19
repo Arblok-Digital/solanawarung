@@ -77,39 +77,39 @@ export const WalletPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-700">
+    <div className="max-w-4xl mx-auto space-y-4 md:space-y-8 animate-in fade-in duration-700 p-3 md:p-0">
       {/* Hero Wallet Card */}
-      <div className="relative overflow-hidden bg-[#0c111d] rounded-[2.5rem] p-8 text-white shadow-2xl shadow-blue-900/20">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/20 blur-[100px] -mr-32 -mt-32"></div>
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-600/10 blur-[80px] -ml-24 -mb-24"></div>
+      <div className="relative overflow-hidden bg-[#0c111d] rounded-2xl md:rounded-[2.5rem] p-5 md:p-8 text-white shadow-2xl shadow-blue-900/20">
+        <div className="absolute top-0 right-0 w-48 md:w-64 h-48 md:h-64 bg-blue-600/20 blur-[80px] md:blur-[100px] -mr-16 md:-mr-32 -mt-16 md:-mt-32"></div>
+        <div className="absolute bottom-0 left-0 w-36 md:w-48 h-36 md:h-48 bg-purple-600/10 blur-[60px] md:blur-[80px] -ml-12 md:-ml-24 -mb-12 md:-mb-24"></div>
         
-        <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 text-blue-400 font-black text-[10px] uppercase tracking-widest">
-              <ShieldCheck size={14} /> Keamanan Terjamin On-Chain
+        <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-6">
+          <div className="space-y-1 md:space-y-2">
+            <div className="flex items-center gap-2 text-blue-400 font-black text-[9px] md:text-[10px] uppercase tracking-widest">
+              <ShieldCheck size={12} /> Keamanan Terjamin On-Chain
             </div>
-            <h2 className="text-sm font-medium text-slate-400">Total Saldo Digital Rupiah</h2>
+            <h2 className="text-xs md:text-sm font-medium text-slate-400">Total Saldo Digital Rupiah</h2>
             <div className="flex items-baseline gap-2">
-              <span className="text-4xl md:text-6xl font-black tracking-tight">
+              <span className="text-3xl md:text-6xl font-black tracking-tight">
                 Rp {balance.toLocaleString('id-ID')}
               </span>
             </div>
           </div>
           
-          <div className="flex gap-3 w-full md:w-auto">
+          <div className="flex gap-2 md:gap-3 w-full md:w-auto">
             <button 
               onClick={() => document.getElementById('topup-section')?.scrollIntoView({ behavior: 'smooth' })}
-              className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-white text-slate-900 px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-50 transition-all shadow-lg active:scale-95"
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-white text-slate-900 px-4 md:px-6 py-3 md:py-4 rounded-xl md:rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-widest hover:bg-blue-50 transition-all shadow-lg active:scale-95"
             >
-              <Plus size={18} /> Isi Saldo
+              <Plus size={16} /> Isi Saldo
             </button>
-            <button className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all active:scale-95 border border-white/10">
-              <ArrowUpRight size={18} /> Kirim
+            <button className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-4 md:px-6 py-3 md:py-4 rounded-xl md:rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-widest transition-all active:scale-95 border border-white/10">
+              <ArrowUpRight size={16} /> Kirim
             </button>
           </div>
         </div>
 
-        <div className="mt-12 flex items-center gap-6 text-xs font-medium text-slate-400 border-t border-white/5 pt-6">
+        <div className="mt-8 md:mt-12 flex flex-col md:flex-row md:items-center gap-3 md:gap-6 text-[11px] md:text-xs font-medium text-slate-400 border-t border-white/5 pt-4 md:pt-6">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
             Status: Aktif
