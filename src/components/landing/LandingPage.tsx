@@ -3,6 +3,7 @@ import {
   Search, Camera, Wallet, TrendingUp, UserPlus, Store,
   CheckCircle, Package, ArrowRight, ShieldCheck, Plus,
 } from 'lucide-react';
+import { RoadmapSection } from './RoadmapSection';
 
 interface LandingPageProps {
   onEnter: () => void;
@@ -203,24 +204,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
           </div>
         </section>
 
-        {/* SECTION ROADMAP — Memanggil File HTML Asli */}
-        <section id="roadmap" className="py-[100px] bg-[#060608]">
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-[60px] reveal">
-              <span className="hero-badge inline-block bg-[#14F195]/10 border border-[#14F195]/20 text-[#14F195] px-4 py-2 rounded-full text-[11px] font-extrabold uppercase tracking-widest mb-6">Visi & Strategi</span>
-              <h2 className="text-[40px] font-extrabold tracking-tight">Roadmap Ekosistem</h2>
-              <p className="text-[#94A3B8] mt-4">Dokumen teknis dan rencana jangka panjang SolanaWarung.</p>
-            </div>
-
-            <div className="reveal w-full aspect-video md:aspect-[16/9] rounded-[40px] overflow-hidden border border-white/10 shadow-2xl bg-black">
-              <iframe
-                src="./solanawarung-ecosystem.html"
-                className="w-full h-full border-none"
-                title="SolanaWarung Ecosystem Roadmap"
-              />
-            </div>
-          </div>
-        </section>
+        {/* SECTION ROADMAP — Responsive React Component */}
+        <RoadmapSection />
 
         <section id="faq" className="py-[100px]">
           <div className="container mx-auto px-6">

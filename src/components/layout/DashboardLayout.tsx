@@ -16,9 +16,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   return (
     <div className="w-full h-full bg-[#060608] font-sans text-[#F0EEE8] flex flex-col relative">
       <Header />
-      <main className="flex-1 flex overflow-hidden">
-        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-        <section className="flex-1 overflow-y-auto bg-[#060608]">
+      <main className="flex-1 flex flex-col md:flex-row relative w-full min-h-0">
+        <aside className="hidden md:flex md:w-64 bg-[#0c111d] border-r border-white/5 z-30 flex-col shrink-0 relative h-full">
+          <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+        </aside>
+        <section className="flex-1 w-full min-w-0 overflow-y-auto overflow-x-hidden bg-[#060608] pb-20 md:pb-8">
           {children}
         </section>
       </main>
