@@ -45,8 +45,7 @@ function MainContent() {
   }
 
   return (
-    <DashboardLayout activeTab={activeTab} setActiveTab={setActiveTab}>
-      {activeTab === 'main' && profile?.role === 'buyer' && <BuyerStorefront />}
+    <DashboardLayout activeTab={activeTab} setActiveTab={setActiveTab}>      {activeTab === 'main' && profile?.role === 'buyer' && <BuyerStorefront onOrderCreated={() => setActiveTab('orders')} />}
       {activeTab === 'main' && profile?.role === 'seller' && <SellerDashboard />}
       {activeTab === 'dashboard' && <InsightPanel />}
       {activeTab === 'wallet' && <WalletPage />}
