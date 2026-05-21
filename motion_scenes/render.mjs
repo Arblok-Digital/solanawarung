@@ -1,8 +1,22 @@
-import { renderProject } from '@motion-canvas/core';
-import project from './src/project.ts';
+import { render } from '@motion-canvas/core';
+import { makeProject } from './src/project';
 
-await renderProject(project, {
-  format: { name: 'mp4', codec: 'h264' },
-  output: './dist/output.mp4',
-  console: true,
-});
+async function renderVideo() {
+  const project = makeProject({
+    scenes: [
+      // scenes will be imported from project file
+    ]
+  });
+
+  // Render the project
+  await render(project, {
+    output: './dist/output.mp4',
+    format: 'mp4',
+    quality: 100,
+    width: 1920,
+    height: 1080,
+    fps: 30,
+  });
+}
+
+renderVideo().catch(console.error);
