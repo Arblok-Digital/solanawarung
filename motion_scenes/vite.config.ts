@@ -9,5 +9,15 @@ export default defineConfig({
     ...motionCanvas({
       project: './src/project.ts',
     }),
+    {
+      name: 'motion-ui-override',
+      enforce: 'pre',
+      transformIndexHtml(html) {
+        return html.replace(
+          '</head>',
+          '    <link rel="stylesheet" href="/override.css" />\n  </head>'
+        );
+      }
+    }
   ],
 });

@@ -1,0 +1,43 @@
+/* Motion Canvas UI Footer Overrides */
+/* Target the footer/status bar */
+._root_p7njo_1 {
+  font-size: 18px !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  padding: 8px 12px !important;
+  line-height: 1.5 !important;
+}
+
+/* Ensure all child text elements scale */
+._root_p7njo_1 * {
+  font-size: 18px !important;
+}
+
+/* Shortcuts container - increase gap and icon size */
+._shortcuts_p7njo_16 {
+  gap: 12px !important;
+}
+
+._shortcuts_p7njo_16 svg,
+._shortcuts_p7njo_16 img {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+}
+
+/* Shortcut items */
+._shortcut_p7njo_16 {
+  font-size: 18px !important;
+}
+
+/* Code element cleanup - hide version info that looks like leaked code */
+._root_112ja_1 code,
+._root_112ja_1 pre {
+  display: none !important;
+}
+
+/* Fallback for any monospace text that looks like code */
+._root_112ja_1 {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}

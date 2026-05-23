@@ -28,9 +28,9 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
       // Opsi B: Dompet Digital (Simulasi/Internal)
       setLoading(true);
       try {
-        await processCheckout({
-          buyerId: user.uid,
-          sellerId: user.uid, // MOCK: Same ID for demo visualization
+await processCheckout({
+           buyerId: user?.uid || 'anonymous',
+           sellerId: user?.uid || 'anonymous', // MOCK: Same ID for demo visualization
           productId: product.id || '',
           productName: product.name,
           amount: product.price,

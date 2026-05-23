@@ -6,21 +6,22 @@ import { generateBusinessInsights } from '../../services/gemini/analytics'; // A
 import { uploadImage } from '../../services/firebase/storage';
 
 interface ProductFormProps {
+  product?: any;
   onSave: (data: any) => Promise<void>;
   onClose: () => void;
 }
 
-export const ProductForm: React.FC<ProductFormProps> = ({ onSave, onClose }) => {
+export const ProductForm: React.FC<ProductFormProps> = ({ product, onSave, onClose }) => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   
   const [formData, setFormData] = useState({
-    name: '',
-    category: 'Makanan',
-    description: '',
-    price: 0,
-    stock: 10,
+    name: product?.name || '',
+    category: product?.category || 'Makanan',
+    description: product?.description || '',
+    price: product?.price || 0,
+    stock: product?.stock || 10,
   });
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {

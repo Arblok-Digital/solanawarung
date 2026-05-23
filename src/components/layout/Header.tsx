@@ -68,7 +68,7 @@ export const Header: React.FC = () => {
     <header className="h-14 md:h-16 bg-[#0c111d] text-white flex items-center justify-between px-3 md:px-8 shrink-0 shadow-lg z-20 relative">
       {/* Subtle gradient line at bottom */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
-      
+
       <div className="flex items-center space-x-2 md:space-x-3 min-w-0">
         <div className="w-8 h-8 md:w-9 md:h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg md:rounded-xl flex items-center justify-center font-black text-base md:text-lg italic shadow-lg shadow-blue-500/20 shrink-0">S</div>
         <div className="min-w-0">
@@ -83,10 +83,10 @@ export const Header: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
       {/* MINT CBDC SIMULATION (Devnet Only) */}
       {connected && (
-        <button 
+        <button
           onClick={async () => {
             // 1. Validasi ketersediaan Wallet & Config
             if (!publicKey || !connected) return alert("Konekin wallet dulu bro!"); // Pastikan wallet konek
@@ -99,13 +99,13 @@ export const Header: React.FC = () => {
 
               // 2. Konversi string/null ke Object PublicKey untuk menghindari error 'toBuffer'
               const mintPublicKey = new PublicKey(CBDC_MINT);
-              
+
               // 3. Ambil Associated Token Address (ATA)
               const ata = await getAssociatedTokenAddress(mintPublicKey, publicKey);
               if (!ata) throw new Error("Gagal menghitung alamat Token Account.");
 
               const amount = 1000000 * Math.pow(10, 9); // Mint 1jt token (asumsi 9 desimal)
-              
+
               const transaction = new Transaction().add(
                 createMintToInstruction(
                   mintPublicKey,
@@ -118,7 +118,7 @@ export const Header: React.FC = () => {
               );
 
               const signature = await sendTransaction(transaction, connection);
-              
+
               // UX Optimis: Refresh saldo setelah 3 detik tanpa menunggu konfirmasi penuh
               setTimeout(() => {
                 updateBalances();
@@ -130,7 +130,7 @@ export const Header: React.FC = () => {
                 blockhash: latestBlockhash.blockhash,
                 lastValidBlockHeight: latestBlockhash.lastValidBlockHeight
               }, 'confirmed');
-              
+
               alert("✅ Minting Sukses! Saldo Digital Rupiah Anda telah diperbarui di blockchain Devnet.");
               updateBalances();
             } catch (err: any) {
@@ -150,7 +150,7 @@ export const Header: React.FC = () => {
 
       <div className="flex items-center gap-1.5 md:gap-4">
         {/* Seed Data Button — icon only on mobile */}
-        <button 
+        <button
           onClick={handleSeed}
           disabled={seeding}
           aria-label="Seed Data"
@@ -180,7 +180,7 @@ export const Header: React.FC = () => {
         </div>
 
         {/* Dev Mode Role Switcher — icon only on mobile */}
-        <button 
+        <button
           onClick={toggleRole}
           aria-label={`Ganti ke mode ${profile?.role === 'seller' ? 'Pembeli' : 'Penjual'}`}
           className="flex items-center gap-1.5 md:gap-2 px-2 md:px-4 h-8 md:h-[38px] bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 text-purple-400 rounded-lg md:rounded-[10px] transition-all text-[9px] md:text-[10px] font-black uppercase tracking-widest cursor-pointer group"
@@ -197,10 +197,10 @@ export const Header: React.FC = () => {
             <p className="text-slate-500 text-[10px]">{user?.email || 'Demo Mode'}</p>
           </div>
           {user?.photoURL ? (
-            <img 
-              src={user.photoURL} 
-              alt="profile" 
-              className="w-7 h-7 rounded-full border-2 border-slate-700 shadow-sm" 
+            <img
+              src={user.photoURL}
+              alt="profile"
+              className="w-7 h-7 rounded-full border-2 border-slate-700 shadow-sm"
             />
           ) : (
             <div className="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-400">
@@ -210,7 +210,7 @@ export const Header: React.FC = () => {
         </div>
 
         {/* Logout — always visible */}
-        <button 
+        <button
           onClick={logout}
           aria-label="Keluar dari akun"
           className="p-2 hover:bg-white/5 rounded-lg md:rounded-xl text-slate-500 hover:text-red-400 transition-all cursor-pointer"

@@ -14,7 +14,11 @@ import { CategoryFilter } from '../shared/CategoryFilter';
 
 const CATEGORIES = ['all', 'Makanan', 'Minuman', 'Fashion', 'Kerajinan', 'Elektronik', 'Digital', 'Jasa', 'Lainnya'];
 
-export const BuyerStorefront: React.FC = () => {
+export interface BuyerStorefrontProps {
+  onOrderCreated?: () => void;
+}
+
+export const BuyerStorefront: React.FC<BuyerStorefrontProps> = ({ onOrderCreated }) => {
   const { user } = useAuth();
   const { connection } = useConnection();
   const wallet = useWallet();

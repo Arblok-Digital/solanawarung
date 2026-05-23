@@ -14,6 +14,8 @@ const model = genAI.getGenerativeModel({
 });
 
 // --- FUNGSI SEMENTARA UNTUK DEBUGGING MODEL ---
+// Note: listModels is not available in all SDK versions, commented out for build safety
+/*
 export const checkModels = async () => {
   console.log("--- Memeriksa Model Gemini yang Tersedia ---");
   try {
@@ -29,6 +31,7 @@ export const checkModels = async () => {
     console.error("Pastikan API Key Anda valid dan 'Generative Language API' sudah di-enable di Google Cloud Console.");
   }
 };
+*/
 // --- AKHIR FUNGSI SEMENTARA ---
 
 export const analyzeProductImage = async (base64Image: string): Promise<ProductAnalysis> => {

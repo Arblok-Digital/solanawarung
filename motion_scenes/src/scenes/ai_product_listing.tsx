@@ -4,6 +4,8 @@ import {all, createRef, easeOutBack, easeOutCubic, linear, waitFor, Vector2} fro
 const BG = '#0A0A0F';
 const GREEN = '#14F195';
 const PURPLE = '#9945FF';
+const CYAN = '#00E1F0';
+const GLASS_BG = 'rgba(13, 13, 18, 0.7)';
 
 export const meta = { name: 'AIProductListing' };
 
@@ -12,95 +14,125 @@ export default makeScene2D(function* (view) {
 
   const titleRef = createRef<Txt>();
   view.add(
-    <Txt ref={titleRef} fontSize={48} fontWeight={700} fontFamily="Arial" fill={GREEN} position={new Vector2(0, -280)}>
+    <Txt ref={titleRef} fontSize={72} fontWeight={700} fontFamily="Arial" fill={GREEN} position={new Vector2(0, -420)}>
       AI Product Listing
     </Txt>
   );
 
-  // Step 1: Camera
-  const camRef = createRef<Rect>();
-  const camLensRef = createRef<Circle>();
+  // Step 1: Camera (Outer circle + Inner lens)
+  const camOuterRef = createRef<Circle>();
+  const camInnerRef = createRef<Circle>();
   const camLabelRef = createRef<Txt>();
 
-  view.add(<Rect ref={camRef} size={[80, 60]} radius={8} fill={GREEN} opacity={0} stroke={GREEN} lineWidth={2} position={new Vector2(-300, 0)} />);
-  view.add(<Circle ref={camLensRef} size={24} fill={GREEN} opacity={0} position={new Vector2(-300, 0)} />);
-  view.add(<Txt ref={camLabelRef} fontSize={20} fill="#aaaaaa" fontFamily="Arial" opacity={0} position={new Vector2(-300, -55)}>Foto Produk</Txt>);
+  view.add(<Circle ref={camOuterRef} size={160} fill={GLASS_BG} stroke={GREEN} lineWidth={3} opacity={0} position={new Vector2(-620, 0)} />);
+  view.add(<Circle ref={camInnerRef} size={60} fill={'rgba(0,0,0,0)'} stroke={GREEN} lineWidth={4} opacity={0} position={new Vector2(-620, 0)} />);
+  view.add(<Txt ref={camLabelRef} fontSize={36} fill="#aaaaaa" fontFamily="Arial" opacity={0} position={new Vector2(-620, -130)}>Foto Produk</Txt>);
 
   // Arrow 1
   const arrow1Ref = createRef<Line>();
-  view.add(<Line ref={arrow1Ref} points={[new Vector2(-240, 0), new Vector2(-140, 0)]} stroke="#ffffff" lineWidth={2} endArrow opacity={0} />);
+  view.add(<Line ref={arrow1Ref} points={[new Vector2(-520, 0), new Vector2(-380, 0)]} stroke="#ffffff" lineWidth={4} endArrow opacity={0} />);
 
-  // Step 2: AI Brain nodes
-  const brainOffsets = [
-    new Vector2(-20, -25), new Vector2(20, -25), new Vector2(-25, 10),
-    new Vector2(25, 10), new Vector2(0, 30), new Vector2(0, -5),
+  // Step 2: Gemini AI Core (sesuai ecosystem.html - Tiga Layer, Gemini sebagai Intelligence Pillar)
+  const geminiCenterX = -320;
+
+  // Central Gemini node (dengan emoji 🤖)
+  const geminiCoreRef = createRef<Circle>();
+  const geminiIconRef = createRef<Txt>();
+  view.add(<Circle ref={geminiCoreRef} size={90} fill={GLASS_BG} stroke={PURPLE} lineWidth={4} opacity={0} position={new Vector2(geminiCenterX, 10)} />);
+  view.add(<Txt ref={geminiIconRef} fontSize={42} fill={PURPLE} fontFamily="Arial" opacity={0} position={new Vector2(geminiCenterX, 10)}>🤖</Txt>);
+
+  // Surrounding nodes (Vision + Analytics satellites)
+  const geminiSatellites: Circle[] = [];
+  const satelliteOffsets = [
+    new Vector2(geminiCenterX - 85, -55),
+    new Vector2(geminiCenterX + 85, -55),
+    new Vector2(geminiCenterX - 100, 55),
+    new Vector2(geminiCenterX + 100, 55),
+    new Vector2(geminiCenterX, -90),
+    new Vector2(geminiCenterX, 95),
   ];
-  const brainConns = [[0,1],[0,2],[0,5],[1,3],[1,5],[2,4],[3,4],[4,5]];
 
-  const brainNodes: Circle[] = [];
-  for (let i = 0; i < brainOffsets.length; i++) {
+  for (const pos of satelliteOffsets) {
     const ref = createRef<Circle>();
-    view.add(<Circle ref={ref} size={10} fill={PURPLE} opacity={0} position={brainOffsets[i]} />);
-    brainNodes.push(ref());
-  }
-  const brainLines: Line[] = [];
-  for (const [a, b] of brainConns) {
-    const ref = createRef<Line>();
-    view.add(<Line ref={ref} points={[brainOffsets[a], brainOffsets[b]]} stroke={PURPLE} lineWidth={1} opacity={0} />);
-    brainLines.push(ref());
+    view.add(<Circle ref={ref} size={22} fill={PURPLE} opacity={0} position={pos} />);
+    geminiSatellites.push(ref());
   }
 
-  const brainLabelRef = createRef<Txt>();
-  view.add(<Txt ref={brainLabelRef} fontSize={20} fill="#aaaaaa" fontFamily="Arial" opacity={0} position={new Vector2(0, -55)}>Gemini AI</Txt>);
+  // Label Gemini AI + subtext (Vision + Analytics) — mirip tampilan di ecosystem.html
+  const geminiLabelRef = createRef<Txt>();
+  const geminiSubRef = createRef<Txt>();
+  view.add(<Txt ref={geminiLabelRef} fontSize={32} fontWeight={700} fill={PURPLE} fontFamily="Arial" opacity={0} position={new Vector2(geminiCenterX, -155)}>Gemini AI</Txt>);
+  view.add(<Txt ref={geminiSubRef} fontSize={18} fill="#aaaaaa" fontFamily="Arial" opacity={0} position={new Vector2(geminiCenterX, -125)}>Vision + Analytics</Txt>);
 
-  // JSON popup
-  const jsonRef = createRef<Txt>();
-  view.add(<Txt ref={jsonRef} fontSize={16} fill={GREEN} fontFamily="monospace" opacity={0} position={new Vector2(0, 80)}>
-    {'{\n  "name": "Kopi Gayo",\n  "category": "Minuman",\n  "price": 85000\n}'}
-  </Txt>);
+  // Product Preview (clean, no raw code)
+  const jsonBgRef = createRef<Rect>();
+  const productNameRef = createRef<Txt>();
+  const categoryRef = createRef<Txt>();
+  const priceRef = createRef<Txt>();
+
+  view.add(<Rect ref={jsonBgRef} size={[420, 220]} radius={16} fill={GLASS_BG} stroke={GREEN} lineWidth={2} opacity={0} position={new Vector2(60, 20)} />);
+  
+  view.add(<Txt ref={productNameRef} fontSize={32} fontWeight={700} fill="#ffffff" fontFamily="Arial" opacity={0} position={new Vector2(60, -40)}>Kopi Gayo</Txt>);
+  view.add(<Txt ref={categoryRef} fontSize={22} fill="#aaaaaa" fontFamily="Arial" opacity={0} position={new Vector2(60, 10)}>☕ Minuman • Arabica</Txt>);
+  view.add(<Txt ref={priceRef} fontSize={36} fontWeight={700} fill={GREEN} fontFamily="Arial" opacity={0} position={new Vector2(60, 70)}>Rp 85.000</Txt>);
 
   // Arrow 2
   const arrow2Ref = createRef<Line>();
-  view.add(<Line ref={arrow2Ref} points={[new Vector2(140, 0), new Vector2(240, 0)]} stroke="#ffffff" lineWidth={2} endArrow opacity={0} />);
+  view.add(<Line ref={arrow2Ref} points={[new Vector2(280, 0), new Vector2(410, 0)]} stroke="#ffffff" lineWidth={4} endArrow opacity={0} />);
 
   // Step 3: Product Card
   const cardRef = createRef<Rect>();
   const cardTitleRef = createRef<Txt>();
   const cardPriceRef = createRef<Txt>();
 
-  view.add(<Rect ref={cardRef} size={[220, 140]} radius={12} fill="#0D0D12" stroke={GREEN} lineWidth={2} opacity={0} position={new Vector2(300, 0)} />);
-  view.add(<Txt ref={cardTitleRef} fontSize={18} fontWeight={700} fill="#ffffff" fontFamily="Arial" opacity={0} position={new Vector2(300, -25)}>Kopi Gayo Premium</Txt>);
-  view.add(<Txt ref={cardPriceRef} fontSize={20} fill={GREEN} fontWeight={700} fontFamily="Arial" opacity={0} position={new Vector2(300, 30)}>Rp 85.000</Txt>);
+  view.add(<Rect ref={cardRef} size={[440, 280]} radius={24} fill={GLASS_BG} stroke={GREEN} lineWidth={2} opacity={0} position={new Vector2(580, 0)} />);
+  view.add(<Txt ref={cardTitleRef} fontSize={32} fontWeight={700} fill="#ffffff" fontFamily="Arial" opacity={0} position={new Vector2(580, -50)}>Kopi Gayo Premium</Txt>);
+  view.add(<Txt ref={cardPriceRef} fontSize={36} fill={GREEN} fontWeight={700} fontFamily="Arial" opacity={0} position={new Vector2(580, 60)}>Rp 85.000</Txt>);
 
-  // Highlight
-  const highlightRef = createRef<Rect>();
+  // Highlight Auto-fill
+  const autoFillContainerRef = createRef<Rect>();
   const autoFillRef = createRef<Txt>();
-  view.add(<Rect ref={highlightRef} size={[230, 150]} radius={12} stroke={GREEN} lineWidth={3} fill={GREEN} opacity={0} position={new Vector2(300, 0)} />);
-  view.add(<Txt ref={autoFillRef} fontSize={24} fill={GREEN} fontWeight={700} fontFamily="Arial" opacity={0} position={new Vector2(300, 100)}>Auto-fill!</Txt>);
+  view.add(
+    <Rect ref={autoFillContainerRef} size={[280, 80]} radius={40} fill={GLASS_BG} stroke={GREEN} lineWidth={3} opacity={0} scale={0.8} position={new Vector2(580, 200)}>
+      <Txt ref={autoFillRef} fontSize={40} fill={GREEN} fontWeight={700} fontFamily="Arial">Auto-fill!</Txt>
+    </Rect>
+  );
 
   // ===== ANIMATION =====
 
   yield* all(
-    camRef().opacity(0.2, 0.4, easeOutCubic),
-    camLensRef().opacity(0.6, 0.4, easeOutCubic),
+    camOuterRef().opacity(1, 0.4, easeOutCubic),
+    camInnerRef().opacity(1, 0.4, easeOutCubic),
     camLabelRef().opacity(1, 0.4, easeOutCubic),
   );
 
-  yield* waitFor(0.5);
+  yield* waitFor(0.3);
 
   yield* arrow1Ref().opacity(1, 0.3, easeOutCubic);
 
-  for (let i = 0; i < brainNodes.length; i++) {
-    yield* all(
-      brainNodes[i].opacity(0.8, 0.12, easeOutCubic),
-      brainLines[i]?.opacity(0.4, 0.12, easeOutCubic),
-    );
-  }
-  yield* brainLabelRef().opacity(1, 0.3, easeOutCubic);
-  yield* waitFor(0.3);
+  // Gemini AI Core animation (lebih prominent seperti di ecosystem.html)
+  yield* all(
+    geminiCoreRef().opacity(1, 0.35, easeOutBack),
+    geminiIconRef().opacity(1, 0.35, easeOutBack),
+  );
 
-  yield* jsonRef().opacity(1, 0.4, easeOutBack);
-  yield* waitFor(0.8);
+  for (const sat of geminiSatellites) {
+    yield* sat.opacity(1, 0.1, easeOutCubic);
+  }
+
+  yield* all(
+    geminiLabelRef().opacity(1, 0.3, easeOutCubic),
+    geminiSubRef().opacity(1, 0.3, easeOutCubic),
+  );
+  yield* waitFor(0.2);
+
+  yield* all(
+    jsonBgRef().opacity(1, 0.4, easeOutBack),
+    productNameRef().opacity(1, 0.4, easeOutBack),
+    categoryRef().opacity(1, 0.4, easeOutBack),
+    priceRef().opacity(1, 0.4, easeOutBack),
+  );
+  yield* waitFor(0.4);
 
   yield* all(
     arrow2Ref().opacity(1, 0.3, easeOutCubic),
@@ -109,40 +141,39 @@ export default makeScene2D(function* (view) {
     cardPriceRef().opacity(1, 0.4, easeOutCubic),
   );
 
-  yield* waitFor(0.5);
-
-  yield* all(
-    highlightRef().opacity(0.15, 0.2, linear),
-    autoFillRef().opacity(1, 0.3, easeOutBack),
-  );
   yield* waitFor(0.3);
-  yield* highlightRef().opacity(0, 0.3, linear);
-  yield* waitFor(0.3);
-  yield* all(
-    highlightRef().opacity(0.15, 0.2, linear),
-    autoFillRef().opacity(1, 0.2, linear),
-  );
 
+  // Auto-fill stamp bounce & card pulse
+  yield* all(
+    autoFillContainerRef().opacity(1, 0.2, linear),
+    autoFillContainerRef().scale(1.2, 0.15, easeOutCubic).to(1, 0.25, easeOutBack),
+    cardRef().lineWidth(4, 0.15, easeOutCubic).to(1, 0.25, easeOutBack),
+  );
+  
   yield* waitFor(1.0);
 
   // Fade out
   yield* all(
-    titleRef().opacity(0, 0.5, linear),
-    camRef().opacity(0, 0.5, linear),
-    camLensRef().opacity(0, 0.5, linear),
-    camLabelRef().opacity(0, 0.5, linear),
-    arrow1Ref().opacity(0, 0.5, linear),
-    jsonRef().opacity(0, 0.5, linear),
-    arrow2Ref().opacity(0, 0.5, linear),
-    cardRef().opacity(0, 0.5, linear),
-    cardTitleRef().opacity(0, 0.5, linear),
-    cardPriceRef().opacity(0, 0.5, linear),
-    highlightRef().opacity(0, 0.5, linear),
-    autoFillRef().opacity(0, 0.5, linear),
-    brainLabelRef().opacity(0, 0.5, linear),
+    titleRef().opacity(0, 0.4, linear),
+    camOuterRef().opacity(0, 0.4, linear),
+    camInnerRef().opacity(0, 0.4, linear),
+    camLabelRef().opacity(0, 0.4, linear),
+    arrow1Ref().opacity(0, 0.4, linear),
+    jsonBgRef().opacity(0, 0.4, linear),
+    productNameRef().opacity(0, 0.4, linear),
+    categoryRef().opacity(0, 0.4, linear),
+    priceRef().opacity(0, 0.4, linear),
+    arrow2Ref().opacity(0, 0.4, linear),
+    cardRef().opacity(0, 0.4, linear),
+    cardTitleRef().opacity(0, 0.4, linear),
+    cardPriceRef().opacity(0, 0.4, linear),
+    autoFillContainerRef().opacity(0, 0.4, linear),
+    geminiCoreRef().opacity(0, 0.4, linear),
+    geminiIconRef().opacity(0, 0.4, linear),
+    geminiLabelRef().opacity(0, 0.4, linear),
+    geminiSubRef().opacity(0, 0.4, linear),
   );
-  for (const n of brainNodes) n.opacity(0, 0.3, linear);
-  for (const l of brainLines) l.opacity(0, 0.3, linear);
+  for (const sat of geminiSatellites) sat.opacity(0, 0.3, linear);
 
-  yield* waitFor(0.5);
+  yield* waitFor(0.3);
 });
