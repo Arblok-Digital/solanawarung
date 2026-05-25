@@ -268,7 +268,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
                 <h3 className="text-sm font-extrabold uppercase tracking-widest mb-5">Perusahaan</h3>
                 <div className="space-y-3">
                   <a href="#" className="block text-sm text-[#94A3B8] hover:text-[#14F195]">Tentang Kami</a>
-                  <a href="#" className="block text-sm text-[#94A3B8] hover:text-[#14F195]">Hubungi Kami</a>
+                  <a href="mailto:ardiblokchine@gmail.com" className="block text-sm text-[#94A3B8] hover:text-[#14F195]">Hubungi Kami</a>
                 </div>
               </div>
             </div>
